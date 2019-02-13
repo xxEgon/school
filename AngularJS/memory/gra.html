@@ -1,0 +1,4 @@
+<div id="playfieldDiv">
+    <button class="piece" style="background-image:url('img/{{x}}.jpg')" ng-repeat="x in tTopCard track by $index" ng-click="clickPiece(x, $index)" ng-disabled="!(tTopCard[$index]==0)"></button>
+    <div id="alertDiv" ng-show="showAlert"><div>{{alert}}</div></div>
+</div>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Czasopisma</title>
+    <meta charset="utf-8">
+    <meta name="author" content="damian filipowski" />
+    <style>
+        #imagesBox {
+            width: 600px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .logo {
+            width: 101%;
+            display: block;
+            float: left;
+            cursor: pointer;
+        }
+
+        .year {
+            background-color: grey;
+            display: inline-block;
+            margin: 5px;
+            padding: 5px;
+            border: 1px black solid;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .year:hover {
+            background-color: lightgrey;
+        }
+
+        .back {
+            cursor: pointer;
+            border-top: 1px black solid;
+            border-bottom: 1px black solid;
+            font-weight: bold;
+            margin: 0 auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        table {
+            font-family: Arial, sans-serif;
+        }
+
+        td {
+            text-align: center;
+            height: 220px;
+        }
+
+        span {
+            font-weight: bold;
+        }
+
+        .tablesDiv {
+            width: 170%;
+            margin-left: -35%;
+        }
+
+        .table1 {
+            width: 50%;
+            float: left;
+        }
+
+        .table2 {
+            width: 50%;
+            float: right;
+        }
+
+        .imgtd {
+            height: auto;
+        }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+    <script>
+        var lastCzas = 0;
+
+        var app = angular.module('czasApp', []);
+        app.controller('czasCtrl', function ($scope, $http) {
+            $http({
+                url: "ajax.php",
+                method: "GET",
+                params: {
+                    f: 1,
+                    p: "/czasopisma/zmienne/*"
+                }
+            }).then(function (response) {
+                $scope.images_names = response.data;
+                console.log(response.data)
+                if (response.data.length % 2 == 0) {
+                        $scope.imagesHalf = response.data.length / 2;
+                        $scope.imagesHalf2 = -1 * (response.data.length / 2);
+                    } else {
+                        $scope.imagesHalf = (response.data.length / 2);
+                        $scope.imagesHalf2 = (-1 * (response.data.length / 2)) - 1;
+                    }
+            })
+
+            $scope.imagesHide = false;
+            $scope.yearsHide = true;
+            $scope.backHide = true;
+            $scope.tableHide = true;
+            $scope.tableHide2 = true;
+
+            $scope.imgClick = function (that) {
+
+                console.log(that.klik);
+                lastCzas = that.klik;
+                //$scope.lastCzas = lastCzas;
+
+                $http({
+                    url: "ajax.php",
+                    method: "GET",
+                    params: {
+                        f: 1,
+                        p: "/czasopisma/lata/" + that.klik
+                    }
+                }).then(function (response) {
+                    $scope.imagesHide = true;
+                    $scope.backHide = false;
+                    $scope.yearsHide = false;
+
+                    var yearsTab = response.data[0][0].split(",");
+                    yearsTab.push("Wszystkie")
+                    $scope.years = yearsTab;
+                    console.log($scope.years)
+
+                })
+
+            }
+            $scope.backClick = function () {
+                console.log("Back");
+                $scope.imagesHide = false;
+                $scope.yearsHide = true;
+                $scope.backHide = true;
+                $scope.tableHide = true;
+                $scope.tableHide2 = true;
+            }
+            $scope.yearClick = function (that) {
+                console.log(lastCzas + "  ==>  " + that)
+
+                var path;
+                if (that == "Wszystkie")
+                    path = "/czasopisma/" + lastCzas + "/*";
+                else
+                    path = "/czasopisma/" + lastCzas + "/*[@rok='" + that + "']";
+
+                //console.log(path);
+                $http({
+                    url: "ajax.php",
+                    method: "GET",
+                    params: {
+                        f: 1,
+                        p: path
+                    }
+                }).then(function (response) {
+                    console.log(response.data);
+                    $scope.tableData = response.data;
+                    if (response.data.length % 2 == 0) {
+                        $scope.tableDataHalf = response.data.length / 2;
+                        $scope.tableDataHalf2 = -1 * (response.data.length / 2);
+                    } else {
+                        $scope.tableDataHalf = (response.data.length / 2) + 1;
+                        $scope.tableDataHalf2 = -1 * (response.data.length / 2);
+                    }
+
+                    if (response.data.length > 1)
+                        $scope.tableHide2 = false;
+
+                    $scope.tableHide = false;
+                    $scope.lastCzasTable = lastCzas;
+                })
+            }
+        });
+    </script>
+</head>
+
+<body ng-app="czasApp">
+    <div id="imagesBox" ng-controller="czasCtrl">
+
+        <table class="table1" ng-hide="imagesHide">
+            <tr ng-repeat="x in images_names | orderBy: 'klik' | limitTo : imagesHalf">
+                <td class="imgtd" ng-click="imgClick(x) " id="{{x.klik}}">
+                    <img class="logo" ng-src="https://atarionline.pl/biblioteka/czasopisma/img/{{x.src}}" />
+                </td>
+            </tr>
+        </table>
+        <table class="table2" ng-hide="imagesHide">
+            <tr ng-repeat="x in images_names | orderBy: 'klik' | limitTo : imagesHalf2">
+                <td class="imgtd" ng-click="imgClick(x) " id="{{x.klik}}">
+                    <img class="logo" ng-src="https://atarionline.pl/biblioteka/czasopisma/img/{{x.src}}" />
+                </td>
+            </tr>
+        </table>
+
+        <div class="yearsDiv" ng-hide="yearsHide">
+            <div class="year" ng-repeat="x in years" ng-click="yearClick(x)">{{x}}</div>
+        </div>
+
+        <div class="back" ng-hide="backHide" ng-click="backClick()">
+            cofnij
+            <img src="http://atarionline.pl/biblioteka/materialy_o_grach/back.gif" alt="back" />
+        </div>
+
+        <div class="tablesDiv">
+            <table ng-hide="tableHide" border="1" class="table1">
+                <tr>
+                    <th>strona tytułowa</th>
+                    <th>plik</th>
+                    <th>pismo</th>
+                    <th>darczyńcy</th>
+                    <tr ng-repeat="x in tableData | limitTo : tableDataHalf">
+                        <td>
+                            <img ng-src="http://atarionline.pl/biblioteka/czasopisma/{{lastCzasTable}}/{{x.miniaturka}}" alt="brak - nikt nie skanuje"
+                            />
+                        </td>
+                        <td>
+                            format: <span>{{x.format}}</span><br> stron: <span>{{x.stron}}</span><br>plik:
+                            <a ng-href="http://atarionline.pl/biblioteka/czasopisma/{{lastCzasTable}}/{{x.plik}}">tutaj</a>
+                        </td>
+                        <td>
+                            nazwa: <span>{{x.nazwa}}</span><br> numer: <span>{{x.numer}}</span><br> wydawca: <span>{{x.wydawca}}</span><br>
+                        </td>
+                        <td>
+                            skan: <span>{{x.skan}}</span><br> przetworzenie: <span>{{x.przetworzenie}}</span><br> podesłał:
+                            <span>{{x.podeslal}}</span><br>
+                        </td>
+                    </tr>
+            </table>
+            <table ng-hide="tableHide2" border="1" class="table2">
+                <tr>
+                    <th>strona tytułowa</th>
+                    <th>plik</th>
+                    <th>pismo</th>
+                    <th>darczyńcy</th>
+                    <tr ng-repeat="x in tableData | limitTo : tableDataHalf2">
+                        <td>
+                            <img ng-src="http://atarionline.pl/biblioteka/czasopisma/{{lastCzasTable}}/{{x.miniaturka}}" alt="brak - nikt nie skanuje"
+                            />
+                        </td>
+                        <td>
+                            format: <span>{{x.format}}</span><br> stron: <span>{{x.stron}}</span><br>plik:
+                            <a ng-href="http://atarionline.pl/biblioteka/czasopisma/{{lastCzasTable}}/{{x.plik}}">tutaj</a>
+                        </td>
+                        <td>
+                            nazwa: <span>{{x.nazwa}}</span><br> numer: <span>{{x.numer}}</span><br> wydawca: <span>{{x.wydawca}}</span><br>
+                        </td>
+                        <td>
+                            skan: <span>{{x.skan}}</span><br> przetworzenie: <span>{{x.przetworzenie}}</span><br> podesłał:
+                            <span>{{x.podeslal}}</span><br>
+                        </td>
+                    </tr>
+            </table>
+        </div>
+
+    </div>
+</body>
+
+</html>

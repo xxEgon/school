@@ -1,0 +1,110 @@
+* {
+    font-family: sans-serif;
+}
+
+#return, #restart {
+    position:relative;
+    margin:0 auto;
+    margin-top:20px;
+    border:1px black solid;
+    display: block;
+    text-align: center;
+    padding: 10px 0px;
+    width:100px;
+    text-decoration: none;
+    color:black;
+    background-color: white;
+    transition-duration: .3s;
+}
+#return:hover, #restart:hover {
+    background-color: black;
+    color:white;
+}
+
+#restart {
+    margin-top:40px;
+    cursor:pointer;
+}
+
+
+area {
+    outline: none;
+}
+
+#glownaImg {
+    display: block;
+    margin: 0 auto;
+}
+
+#title {
+    margin: 0 auto;
+    font-size: 35px;
+    text-align: center;
+    margin: 20px;
+}
+
+#playfieldDiv {
+    display: block;
+    margin: 0 auto;
+    width: 400px;
+    height: 400px;
+    position: relative;
+}
+
+.piece {
+    width: 25%;
+    height: 25%;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background-size: 100%;
+    border:0px;
+    outline:none;
+    float:left;
+}
+
+#alertDiv {
+    width:100%;
+    height:100%;
+    position: absolute;
+    top:0px;
+    left:0px;
+    text-align: center;
+    background-color: rgba(255,255,255,0.7)
+}
+#alertDiv div {
+    background-color: red;
+    color:white;
+    padding:20px;
+    display: block;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    border-radius:5px;
+}
+
+#fullTime {
+    border:1px black solid;
+    background-color:#dfdfdf;
+    width:300px;
+    height:25px;
+    position:relative;
+    margin:0 auto;
+    margin-bottom:20px;
+}
+#leftTime {
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:100%;
+    height:100%;
+    border-right:1px black solid;
+}
+#leftTimeText {
+    position:relative;
+    margin:0 auto;
+    width:80px;
+    padding-top:4px;
+    text-align: center;
+}
