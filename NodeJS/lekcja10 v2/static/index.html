@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Armata</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script src="libs/three.js"></script>
+    <script src="js/Armata.js"></script>
+    <script src="js/Kula.js"></script>
+    <script src="js/Siatka.js"></script>
+    <script src="js/Main.js"></script>  
+    <link href="style.css" rel="stylesheet" /> 
+    <style></style>
+    <script>
+        window.addEventListener("load", function () {
+            var client = io();
+            var main;
+
+            client.on("onconnect", function (data) {
+                console.log("ClientID:", data.clientName)
+                console.log("ClientNr:", data.userNr)
+
+                main = new Main(client);
+                main.setUser(data.userNr)               
+            })
+
+            document.addEventListener("mousemove", function (e) {
+                client.emit("mouseposition", {
+                    posX: e.clientX,
+                    posY: e.clientY
+                })
+            })
+
+            client.on("mouseposition", function (data) {
+                console.log("enemy is moving mouse")
+            })
+
+            client.on("rotation", function (data) {
+                main.rotate2(data.armataObj_rotation_y, data.kulaObj_position)
+            })
+
+            client.on("kat", function (data) {
+                main.kat2(data.armataAlpha, data.kulaObj_position)
+            })
+
+            client.on("pal", function (data) {
+                main.pal2(data.kulaObj_position)
+            })
+
+            client.on("drgania", function (data) {
+                main.drgania2(data.camera_rotation_z)
+            })
+
+            client.on("odrzut", function (data) {
+                main.odrzut2(data.koloRotation, data.armataObj_position_z)
+            })
+
+        })
+    </script>
+</head>
+<body>
+    <div id="divSter">
+        <input type="range" id="obrot" min="0" max="360" step="0.5"  value="0"/>
+        <input type="range" id="kat" min="0" max="90" step="0.1" value="45"/>
+        <button id="pal">PAL</button>
+    </div>
+    <div id="div1">
+    </div>   
+</body>
+</html>

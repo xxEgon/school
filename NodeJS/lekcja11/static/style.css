@@ -1,0 +1,24 @@
+﻿#main {
+    width:960px;
+    height:800px;
+    position:relative;
+    margin:0 auto;
+}
+.btn {
+    width:150px;
+    height:35px;
+    margin:10px;
+}
+#area {
+    width:600px;
+    height:600px;
+    margin:10px;
+}
+#selectID {
+    width:600px;
+    height:35px;
+    margin:10px;
+}
+#input1, #input2 {
+    width:250px;
+}

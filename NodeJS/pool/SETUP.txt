@@ -1,0 +1,9 @@
+Aby zagraæ, niezbêdna jest rejestracja u¿ytkownika w bazie danych. Jeœli ju¿ u¿ytkownik jest zarejestrowany to nale¿y siê zalogowaæ.
+Sterowanie:
+•	Zmiana mocy uderzenia: suwak w stopce strony.
+•	Zmiana kierunku strza³u klawisze strza³ek: prawy i lewy.
+•	Uderzenie: klawisz spacji.
+
+
+
+Twórcy: Skrzypczak Robert & Filipowski Damian 

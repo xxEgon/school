@@ -1,0 +1,69 @@
+﻿body {
+    margin: 0;
+    overflow: hidden;
+}
+
+#div1 {
+}
+
+#log {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.9;
+}
+
+#menu {
+    margin: 200px auto;
+    width: 300px;
+    height: 400px;
+    background-color: greenyellow;
+    padding: 30px;
+    opacity: 1.5;
+}
+
+.elem {
+    width: 100%;
+    height: 40px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+#nick {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 30px;
+    background-color: greenyellow;
+    color: black;
+    display: none;
+    z-index: 50;
+    text-align: center;
+}
+
+#wait, #turn {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.9;
+    display: none;
+    color: white;
+    text-align: center;
+    font-size: 40px;
+    padding-top: 200px;
+}
+
+#tablica {
+    position: absolute;
+    z-index: 110;
+    background-color:red;
+    width:100px;
+    height:150px;
+    bottom:0;
+    left:0;
+}

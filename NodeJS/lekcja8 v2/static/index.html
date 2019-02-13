@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Game</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="libs/three.js"></script>
+    <script src="js/Game.js"></script>
+    <script src="js/Net.js"></script>
+    <script src="js/UI.js"></script>
+    <link href="style.css" rel="stylesheet" /> 
+    <style></style>
+    <script>
+        game = 1;
+        net = 1;
+        ui = 1;
+        window.addEventListener("load", function () {
+            game = new Game()
+            net = new Net();
+            ui = new Ui();
+            ui.updateTabDiv(net.gameTab)
+
+            //$("#log").css("display", "none");
+        })
+    </script>
+</head>
+<body>
+    <div id="turn">Ruch drugiego gracza...</div>
+    <div id="log">
+        <div id="menu">
+            <div class="elem">LOGOWANIE</div>
+            <input type="text" id="iText" class="elem"/>
+            <button id="bLoguj" class="elem">LOGUJ</button>
+            <button id="bReset" class="elem">RESET</button>
+            <div class="elem" id="inf"></div>
+        </div> 
+    </div>
+    <div id="tablica"></div>
+    <div id="wait">Czekaj na drugiego gracza...</div>
+    <div id="nick"></div>
+    <div id="div1">
+    </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>MongoDB</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <link href="style.css" rel="stylesheet" />
+    <style></style>
+    <script>
+        window.addEventListener("load", function () {
+            var client = io();
+            client.on("onconnect", function (data) {
+                console.log("Connected ", data.clientName)
+            })
+
+            document.getElementById("addBtn").onclick = function () {
+                console.log("ADD")
+                client.emit("add", {
+                    login: document.getElementById("input1").value,
+                    password: document.getElementById("input2").value,
+                })
+            }
+
+            document.getElementById("selectBtn").onclick = function () {
+                console.log("SELECT")
+                client.emit("select", {
+                })
+            }
+
+            var chosenID = 0;
+
+            client.on("selected", function (data) {
+                console.log("Selected: ", data.selected)
+                document.getElementById("area").innerHTML = data.selected;
+
+                var sel = document.getElementById("selectID")
+                while (sel.firstChild) {
+                    sel.removeChild(sel.firstChild);
+                }
+
+                var t = JSON.parse(data.selected)
+
+                if(t.length > 0)
+                    chosenID = t[0]._id
+
+                for (var i = 0; i < t.length; i++)
+                {
+                    var opt = document.createElement("OPTION")
+                    opt.setAttribute("class", "opt")
+                    opt.innerHTML = t[i]._id
+                    sel.appendChild(opt)
+                }
+            })
+
+            document.getElementById("selectID").onchange = function () {
+                chosenID = this.value
+                console.log("chosenID:", chosenID)
+            }
+
+            document.getElementById("updateBtn").onclick = function () {
+                console.log("UPDATE")
+                if (chosenID != 0)
+                    client.emit("update", {
+                        id: chosenID,
+                        password: document.getElementById("input2").value,
+                    })
+            }
+
+            document.getElementById("deleteBtn").onclick = function () {
+                console.log("DELETE")
+                if (chosenID != 0)
+                    client.emit("delete", {
+                        id: chosenID,
+                    })
+            }
+
+        })
+    </script>
+</head>
+<body>
+    <div id="main">
+        <input type="text" id="input1" class="btn" />
+        <input type="text" id="input2" class="btn" />
+        <br />
+        <button id="addBtn" class="btn">ADD</button>
+        <button id="selectBtn" class="btn">SELECT</button>
+        <button id="updateBtn" class="btn">UPDATE</button>
+        <button id="deleteBtn" class="btn">DELETE</button>
+        <textarea id="area"></textarea>     <br />
+        <select id="selectID"></select>
+    </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Armata</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="libs/three.js"></script>
+    <script src="js/Armata.js"></script>
+    <script src="js/Kula.js"></script>
+    <script src="js/Siatka.js"></script>
+    <script src="js/Main.js"></script>  
+    <link href="style.css" rel="stylesheet" /> 
+    <style></style>
+    <script>
+        window.addEventListener("load", function () {
+            var main = new Main();
+
+        })
+    </script>
+</head>
+<body>
+    <div id="divSter">
+        <input type="range" id="obrot" min="0" max="360" step="0.5"  value="0"/>
+        <input type="range" id="kat" min="0" max="90" step="0.1" value="45"/>
+        <button id="pal">PAL</button>
+    </div>
+    <div id="div1">
+    </div>   
+</body>
+</html>

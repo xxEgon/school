@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Pool</title>
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/range.css" rel="stylesheet" />
+    <script src="libs/three.js"></script>
+    <script src="js/core/Main.js"></script>
+    <script src="js/models/Cue.js"></script>
+    <script src="js/models/Table.js"></script>
+    <script src="js/net/LoginScreen.js"></script>
+    <script src="js/net/Net.js"></script>
+    <script src="js/net/WaitingScreen.js"></script>
+    <script src="libs/ColladaLoader.js"></script>
+    <script src="js/ui/ui.js"></script>
+    <script src="libs/physi.js"></script>
+    <script src="libs/stats.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <script>
+        console.warn = function () {}
+        Physijs.scripts.worker = 'libs/physijs_worker.js';
+        Physijs.scripts.ammo = 'ammo.js';
+        var playerNr = 0;
+        var mymove = 0;
+        var net
+        var loginscreen
+        var waitingscreen
+        var main
+        var ui
+        var player1 = {
+            nick: "",
+            score: 0,
+            ball:"",
+        }
+        var player2 = {
+            nick: "",
+            score: 0,
+            ball: "",
+        }
+        window.addEventListener("load", function () {
+            net = new Net()
+			//main = new Main()
+			//ui = new UI()
+            loginScreen = new LoginScreen()
+            waitingScreen = new WaitingScreen()
+        })
+    </script>
+</head>
+<body>
+    <div id="main"></div>
+</body>
+</html>
