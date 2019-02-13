@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LOTTO</title>
+    <style>
+        #main {
+            position: relative;
+            width: 600px;
+            border: 5px #00cc99 double;
+            margin: 0 auto;
+            font-family: sans-serif;
+        }
+
+        #lotto {
+            margin: 10px auto;
+            display: block;
+            cursor: pointer;
+        }
+
+        #wylosowano {
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        #balls {
+            margin: 10px auto;
+            width: 360px;
+            height: 60px;
+        }
+
+        .ball {
+            display:inline-block;
+            background-image: url("gfx/ball.png");
+            background-size: 60px;
+            height: 60px;
+            width: 60px;
+            line-height: 60px;
+            font-size:20px;
+            text-align: center;
+        }
+
+        #poprzednie {
+            width: 500px;
+            margin: 10px auto;
+        }
+
+        #wyniki {
+            margin: 10px auto;
+            width: 350px;
+        }
+
+        .wynik {
+            margin: 5px auto;
+            width: 450px;
+            height: 30px;
+        }
+        .usunWynik {
+            height:20px;
+            width:20px;
+            border: 1px red solid;
+            line-height:17px;
+            font-size:25px;
+            display: inline-block;
+            text-align:center;
+            color:red;
+            margin:0px 5px;
+            border-radius:10px;
+            cursor:pointer;
+        }
+    </style>
+    <script>
+        function usunWyn(toid) {
+            console.log("USUN")
+
+            console.log("ID= " + toid)
+
+            document.getElementById("wyniki").removeChild(document.getElementById("i"+toid))
+
+            send(2, toid)
+        }
+        function send(f, str) {
+            console.group("SEND")
+
+            xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "ajax2.php", true);
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (f == 1) {
+                        var ob = JSON.parse(this.responseText)
+                        console.log(ob)
+
+                        for (i = 0; i < ob.dane.length; i++) {
+                            nowyWynik(ob.dane[i].wynik, ob.dane[i].data, ob.dane[i].id)
+                        }
+
+                        var wyn = ob.dane[ob.dane.length - 1].wynik.split(";")
+                        //console.log(wyn)
+                        for (i = 0; i < 6; i++) {
+                            document.getElementById("ball" + i).innerHTML = wyn[i];
+                        }
+
+                    } else if (f == 2) {
+
+                        var ob = JSON.parse(this.responseText)
+                        console.log(ob)
+
+                    }
+                }
+            };
+
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("f=" + f + "&s=" + str);
+
+            console.groupEnd()
+        }
+
+        function nowyWynik(wyn, dat, id) {
+
+            var wynik = document.createElement("div")
+            wynik.setAttribute("class", "wynik")
+            wynik.setAttribute("id", "i" + id)
+            document.getElementById("wyniki").appendChild(wynik)
+
+            var usunWynik = document.createElement("div")
+            usunWynik.setAttribute("class", "usunWynik")
+            usunWynik.setAttribute("id", id)
+            usunWynik.innerHTML = "x"
+            usunWynik.setAttribute("onclick", "usunWyn(this.id)")
+            wynik.appendChild(usunWynik)
+
+            wynik.innerHTML += "<b><i>" + dat + "</i></b>" + ": " + wyn
+
+        }     
+
+        window.onload = function () {
+            var lotto = document.getElementById("lotto")
+
+            var pierwszy = true;
+
+            
+
+            lotto.onclick = function () {
+                console.group("LOTTO.click")
+
+                if (pierwszy) {
+                    console.log("PIERWSZY")
+
+                    var p = document.createElement("p")
+                    p.innerHTML = "Wylosowano: "
+                    document.getElementById("wylosowano").appendChild(p)
+
+                    var balls = document.createElement("div")
+                    balls.setAttribute("id", "balls")
+                    document.getElementById("wylosowano").appendChild(balls)
+
+                    for (i = 0; i < 6; i++) {
+                        var ball = document.createElement("div")
+                        ball.setAttribute("id", "ball" + i)
+                        ball.setAttribute("class", "ball")
+                        balls.appendChild(ball)
+                    }
+
+                    var p2 = document.createElement("p")
+                    p2.innerHTML = "Poprzednie wyniki: "
+                    document.getElementById("poprzednie").appendChild(p2)
+
+                    var wyniki = document.createElement("div")
+                    wyniki.setAttribute("id", "wyniki")
+                    document.getElementById("poprzednie").appendChild(wyniki)
+
+                    send(1, "p")
+                }
+                if (!pierwszy) {
+                    console.log("KOLEJNY")
+
+                    send(1, "k")
+                }
+                pierwszy = false;
+
+                console.groupEnd()
+            }       
+        }
+    </script>
+</head>
+<body>
+    <div id="main">
+        <img id="lotto" src="gfx/lotto.png" alt="lotto" />
+        <div id="wylosowano">
+        </div>
+        <div id="poprzednie">
+        </div>
+    </div>
+</body>
+</html>

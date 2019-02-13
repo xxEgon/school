@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Żużel</title>
+    <meta charset="utf-8"/>
+    <style>
+        body {
+            background-color: #273746;
+            font-family: sans-serif;
+        }
+
+        #main {
+            position: relative;
+            width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #273746;
+        }
+
+        #menu {
+            margin-top: 90px;
+            width: 600px;
+            position: absolute;
+            top: 300px;
+        }
+
+        .c {
+            position: absolute;
+        }
+
+        .img {
+            display: none;
+        }
+
+        #users_div {
+            background-color: #273746;
+            margin: 15px auto;
+            width: 250px;
+            height: 60px;
+            border: 2px white solid;
+        }
+
+        #okr_div {
+            width: 240px;
+            height: 30px;
+            position: absolute;
+            top: 330px;
+            left: 200px;
+            text-align: center;
+        }
+
+        .okr {
+            -webkit-text-stroke: 1px white;
+            -moz-text-stroke: 1px white;
+            height:30px;
+            display: inline-block;
+            text-align: center;
+            font-weight: 900;     
+            font-size: 25px;               
+        }
+
+        #canDiv {
+            width: 240px;
+            height: 75px;
+            position: absolute;
+            top: 130px;
+            left: 200px;
+            text-align: center;
+            color: white;
+            font-size: 25px;
+            line-height: 75px;
+        }
+
+        .btn {
+            position: relative;
+            display: inline-block;           
+            margin-bottom: 10px;
+            margin-left:1%;
+            margin-left:1%;
+            width:31.33%;
+            height: 30px;
+            outline: none;
+            cursor: pointer;
+            border:none;
+            background-color: white;
+        }
+
+        .btn:hover {
+            font-weight: bold;
+        }
+
+        #sel {
+            margin-left:1%;
+            margin-left:1%;
+            width: 48%;
+            height: 30px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        #sel2 {
+                        margin-left:1%;
+            margin-left:1%;
+            width: 48%;
+            height: 30px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .user {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            display: inline-block;
+            margin: 10px;
+            border-radius: 5px;
+            line-height: 40px;
+            border: 1px black solid;
+            cursor: pointer;
+            font-weight: bold;
+            color: black;
+        }
+    </style>
+    <script>
+        var g = [];
+        function canvas() {
+            var el = document.getElementById("can");
+            var ctx = el.getContext("2d");
+
+            var el2 = document.getElementById("can2");
+            var ctx2 = el2.getContext("2d");
+
+            var el3 = document.getElementById("can3");
+            var ctx3 = el3.getContext("2d");
+
+            //prostokat
+            ctx.fillStyle = "#273746";
+            ctx.fillRect(0, 0, 600, 300);
+            //ctx.stroke();
+
+            //ctx.strokeStyle = "#000000";
+            var path1 = new Path2D();
+            var path2 = new Path2D();
+            var path3 = new Path2D();
+            rysujTory();
+
+            function rysujTory() {
+                ctx.strokeStyle = "#000000";
+                //tor1
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                path1.arc(150, 150, 140, 0.5 * Math.PI, 1.5 * Math.PI);
+                path1.arc(450, 150, 140, 1.5 * Math.PI, 0.5 * Math.PI);
+                path1.lineTo(150, 290)
+                ctx.fillStyle = "#EAECEE";
+                ctx.fill(path1);
+                ctx.closePath(path1);
+                ctx.stroke(path1);
+
+                //tor2
+
+                //ctx.lineWidth=1;
+                ctx.beginPath();
+                path2.arc(150, 150, 50, 0.5 * Math.PI, 1.5 * Math.PI);
+                path2.arc(450, 150, 50, 1.5 * Math.PI, 0.5 * Math.PI);
+                path2.lineTo(150, 200)
+                ctx.fillStyle = "#273746";
+                ctx.fill(path2);
+                ctx.closePath(path2);
+                ctx.stroke(path2);
+
+                //linia mety
+
+                ctx3.lineWidth = 2;
+                ctx3.beginPath();
+                path3.moveTo(260,290)
+                path3.lineTo(260, 200)
+                ctx3.stroke(path3);
+
+            }
+
+            //gra
+            function _Gracz(name, lastY, key, color, nr) {
+                this.name = name;
+                this.newX = 0;
+                this.newY = 0;
+                this.lastX = 250;
+                this.lastY = lastY;
+                this.dx = 0;
+                this.dy = 0;
+                this.R = 4;
+                this.alfa = 0;
+                this.odchyl = 0.05;
+                this.start = true;
+                this.left = false;
+                this.key = key;
+                this.color = color;
+                this.nr = nr;
+                this.tSlad = [];
+                this.okr= 0;
+            }
+
+            var odchyl = 0.05;
+            var l_graczy = 0;
+            var t_poz_graczy= [];
+            var max_okr=-1;
+
+            //game_set();
+            function game_set() {
+                console.log("game_set")
+                g = [];
+                
+                var g1 = new _Gracz("Gracz 1", 220, 37, "#ff0000", 1);
+                var g2 = new _Gracz("Gracz 2", 235, 65, "#008000", 2);
+                var g3 = new _Gracz("Gracz 3", 250, 107, "#0000ff", 3);
+                var g4 = new _Gracz("Gracz 4", 265, 72, "#ffa500", 4);
+
+                switch (l_graczy) {
+                    case 1:
+                        g.push(g1);
+                        break;
+                    case 2:
+                        g.push(g1);
+                        g.push(g2);
+                        break;
+                    case 3:
+                        g.push(g1);
+                        g.push(g2);
+                        g.push(g3);
+                        break;
+                    case 4:
+                        g.push(g1);
+                        g.push(g2);
+                        g.push(g3);
+                        g.push(g4);
+                        break;
+                }
+                t_poz_graczy= g.slice();
+            }
+            var licz = 0;
+            var start = false;
+            var myInterval;
+            function startGame() {
+                console.log("LICZBA GRACZY: " + l_graczy)
+                myInterval = setInterval(function () {
+                    if (start) {
+                        if (licz < 101)
+                            licz++;
+                        //console.log(licz)
+                        //console.log(g[0].tSlad.length)
+                        ctx2.clearRect(0, 0, 600, 300);
+                        for (i = 0; i <= g.length - 1; i++) {
+                            if (licz > 100) {
+                                if (g[i].tSlad.length > 7) {
+                                    ctx.lineWidth = 3;
+                                    ctx.strokeStyle = "#EAECEE";
+                                    ctx.beginPath();
+                                    ctx.moveTo(g[i].tSlad[0].x + (g[i].tSlad[1].x - g[i].tSlad[0].x) / 0.2, g[i].tSlad[0].y + (g[i].tSlad[1].y - g[i].tSlad[0].y) / 0.2);
+                                    ctx.lineTo(g[i].tSlad[0].x, g[i].tSlad[0].y);
+                                    ctx.stroke();
+                                    g[i].tSlad.splice(0, 1);
+                                }
+                            }
+                            if (g[i].start) {
+
+                                g[i].dx = g[i].R * Math.cos(g[i].alfa);
+                                g[i].dy = g[i].R * Math.sin(g[i].alfa);
+                                //console.log(dx, dy)
+                                g[i].newX = g[i].lastX + g[i].dx;
+                                g[i].newY = g[i].lastY + g[i].dy;
+                                //console.log(newX, newY)
+                                ctx.lineWidth = 2;
+                                ctx.strokeStyle = g[i].color;
+                                ctx.beginPath();
+                                ctx.moveTo(g[i].newX, g[i].newY);
+                                ctx.lineTo(g[i].lastX, g[i].lastY);
+                                ctx.stroke();
+
+                                g[i].tSlad.push({
+                                    x: g[i].lastX,
+                                    y: g[i].lastY,
+                                })
+
+                                var img;
+
+                                if (g[i].lastX > g[i].newX) {
+                                    img = document.getElementById("img" + g[i].nr + "o");
+                                }
+                                else {
+                                    img = document.getElementById("img" + g[i].nr);
+                                }
+
+                                ctx2.save();
+                                ctx2.translate(g[i].newX, g[i].newY);
+                                ctx2.rotate(g[i].alfa);
+                                ctx2.drawImage(img, -30, -10, 30, 20);
+                                ctx2.restore();
+
+                                g[i].lastX = g[i].newX;
+                                g[i].lastY = g[i].newY;
+
+                                if (g[i].left)
+                                    g[i].alfa -= odchyl;
+
+                                if (g[i].newX > 258 && g[i].newX <= 262 && g[i].newY> 200&& g[i].newY< 290) {
+                                    if(g[i].okr==max_okr) {
+                                        document.getElementById("canDiv").innerHTML= "Wygrywa "+g[i].name+"!"
+                                        setTimeout(function () {
+                                            start=false;
+                                        },50)
+                                    }
+                                    else {
+                                        g[i].okr++;
+                                        console.log("NOWE OKRAZENIE: "+g[i].okr);
+                                        document.getElementById("okr"+(i+1)).innerHTML= g[i].okr+"/"+max_okr;
+                                    }
+                                
+                                }
+
+                                if (ctx.isPointInPath(path1, g[i].newX, g[i].newY) == false ||
+                                    ctx.isPointInPath(path2, g[i].newX, g[i].newY) == true ) {
+                                    g[i].start = false;
+                                    t_poz_graczy.splice(i, 1)
+                                    //console.log(t_poz_graczy)
+                                    console.log(g[i].name + " odpada")
+                                    if(document.getElementById("canDiv").innerHTML.split(" ")[0]!="Wygrywa")
+                                        komunikat(g[i].name + " odpada")
+                                    if(t_poz_graczy.length==1)
+                                    {
+                                        document.getElementById("canDiv").innerHTML= "Wygrywa "+t_poz_graczy[0].name+"!"
+                                        setTimeout(function () {
+                                            start=false;
+                                        },500)
+                                    }
+                                }
+                                //console.log(g[i].newX)
+                                
+                                
+                                
+                            }
+                        }
+                    }
+                }, 30)
+            }
+
+            document.addEventListener("keydown", function (e) {
+                //console.log(e.which)
+                switch (l_graczy) {
+                    case 4:
+                        if (e.which == g[3].key)
+                            g[3].left = true;
+                    case 3:
+                        if (e.which == g[2].key)
+                            g[2].left = true;
+                    case 2:
+                        if (e.which == g[1].key)
+                            g[1].left = true;
+                    case 1:
+                        if (e.which == g[0].key)
+                            g[0].left = true;
+                        break;
+                }
+            })
+            document.addEventListener("keyup", function (e) {
+                switch (l_graczy) {
+                    case 4:
+                        if (e.which == g[3].key)
+                            g[3].left = false;
+                    case 3:
+                        if (e.which == g[2].key)
+                            g[2].left = false;
+                    case 2:
+                        if (e.which == g[1].key)
+                            g[1].left = false;
+                    case 1:
+                        if (e.which == g[0].key)
+                            g[0].left = false;
+                        break;
+                }
+            })
+
+            var cd = document.getElementById("canDiv");
+            function komunikat(kom) {
+                cd.innerHTML = kom;
+                setTimeout(function () {
+                    cd.innerHTML = "";
+                }, 2000)
+            }
+            document.getElementById("start").onclick = function () {startowanie()};
+            function startowanie() {
+                console.log("start!!!")
+                if(max_okr!=-1){
+                if (l_graczy > 0) {
+                    cd.innerHTML = "3";
+                    document.getElementById("start").onclick= function() {};
+                    setTimeout(function () {
+                        cd.innerHTML = "2";
+                        setTimeout(function () {
+                            cd.innerHTML = "1";
+                            setTimeout(function () {
+                                cd.innerHTML = "START";
+                                startGame()
+                                start = true
+                                setTimeout(function () {
+                                    cd.innerHTML = "";
+                                }, 3000)
+                            }, 1000)
+                        }, 1000)
+                    }, 1000)
+                }
+                else {
+                    komunikat("Wybierz ilość graczy")
+                }}
+                else {
+                    komunikat("Wybierz il. okrążeń")
+                }
+            }
+            document.getElementById("stop").onclick = function () { start = false }
+            document.getElementById("restart").onclick = function () {
+                komunikat("")
+                ctx.clearRect(0, 0, 600, 300);
+                ctx2.clearRect(0, 0, 600, 300);
+                rysujTory();
+                start = false;
+                game_set();
+                clearInterval(myInterval)
+                licz = 0;
+                //console.log(g)
+                //console.log(keys)
+                for (i = 0; i < g.length; i++) {
+                    g[i].key = keys[i];
+                }
+                for(i=1;i<=g.length;i++)
+                    document.getElementById("okr"+(i)).innerHTML= "0/"+max_okr;
+                //console.log(g)
+                 document.getElementById("start").onclick = function () {startowanie()};
+            }
+
+            var sel2 = document.getElementById("sel2");
+            sel2.onchange= function (){
+                max_okr= Number(sel2.value);
+            }
+
+            var keys = [];
+            var sel = document.getElementById("sel");
+            sel.onchange = function () {
+                var v = sel.value
+
+                l_graczy = Number(sel.value);
+                game_set();
+
+                for (i = 0; i < g.length; i++) {
+                    keys.push(g[i].key)
+                }
+
+                var ud = document.getElementById("users_div")
+                while (ud.firstChild) {
+                    ud.removeChild(ud.firstChild);
+                }
+                var ud = document.getElementById("okr_div")
+                while (ud.firstChild) {
+                    ud.removeChild(ud.firstChild);
+                }
+                for (i = 1; i <= v; i++) {
+                    var d = document.createElement("div");
+                    d.setAttribute("id", "okr" + i)
+                    d.setAttribute("class", "okr")
+                    d.style.color = g[i - 1].color
+                    d.style.width = 100/v +"%";
+                    document.getElementById("okr_div").appendChild(d)
+                }
+                for (i = 1; i <= v; i++) {
+                    var d = document.createElement("div");
+                    d.setAttribute("id", "u" + i)
+                    d.setAttribute("class", "user")
+                    d.innerHTML = "U" + i
+                    d.setAttribute("title", "Klawisz: " + g[i - 1].key)
+                    d.style.backgroundColor = g[i - 1].color
+                    var to = this;
+                    d.onclick = function () {
+                        //console.log(g)
+                        console.log("Początkowo: " + g[this.innerHTML.charAt(1) - 1].key, g[this.innerHTML.charAt(1) - 1].name)
+                        //console.log(g[this.innerHTML.charAt(1) - 1].name)
+                        to.style.border = "1px black solid";
+                        to.style.color = "black";
+                        to = this;
+                        var tab = document.getElementsByClassName("user")
+                        to.style.border = "1px white dashed";
+                        to.style.color = "white";
+                        document.body.onkeydown = function (e) {
+                            to.setAttribute("title", "Klawisz: " + e.which);
+                            g[to.innerHTML.charAt(1) - 1].key = e.which;
+                            keys[to.innerHTML.charAt(1) - 1] = g[to.innerHTML.charAt(1) - 1].key;
+                            console.log("Zmieniono na:" + g[to.innerHTML.charAt(1) - 1].key, g[to.innerHTML.charAt(1) - 1].name)
+                            document.body.onkeydown = function (e) { };
+                            to.style.border = "1px black solid";
+                            to.style.color = "black";
+                        }
+                    }
+                    document.getElementById("users_div").appendChild(d)
+                }
+            }
+        }
+    </script>
+</head>
+
+<body onload="canvas()">
+    <div id="main">
+        <canvas id="can" class="c" width="600" height="300"></canvas>
+        <canvas id="can2" class="c" width="600" height="300"></canvas>
+        <canvas id="can3" class="c" width="600" height="300"></canvas>
+        <div id="canDiv"></div>
+        <div id="okr_div"></div>
+        <div id="menu">
+            <button id="start" class="btn">START</button>
+            <button id="stop" class="btn">STOP</button>
+            <button id="restart" class="btn">RESTART</button>
+            <select id="sel2">
+                <option>ILOŚĆ OKRĄŻEŃ</option>
+                <option id="opti1" value="1">1</option>
+                <option id="opti2" value="2">2</option>
+                <option id="opti3" value="3">3</option>
+                <option id="opti4" value="4">4</option>
+                <option id="opti5" value="5">5</option>
+                <option id="opti6" value="6">6</option>
+                <option id="opti7" value="7">7</option>
+                <option id="opti8" value="8">8</option>
+                <option id="opti9" value="9">9</option>
+                <option id="opti10" value="10">10</option>
+            </select>
+            <select id="sel">
+                <option>ILOŚĆ GRACZY</option>
+                <option id="opt1" value="1">1</option>
+                <option id="opt2" value="2">2</option>
+                <option id="opt3" value="3">3</option>
+                <option id="opt4" value="4">4</option>
+            </select>            
+            <div id="users_div"></div>
+        </div>
+    </div>
+    <img id="img1" class="img" src="gfx/1.png" alt="img" width="30" height="20" />
+    <img id="img2" class="img" src="gfx/2.png" alt="img" width="30" height="20" />
+    <img id="img3" class="img" src="gfx/3.png" alt="img" width="30" height="20" />
+    <img id="img4" class="img" src="gfx/4.png" alt="img" width="30" height="20" />
+    <img id="img1o" class="img" src="gfx/1o.png" alt="img" width="30" height="20" />
+    <img id="img2o" class="img" src="gfx/2o.png" alt="img" width="30" height="20" />
+    <img id="img3o" class="img" src="gfx/3o.png" alt="img" width="30" height="20" />
+    <img id="img4o" class="img" src="gfx/4o.png" alt="img" width="30" height="20" />
+</body>
+
+</html>

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="author" content="damian filipowski"/>
+<title>STATKI</title>
+    <script>
+
+    </script>
+<style>
+    #game {
+      width:1100px;
+      margin:0 auto;
+    }
+    #user, #PC {
+      float:left;
+      width:550px;
+    }
+    #nazwauser, #nazwaPC {
+      margin-top:30px;
+      margin-bottom:30px;
+      margin-left:300px;
+      font-size: 25px;
+
+    }
+    #nazwaPC {
+      margin-left:80px;
+    }
+    #startBtn {
+      cursor:pointer;
+      font-size:20px;
+      text-align: center;
+      border:2px black solid;
+      background-color:white;
+      color:black;
+      width:200px;
+      height:50px;
+      float:left;
+      margin-top: 30px;
+      margin-left: 440px;;
+      padding-top:1em;
+    }
+    #startBtn:hover {
+      box-shadow:0px 0px 15px green;
+    }
+    /*część PC----------------------------------------------------------*/
+    #planszaPC {
+        height:300px;
+        width:300px;
+        background-color:grey;
+        border-top:1px black solid;
+        border-right:1px black solid;
+    }
+    .polePC {
+        width:29px;
+        height:29px;
+        position:relative;
+        float:left;
+        border-left:1px black solid;
+        border-bottom:1px black solid;
+        background-color:white;
+        border-collapse: collapse;
+        text-align: center;
+        font-size:30px;
+        cursor:pointer;
+    }
+    .statekPC {
+        width:29px;
+        height:29px;
+        position:relative;
+        float:left;
+        border-left:1px black solid;
+        border-bottom:1px black solid;
+        background-color:white;
+        border-collapse: collapse;
+        text-align: center;
+        font-weight: bold;
+        font-size:30px;
+        color:red;
+        cursor:pointer;
+    }
+    /*strona usera---------------------------------------------------------*/
+    #statkiDiv {
+        height:410px;
+        width:130px;
+        background-color:white;
+        float:left;
+    }
+    #main {
+        margin-left: 200px;
+        height:300px;
+        width:300px;
+        background-color:white;
+        border-top:1px black solid;
+        border-right:1px black solid;
+    }
+    .pole {
+        width:29px;
+        height:29px;
+        position:relative;
+        float:left;
+        border-left:1px black solid;
+        border-bottom:1px black solid;
+        background-color:transparent;
+        border-collapse: collapse;
+        text-align: center;
+        font-size:30px;
+        cursor:pointer;
+    }
+    .poleCont {
+        width:29px;
+        height:29px;
+        position:relative;
+        float:left;
+        border-left:1px black solid;
+        border-bottom:1px black solid;
+        background-color:transparent;
+        border-collapse: collapse;
+        cursor:pointer;
+    }
+    .statek {
+        width:29px;
+        height:29px;
+        position:relative;
+        float:left;
+        border-left:1px black solid;
+        border-bottom:1px black solid;
+        background-color:blue !important;
+        border-collapse: collapse;
+        color:yellow;
+        text-align: center;
+        font-size:30px;
+        font-weight: bold;
+        cursor:pointer;
+    }
+    .cont {
+        border-top:1px black solid;
+        border-right:1px black solid;
+        position:relative;
+        margin-bottom:10px;
+        height:30px;
+        z-index:20;
+    }
+</style>
+</head>
+<body>
+  <div id ="game">
+    <div id="user">
+      <div id="nazwauser">GRACZ</div>
+      <div id="statkiDiv">
+      </div>
+      <div id="main" oncontextmenu="event.preventDefault();">
+      </div>
+    </div>
+    <div id="PC">
+      <div id="nazwaPC">KOMPUTER</div>
+      <div id="planszaPC">
+      </div>
+    </div>
+  </div>
+<script>
+//rozpocznij gre
+var ruchGracza = true;
+var ruchNrPC = 1;
+var ruchNrUser = 1;
+function startGame () {
+  console.log("Lets play the game.");
+  var polePC = document.getElementById("planszaPC").children;
+  for(i=0;i<polePC.length;i++)
+  {
+    polePC[i].onclick = ruchUser;
+  }
+  document.getElementById("startBtn").remove();
+}
+function ruchUser () {
+  console.log("Ruch gracza",ruchNrUser)
+    var idX = this.id;
+    idX = idX.substr(2,1);
+    var idY = this.id;
+    idY = idY.substr(3,1);
+    Number(idX);
+    Number(idY);
+    var t=document.getElementById("PC"+""+idX+""+idY);
+    if(t.className == "statekPC trafiony trafionyPC" || t.className == "polePC trafionyPC")
+    {
+      alert("To pole juz było wykorzystane, wskaz inne")
+      console.log("Powtorzenie ruchu");
+      var polePC = document.getElementById("planszaPC").children;
+      for(i=0;i<polePC.length;i++)
+      {
+        polePC[i].onclick = ruchUser;
+      }
+    }
+    else
+    {
+      ruchNrUser++;
+      idX++;
+      idY++;
+      if(tabPC[idX][idY]==1)
+      {
+        idX--;
+        idY--;
+        document.getElementById("PC"+""+idX+""+idY).innerHTML="×";
+        document.getElementById("PC"+""+idX+""+idY).setAttribute("class","statekPC trafiony trafionyPC");
+      }
+      else
+      {
+        idX--;
+        idY--;
+        document.getElementById("PC"+""+idX+""+idY).innerHTML="•";
+        document.getElementById("PC"+""+idX+""+idY).setAttribute("class","polePC trafionyPC");
+      }
+      var polePC = document.getElementById("planszaPC").children;
+      for(i=0;i<polePC.length;i++)
+      {
+        polePC[i].onclick = null;
+      }
+      setTimeout(function(){
+        ruchPC();
+        ruchGracza=true;
+        var polePC = document.getElementById("planszaPC").children;
+        for(i=0;i<polePC.length;i++)
+        {
+          polePC[i].onclick = ruchUser;
+        }
+      }, 1000);
+      if(document.getElementsByClassName("trafiony").length == 20)
+      {
+        alert("GRACZ WYGRAŁ! Wygrano w "+(ruchNrUser-1)+" ruchach");
+        location.reload();
+      }
+    }
+  }
+
+function ruchPC () {
+  var idX = Math.floor(Math.random() * 10);
+  var idY = Math.floor(Math.random() * 10);
+  console.log("Ruch komputera: ",ruchNrPC,"   XY: ",idX,idY);
+  var t=document.getElementById(idX+""+idY);
+  if(t.className == "statek trafionyStatekUser trafionyUser" || t.className == "pole trafionyUser")
+  {
+    console.log("Powtorzenie ruchu");
+    ruchPC();
+  }
+  else
+  {
+    //console.log(document.getElementById(idX+""+idY).className);
+    ruchNrPC++;
+    idX++;
+    idY++;
+    if(tab[idX][idY]==1)
+    {
+      idX--;
+      idY--;
+      document.getElementById(idX+""+idY).innerHTML="×";
+      document.getElementById(idX+""+idY).setAttribute("class","statek trafionyStatekUser trafionyUser");
+    }
+    else
+    {
+      idX--;
+      idY--;
+      document.getElementById(idX+""+idY).innerHTML="•";
+      document.getElementById(idX+""+idY).setAttribute("class","pole trafionyUser");
+    }
+    if(document.getElementsByClassName("trafionyStatekUser").length == 20)
+    {
+      alert("KOMPUTER WYGRAŁ!");
+      location.reload();
+    }
+  }
+}
+///////////--------------------------------------------------------część PC-------------------------------------
+function losuj(masztyPC,tabPC){
+    var i = Math.round(Math.random() * (10-masztyPC))+1
+    var j = Math.round(Math.random() * (10-masztyPC))+1
+    var k = Math.round(Math.random())
+    //console.log(i, j, k)
+    if(k==0)
+    {
+        var zajete;
+        for(p=-1; p<(masztyPC+1); p++)
+        {
+               if(tabPC[i][j+p]!=0 || tabPC[i-1][j+p]!=0 || tabPC[i+1][j+p]!=0)
+               {
+                    zajete=true;
+                    break;
+               }
+                else {
+                    zajete=false;
+                }
+        }
+        if(zajete==true)
+            losuj(masztyPC,tabPC)
+        else
+        {
+            for(p=0; p<(masztyPC); p++)
+            {
+                    tabPC[i][j+p]=1;
+            }
+        }
+    }
+    if(k==1)
+    {
+        var zajete;
+        for(p=-1; p<(masztyPC+1); p++)
+        {
+               if(tabPC[i+p][j]!=0 || tabPC[i+p][j-1]!=0 || tabPC[i+p][j+1]!=0)
+               {
+                    zajete=true;
+                    break;
+               }
+                else {
+                    zajete=false;
+                }
+        }
+        if(zajete==true)
+            losuj(masztyPC,tabPC)
+        else
+        {
+            for(p=0; p<(masztyPC); p++)
+            {
+                    tabPC[i+p][j]=1;
+            }
+        }
+    }
+}
+var tabPC = [];
+for ( i=0; i<12; i++ )
+{
+    tabPC[i]=[];
+    for ( j=0; j<12; j++ )
+    {
+        tabPC[i][j]=0
+    }
+}
+//console.log("wyzerowana: "+tabPC)
+var masztyPC =4;
+var statkiPC=1;
+
+while(statkiPC<5)
+{
+    for(i=0;i<(statkiPC);i++)
+    {
+        losuj(masztyPC,tabPC);
+        //console.log("po danym rozstawieniu statku: "+tabPC);
+    }
+    //console.log("po danym rozstawieniu statków o danym maszcie: "+tabPC);
+    masztyPC--;
+    statkiPC++;
+}
+
+for ( i=1; i<11; i++ )
+{
+    for ( j=1; j<11; j++ )
+    {
+        if(tabPC[i][j]==0)
+            {
+                var d1 = document.createElement("DIV");
+                d1.setAttribute("class","polePC");
+                d1.setAttribute("id","PC"+""+(i-1)+""+(j-1));
+                document.getElementById("planszaPC").appendChild(d1);
+            }
+        if(tabPC[i][j]==1)
+            {
+                var d2 = document.createElement("DIV");
+                d2.setAttribute("class","statekPC");
+                d2.setAttribute("id","PC"+""+(i-1)+""+(j-1));
+                document.getElementById("planszaPC").appendChild(d2);
+            }
+    }
+}
+/////////-------------------------------------część usera-------------------------------------------
+var tab=[];
+for ( i=0; i<12; i++ )
+{
+    tab[i]=[];
+    for ( j=0; j<12; j++ )
+    {
+        tab[i][j]=0
+    }
+}
+//generowanie statkow po lewej
+var statki = 1;
+var maszty = 4;
+
+while(statki<5)
+{
+    for(i=0; i<statki; i++)
+        {
+            var cont = document.createElement("DIV");
+            cont.setAttribute("id","cont,"+maszty+","+i);
+            cont.setAttribute("class","cont");
+            cont.setAttribute("style", "width:"+(maszty*30)+"px;");
+            //cont.onclick = function () {chooseShip(cont)};
+            cont.setAttribute("onclick","chooseShip(this)")
+            //cont.onmouseover = function (){this.style.backgroundColor= 'blue'};
+            cont.setAttribute("onmouseover","this.style.backgroundColor= 'blue'")
+            //cont.onmouseout = function ()(this.style.backgroundColor= 'white'};
+            cont.setAttribute("onmouseout","this.style.backgroundColor = 'white'")
+            document.getElementById("statkiDiv").appendChild(cont);
+             for(j=0; j<maszty; j++)
+                 {
+                    var d = document.createElement("DIV");
+                    d.setAttribute("class","poleCont");
+                    cont.appendChild(d);
+                 }
+        }
+    statki++
+    maszty--
+}
+var poprzedni = "cont,4,0";
+var n=1;
+var rozmiarMasztu=4;
+document.getElementById(poprzedni).setAttribute("onmouseout","this.style.backgroundColor= 'blue'")
+document.getElementById(poprzedni).style.backgroundColor= 'blue';
+
+function chooseShip(cont) {
+    var p = cont.id;
+    if(document.getElementById(poprzedni))
+    {
+    document.getElementById(poprzedni).setAttribute("onmouseout","this.style.backgroundColor= 'white'")
+    document.getElementById(poprzedni).style.backgroundColor= 'white';
+    }
+    rozmiarMasztu = p;
+    rozmiarMasztu = rozmiarMasztu.substr(5,1);
+    cont.setAttribute("onmouseout","this.style.backgroundColor= 'blue'")
+    cont.style.backgroundColor= 'blue';
+    poprzedni = p;
+    var tabPole =document.getElementsByClassName("pole")
+    for(i=0;i<tabPole.length;i++)
+    {
+        tabPole[i].onmouseover = OVERchangeColorPole;
+        tabPole[i].onmouseout = OUTchangeColorPole;
+        tabPole[i].onclick = setShip;
+    }
+}
+//generowanie planszy
+for ( i=1; i<11; i++ )
+{
+    for ( j=1; j<11; j++ )
+    {
+        if(tab[i][j]==0)
+            {
+                var d1 = document.createElement("DIV");
+                d1.setAttribute("class","pole");
+                d1.setAttribute("id", (i-1)+""+(j-1));
+                d1.oncontextmenu = rotatePole;
+                d1.onclick = setShip;
+                document.getElementById("main").appendChild(d1);
+            }
+    }
+}
+var tabPole = document.getElementsByClassName("pole")
+for(i=0;i<tabPole.length;i++)
+{
+    tabPole[i].onmouseover = OVERchangeColorPole;
+    tabPole[i].onmouseout = OUTchangeColorPole;
+}
+///////////////////////po prawej
+var pop;
+var poziomo=true;
+function rotatePole() {
+    if(poziomo==true)
+    {
+        poziomo=false;
+    }
+    else
+    {
+        poziomo=true;
+    }
+    var tabPole = document.getElementsByClassName("pole")
+    for(i=0;i<tabPole.length;i++)
+    {
+        tabPole[i].style.backgroundColor= 'white';
+        tabPole[i].onmouseover = OVERchangeColorPole;
+        tabPole[i].onmouseout = OUTchangeColorPole;
+    }
+    //console.log(poziomo)
+}
+function setShip() {
+  if(niestawiaj==false)
+  {
+    document.getElementById(poprzedni).remove();
+    if(poziomo==true)
+    {
+      var idX = this.id;
+      idX = idX.substr(0,1);
+      var idY = this.id;
+      idY = idY.substr(1,1);
+      //console.log(idX,idY,tab)
+      for(i=0;i<rozmiarMasztu;i++)
+        {
+            var idX = this.id;
+            idX = idX.substr(0,1);
+            var idY = this.id;
+            idY = idY.substr(1,1);
+            idY=Number(idY);
+            idX=Number(idX);
+            if(idY<=10-rozmiarMasztu)
+            {
+                idY=(idY+i);
+            }
+            else
+            {
+                idY=((10-rozmiarMasztu)+i);
+            }
+            document.getElementById(idX+""+idY).style.backgroundColor= "blue";
+            document.getElementById(idX+""+idY).setAttribute("class","statek");
+            document.getElementById(idX+""+idY).setAttribute("onmouseout","null");
+            document.getElementById(idX+""+idY).setAttribute("onmouseover","null");
+            document.getElementById(idX+""+idY).onclick = null;
+            //console.log(idX,idY)
+            idX++;
+            idY++;
+            //console.log(idX,idY,"---")
+            tab[idX][idY]=1;
+            tab[idX+1][idY]=2;
+            tab[idX-1][idY]=2;
+        }
+        tab[idX][idY-rozmiarMasztu]=2;
+        tab[idX+1][idY-rozmiarMasztu]=2;
+        tab[idX-1][idY-rozmiarMasztu]=2;
+        tab[idX][idY+1]=2;
+        tab[idX+1][idY+1]=2;
+        tab[idX-1][idY+1]=2;
+        idX--;
+        idY--;
+        var tabPole = document.getElementsByClassName("pole")
+        for(i=0;i<tabPole.length;i++)
+        {
+            tabPole[i].setAttribute("onmouseout","this.style.backgroundColor= 'white'");
+            tabPole[i].setAttribute("onmouseover","this.style.backgroundColor= 'white'");
+            tabPole[i].onclick = null;
+        }
+    }
+    else
+    {
+      var idX = this.id;
+      idX = idX.substr(0,1);
+      var idY = this.id;
+      idY = idY.substr(1,1);
+      //console.log(idX,idY,tab)
+      for(i=0;i<rozmiarMasztu;i++)
+        {
+            var idX = this.id;
+            idX = idX.substr(0,1);
+            var idY = this.id;
+            idY = idY.substr(1,1);
+            idY=Number(idY);
+            idX=Number(idX);
+            if(idX<=10-rozmiarMasztu)
+            {
+                idX=(idX+i);
+            }
+            else
+            {
+                idX=((10-rozmiarMasztu)+i);
+            }
+            document.getElementById(idX+""+idY).style.backgroundColor= "blue";
+            document.getElementById(idX+""+idY).setAttribute("class","statek");
+            document.getElementById(idX+""+idY).setAttribute("onmouseout","null");
+            document.getElementById(idX+""+idY).setAttribute("onmouseover","null");
+            document.getElementById(idX+""+idY).onclick = null;
+            //console.log(idX,idY)
+            idX++;
+            idY++;
+            //console.log(idX,idY,"---")
+            tab[idX][idY]=1;
+            tab[idX][idY+1]=2;
+            tab[idX][idY-1]=2;
+            idX--;
+            idY--;
+        }
+        idX++;
+        idY++;
+        tab[idX-rozmiarMasztu][idY]=2;
+        tab[idX-rozmiarMasztu][idY+1]=2;
+        tab[idX-rozmiarMasztu][idY-1]=2;
+        tab[idX+1][idY]=2;
+        tab[idX+1][idY+1]=2;
+        tab[idX+1][idY-1]=2;
+        idX--;
+        idY--;
+        var tabPole = document.getElementsByClassName("pole")
+        for(i=0;i<tabPole.length;i++)
+        {
+            tabPole[i].setAttribute("onmouseout","this.style.backgroundColor= 'white'");
+            tabPole[i].setAttribute("onmouseover","this.style.backgroundColor= 'white'");
+            tabPole[i].onclick = null;
+        }
+    }
+  }
+  if(document.getElementById("statkiDiv").children.length == 0)
+  {
+    var tabPole = document.getElementsByClassName("pole")
+    for(i=0;i<tabPole.length;i++)
+    {
+        tabPole[i].onclick = function () {alert("Ruch gracza - plansza obok")};
+    }
+    var tabPole = document.getElementsByClassName("statek")
+    for(i=0;i<tabPole.length;i++)
+    {
+        tabPole[i].onclick = function () {alert("Ruch gracza - plansza obok")};
+    }
+    var btn1 = document.createElement("DIV");
+    btn1.setAttribute("id","startBtn");
+    btn1.setAttribute("onclick","startGame()");
+    btn1.innerHTML="START";
+    document.getElementById("game").appendChild(btn1);
+  }
+}
+var niestawiaj = false;
+function OVERchangeColorPole() {
+    if(poziomo==true)
+        {
+            var obecnaPozycja = this.id;
+            var idX = this.id;
+            idX = idX.substr(0,1);
+            var idY = this.id;
+            idY = idY.substr(1,1);
+            for(i=0;i<rozmiarMasztu;i++)
+            {
+                var idX = this.id;
+                idX = idX.substr(0,1);
+                var idY = this.id;
+                idY = idY.substr(1,1);
+                idY=Number(idY);
+                idX=Number(idX);
+                if(idY<=10-rozmiarMasztu)
+                {
+                    idY=(idY+i);
+                }
+                else
+                {
+                    idY=((10-rozmiarMasztu)+i);
+                }
+                //console.log(idY)
+                idX++;
+                idY++;
+                if(tab[idX-1][idY]!=1 && tab[idX+1][idY]!=1 && tab[idX][idY]!=1 &&
+                   tab[idX-1][idY-1]!=1 && tab[idX+1][idY-1]!=1 && tab[idX][idY-1]!=1 &&
+                   tab[idX-1][idY+1]!=1 && tab[idX+1][idY+1]!=1 && tab[idX][idY+1]!=1)
+                {
+                  idX--;
+                  idY--;
+                  document.getElementById(idX+""+idY).style.backgroundColor= "green";
+                  document.getElementById(idX+""+idY).onclick = setShip;
+                  niestawiaj=false;
+                }
+                else
+                {
+                  idX--;
+                  idY--;
+                  document.getElementById(idX+""+idY).style.backgroundColor= "red";
+                  document.getElementById(idX+""+idY).onclick = null;
+                  niestawiaj=true;
+                }
+
+            }
+        }
+    else
+        {
+          var obecnaPozycja = this.id;
+          var idX = this.id;
+          idX = idX.substr(0,1);
+          var idY = this.id;
+          idY = idY.substr(1,1);
+          for(i=0;i<rozmiarMasztu;i++)
+          {
+              var idX = this.id;
+              idX = idX.substr(0,1);
+              var idY = this.id;
+              idY = idY.substr(1,1);
+              idY=Number(idY);
+              idX=Number(idX);
+              if(idX<=10-rozmiarMasztu)
+              {
+                  idX=(idX+i);
+              }
+              else
+              {
+                  idX=((10-rozmiarMasztu)+i);
+              }
+              //console.log(idY)
+              idX++;
+              idY++;
+              if(tab[idX][idY-1]!=1 && tab[idX][idY+1]!=1 && tab[idX][idY]!=1 &&
+                 tab[idX-1][idY-1]!=1 && tab[idX-1][idY+1]!=1 &&tab[idX-1][idY]!=1 &&
+                 tab[idX+1][idY-1]!=1 && tab[idX+1][idY+1]!=1 && tab[idX+1][idY]!=1
+                  /*tab[idX-1][idY]!=1 && tab[idX+1][idY]!=1 && tab[idX][idY]!=1 &&
+                  tab[idX-1][idY-rozmiarMasztu]!=1 && tab[idX+1][idY-rozmiarMasztu]!=1 && tab[idX][idY-rozmiarMasztu]!=1 &&
+                  tab[idX-1][idY+1]!=1 && tab[idX+1][idY+1]!=1 && tab[idX][idY+1]!=1*/
+               )
+              {
+                idX--;
+                idY--;
+                document.getElementById(idX+""+idY).style.backgroundColor= "green";
+                document.getElementById(idX+""+idY).onclick = setShip;
+                niestawiaj=false;
+              }
+              else
+              {
+                idX--;
+                idY--;
+                document.getElementById(idX+""+idY).style.backgroundColor= "red";
+                document.getElementById(idX+""+idY).onclick = null;
+                niestawiaj=true;
+              }
+          }
+        }
+}
+function OUTchangeColorPole() {
+    if(poziomo==true)
+        {
+            var obecnaPozycja = this.id;
+            var idX = this.id;
+            idX = idX.substr(0,1);
+            var idY = this.id;
+            idY = idY.substr(1,1);
+            for(i=0;i<rozmiarMasztu;i++)
+            {
+                var idX = this.id;
+                idX = idX.substr(0,1);
+                var idY = this.id;
+                idY = idY.substr(1,1);
+                idY=Number(idY);
+                if(idY<=10-rozmiarMasztu)
+                {
+                    idY=(idY+i);
+                }
+                else
+                {
+                    idY=((10-rozmiarMasztu)+i);
+                }
+                document.getElementById(idX+idY).style.backgroundColor= "white";
+            }
+        }
+    else
+        {
+            var obecnaPozycja = this.id;
+            var idX = this.id;
+            idX = idX.substr(0,1);
+            var idY = this.id;
+            idY = idY.substr(1,1);
+            for(i=0;i<rozmiarMasztu;i++)
+            {
+                var idX = this.id;
+                idX = idX.substr(0,1);
+                var idY = this.id;
+                idY = idY.substr(1,1);
+                idX=Number(idX);
+                if(idX<=10-rozmiarMasztu)
+                {
+                    idX=(idX+i);
+                }
+                else
+                {
+                    idX=((10-rozmiarMasztu)+i);
+                }
+                document.getElementById(idX+idY).style.backgroundColor= "white";
+            }
+        }
+       pop = this;
+}
+/*
+var tabPole =document.getElementsByClassName("pole")
+for(i=0;i<tabPole.length;i++)
+{
+
+    tabPole[i].onmouseover = OVERchangeColorPole;
+    tabPole[i].onmouseout = OUTchangeColorPole;
+    tabPole[i].oncontextmenu = rotatePole;
+}
+*/
+
+</script>
+</body>
+</html>

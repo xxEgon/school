@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OX</title>
+    <meta charset="utf8" />
+    <meta name="author" content="damian filipowski" />
+	<link rel="shortcut icon" href="favicon.png" />
+    <style>
+        #main {
+            position: relative;
+            margin: 0 auto;
+            width: 500px;
+            height: 100%;
+            padding: 10px;
+			font-family:sans-serif;
+        }
+
+        #block {
+            position: relative;
+            margin: 0 auto;
+            width: 150px;
+            height: 150px;
+            border: 1px black solid;
+            z-index: 100;
+            background-color: red;
+            opacity: 0;
+            margin-top: -152px;
+            display: block;
+        }
+
+        #plansza {
+            position: relative;
+            margin: 0 auto;
+            width: 150px;
+            height: 150px;
+            border: 1px black solid;
+        }
+
+        .pole {
+            display: inline-block;
+            position: relative;
+            height: 48px;
+            width: 48px;
+            border: 1px black solid;
+            cursor: pointer;
+            text-align: center;
+            line-height: 40px;
+            font-size: 45px;
+            float: left;
+        }
+
+        .wybor {
+            border: 1px green solid;
+            cursor: pointer;
+            display: inline-block;
+            padding: 5px;
+        }
+
+        #choose {
+            text-align: center;
+            font-size: 25px;
+            margin: 10px;
+        }
+
+        #move {
+            text-align: center;
+            font-size: 25px;
+            margin: 10px;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+
+            var user = "a";
+
+            var notChoosed = true;
+
+            var liczRuch = 0;
+
+            var end = false;
+
+            for (i = 0; i < 9; i++) {
+                var d = document.createElement("DIV");
+                d.setAttribute("id", i);
+                d.setAttribute("class", "pole");
+                d.onclick = function () {
+                    console.log("klik" + this.id)
+
+                    if (user != "a" && this.innerHTML == "") {
+                        console.log("RUCH")
+
+                        liczRuch++;
+
+                        this.innerHTML = user
+
+                        send(1, this.id)
+
+                        switch (checkWinState()) {
+                            case "win":
+                                send(3, "win")
+                                break;
+                            case "draw":
+                                send(3, "draw")
+                                break;
+                            default:
+                                console.log("continueGame...")
+                                break;
+                        }
+
+                        document.getElementById("move").innerHTML = "Opponent's move"
+                        document.getElementById("block").style.display = "block"
+                    }
+
+                }
+                document.getElementById("plansza").appendChild(d);
+            }
+
+            function send(a, b) {
+                // console.log("Send")
+                xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "ajax.php", true);
+
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+
+                        //console.log(this.responseText)
+
+                        var ob = JSON.parse(this.responseText)
+                        //console.log("Response: " , ob)
+
+                        switch (ob.action) {
+                            case "userUpdated":
+                                console.log("userUpdated")
+
+                                break;
+                            case "notChoosed":
+                                setTimeout(function () {
+                                    if (notChoosed) {
+                                        console.log("notChoosed")
+                                        send(-2, -10);
+                                    }
+                                }, 500);
+                                break;
+                            case "Choosed":
+                                console.log("Choosed:", ob.user)
+                                user = ob.user
+                                notChoosed = false
+                                document.getElementById("choose").innerHTML = "Left '" + ob.user + "'";
+                                document.getElementById("move").innerHTML = "Your move!"
+                                document.getElementById("block").style.display = "none"
+                                break;
+                            case "notUpdated":
+                                setTimeout(function () {
+                                    console.log("notUpdated")
+                                    send(-1, -10)
+                                }, 500);
+                                break;
+                            case "Updated":
+                                console.log("Updated")
+                                //console.log(ob.index)
+                                if (user == "x")
+                                    document.getElementById(ob.index).innerHTML = "o";
+                                else
+                                    document.getElementById(ob.index).innerHTML = "x";
+
+                                liczRuch++;
+
+                                document.getElementById("move").innerHTML = "Your move!"
+                                document.getElementById("block").style.display = "none"
+
+                                send(2, -10)
+
+                                break;
+                            case "updateSuccess":
+                                console.log("updateSuccess")
+                                setTimeout(function () {
+                                    if (end == false)
+                                        send(-1, -10)
+                                }, 500);
+                                break;
+                            case "End":
+                                console.log("I lost")
+                                end = true;
+                                document.getElementById("move").innerHTML = "You lost."
+                                document.getElementById("move").style.color = "red"
+                                document.getElementById("block").style.display = "block"
+                                break;
+                            case "notEnd":
+                                console.log("notEnd")
+                                break;
+                            case "I_won":
+                                console.log("I won")
+                                end = true;
+                                document.getElementById("move").innerHTML = "You won!"
+                                document.getElementById("move").style.color = "red"
+                                document.getElementById("block").style.display = "block"
+                                break;
+                            case "Draw":
+                                console.log("Draw")
+                                end = true;
+                                document.getElementById("move").innerHTML = "Draw"
+                                document.getElementById("move").style.color = "red"
+                                document.getElementById("block").style.display = "block"
+                                break;
+                        }
+
+                    }
+                };
+
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                if (b == -10) {
+                    //console.log(a)
+                    xhttp.send("a=" + a);
+                }
+                else {
+                    //console.log(a, b)
+                    xhttp.send("a=" + a + "&b=" + b);
+                }
+
+            }
+
+            send(-3, "a")
+
+            send(-2, -10);
+
+            document.getElementById("kolko").onclick = function () {
+                console.log("Wybieram 'O'")
+                user = "o"
+                notChoosed = false;
+                send(-3, user)
+                send(-1, -10);
+                document.getElementById("choose").innerHTML = "Choosed 'o'";
+                document.getElementById("move").innerHTML = "Opponent's move"
+            }
+            document.getElementById("krzyzyk").onclick = function () {
+                console.log("Wybieram 'X'")
+                user = "x"
+                notChoosed = false;
+                send(-3, user)
+                send(-1, -10);
+                document.getElementById("choose").innerHTML = "Choosed 'x'";
+                document.getElementById("move").innerHTML = "Opponent's move"
+            }
+
+            function checkWinState() {
+                if (
+                    document.getElementById("0").innerHTML == user && document.getElementById("1").innerHTML == user && document.getElementById("2").innerHTML == user
+                    ||
+                    document.getElementById("3").innerHTML == user && document.getElementById("4").innerHTML == user && document.getElementById("5").innerHTML == user
+                    ||
+                    document.getElementById("6").innerHTML == user && document.getElementById("7").innerHTML == user && document.getElementById("8").innerHTML == user
+                    ||
+                    document.getElementById("0").innerHTML == user && document.getElementById("3").innerHTML == user && document.getElementById("6").innerHTML == user
+                    ||
+                    document.getElementById("1").innerHTML == user && document.getElementById("4").innerHTML == user && document.getElementById("7").innerHTML == user
+                    ||
+                    document.getElementById("2").innerHTML == user && document.getElementById("5").innerHTML == user && document.getElementById("8").innerHTML == user
+                    ||
+                    document.getElementById("0").innerHTML == user && document.getElementById("4").innerHTML == user && document.getElementById("8").innerHTML == user
+                    ||
+                    document.getElementById("2").innerHTML == user && document.getElementById("4").innerHTML == user && document.getElementById("6").innerHTML == user
+                )
+                    return "win";
+                else {
+                    if (liczRuch == 9)
+                        return "draw";
+                    else
+                        return "nothing";
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="main">
+        <div id="choose">
+            Choose:
+            <div id="kolko" class="wybor">O</div>
+            <div id="krzyzyk" class="wybor">X</div>
+        </div>
+        <div id="move"></div>
+        <div id="plansza">
+        </div>
+        <div id="block"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MONEY MONEY</title>
+    <style>
+    </style>
+    <script>
+        function canvas() {
+            var el = document.getElementsByTagName("canvas")[0];
+            var ctx = el.getContext("2d");
+
+            function _Dolar(nr, pr, kier, x, y, ct) {
+                this.nr = nr;
+                this.predkosc = pr;
+                this.kierunek = kier;
+                this.x = x;
+                this.y = y;
+            }
+
+            var money = [];
+            var img = [];
+
+            for (i = 0; i < 3; i++) {
+                img[i] = new Image()
+                img[i].src = './gfx/d' + (i + 1) + '.png';
+            }
+
+            setInterval(function () {
+                var ranNr = Math.floor(Math.random() * 3);
+                var ranPr = Math.ceil(Math.random() * 8);
+                ranPr *= 0.05
+                var ranKier = Math.floor(Math.random() * 4);
+                var ranX = Math.floor(Math.random() * (el.width - 30));
+                var ranY = Math.floor(Math.random() * (el.height - 50));
+
+                money.push(new _Dolar(ranNr, ranPr, ranKier, ranX, ranY))
+
+            }, 1000)
+
+            setInterval(function () {
+
+                ctx.clearRect(0, 0, el.width, el.height);
+
+                for (i = 0; i < money.length; i++) {
+
+                    var dol = money[i]
+
+                    if (dol.x >= el.width - 30 || dol.x <= 0 || dol.y <= 0 || dol.y >= el.height - 50) {
+                        dol.kierunek++
+                        if (dol.kierunek == 4)
+                            dol.kierunek = 0;
+                    }
+
+                    switch (dol.kierunek) {
+                        case 0:
+                            dol.x -= dol.predkosc
+                            dol.y -= dol.predkosc
+                            break;
+                        case 1:
+                            dol.x += dol.predkosc
+                            dol.y -= dol.predkosc
+                            break;
+                        case 2:
+                            dol.x += dol.predkosc
+                            dol.y += dol.predkosc
+                            break;
+                        case 3:
+                            dol.x -= dol.predkosc
+                            dol.y += dol.predkosc
+                            break;
+                    }
+
+                    ctx.drawImage(img[dol.nr], dol.x, dol.y, 30, 50);
+
+                }
+            }, 5)
+        }
+    </script>
+</head>
+<body onload="canvas()">
+    <h1>I Need A Dollar</h1>
+    <canvas width="600" height="400" style="border:solid 1px;"></canvas>
+</body>
+</html>
