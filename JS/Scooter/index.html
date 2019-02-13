@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="author" content="damian filipowski" />
+    <meta charset="utf-8" />
+    <title>Scooter</title>
+    <link rel="icon" type="image/gif" href="./gfx/favicon.gif" />
+    <link href="style.css" rel="stylesheet" />
+    <script src="js/Movement.js"></script>
+    <script src="js/Map.js"></script>
+    <script src="js/Links.js"></script>
+    <script src="js/Scoreboard.js"></script>
+    <script src="js/Objects.js"></script>
+    <script src="js/Load.js"></script>
+    <style>
+    </style>
+    <script>
+        window.onload = function () {
+
+            ctx1 = document.getElementById("c1").getContext('2d');
+            ctx12 = document.getElementById("c12").getContext('2d');
+            ctx15 = document.getElementById("c15").getContext('2d');
+            ctx17 = document.getElementById("c17").getContext('2d');
+            ctx2 = document.getElementById("c2").getContext('2d');
+            ctx3 = document.getElementById("c3").getContext('2d');
+
+            document.body.onkeypress = function (e) {
+                if (e.which == 13) {
+                    document.getElementById("startScreen").style.backgroundImage = "none"
+                    document.getElementById("startScreen").innerHTML = "Level 3"
+                    setTimeout(function () {
+                        document.getElementById("startScreen").style.display = "none";
+
+                        objects = new Objects();
+                        scoreboard = new Scoreboard();
+                        links = new Links();
+                        map = new Map();
+                        movement = new Movement();
+                        load = new Load();
+                        load.init();
+
+                    }, 3000)
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="playfield">
+        <div id="startScreen"></div>
+        <div id="scoreboard"></div>
+        <canvas id="c1" class="can" width="960" height="631"></canvas>
+        <canvas id="c15" class="can" width="960" height="631"></canvas>
+        <canvas id="c12" class="can" width="960" height="631"></canvas>
+        <canvas id="c17" class="can" width="960" height="631"></canvas>
+        <canvas id="c2" class="can" width="960" height="631"></canvas>
+        <canvas id="c3" class="can" width="960" height="631"></canvas>
+    </div>
+</body>
+</html>

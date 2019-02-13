@@ -1,0 +1,107 @@
+﻿body {
+    background-color: black;
+}
+
+#playfield {
+    background-color: white;
+    position: relative;
+    width: 960px;
+    height: 631px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+#scoreboard {
+    position: absolute;
+    width: 960px;
+    height: 100px;
+    top: 0;
+    left: 0;
+}
+
+#score {
+    width: 960px;
+}
+
+#over {
+    position:absolute;
+    right:0;
+    top:0;
+    display:none;
+}
+
+.can {
+    position: absolute;
+    top: 73px;
+    left: 0;
+}
+
+@font-face {
+    font-family: AtariFull;
+    src: url(fonts/atari_full.ttf);
+}
+
+#scoreNumber, #highScoreNumber {
+	position:absolute;
+	top:10px;
+	left:210px;
+	width:200px;
+	height:30px;
+	font-family:AtariFull;
+	color:white;
+	text-align:right;
+	font-size:20px;
+	letter-spacing:4.5px;
+	line-height:34px;
+}
+#highScoreNumber {
+	top:33px;
+}
+#lifeDiv {
+	position:absolute;
+	top:14px;
+	left:430px;
+	width:100px;
+	height:25px;
+}
+
+.lifeImg {
+    position: relative;
+    display: inline-block;
+    width: 19px;
+    height: 22px;
+    margin-left: 3px;
+    margin-right: 3px;
+    float: left;
+    background-image: url("gfx/scoreboard/life.png");
+}
+#gameOver {
+	position: absolute;
+    width: 960px;
+    height: 640px;
+    top: 70px;
+    left: 0px;
+	background-color:black;
+	display:none;
+	z-index:100;
+}
+#startScreen {
+	position:absolute;
+	width:960px;
+	height:731px;
+	background-color:black;
+	z-index:200;
+	text-align:center;
+	font-family:AtariFull;
+	font-size:40px;
+	line-height:600px;
+	color:white;
+    background-image:url("gfx/scoreboard/startScreen.png");
+}
+#one {
+    position:absolute;
+    width:6px;
+    height:22px;
+    top:15px;
+    left:221px;
+}
