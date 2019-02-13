@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Awesome</title>
+    <meta charset="utf-8" />
+    <script src="js/levelData.js"></script>
+    <script src="js/Stats.js"></script>
+    <script src="js/level.js"></script>
+    <script src="js/MyLight.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #menu {
+            position: absolute;
+            right: 0;
+            bottom: -160px;
+            width: 100%;
+            height: 150px;
+            z-index: 10;
+            opacity: 0.9;
+            padding: 5px;
+            background-color: black;
+            color: white;
+            border-top: 1px white solid;
+        }
+
+        #toggle {
+            background-color: black;
+            width: 30px;
+            height: 30px;
+            color: white;
+            position: absolute;
+            top: -30px;
+            right: 0px;
+            font-size: 20px;
+            border: 1px white solid;
+            z-index: 15;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .inp {
+            position: relative;
+            width: 33%;
+            height: 33%;
+            display: inline-block;
+        }
+
+    </style>
+    <script src="libs/three.js"></script>
+    <script src="js/loadModel.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+
+            var wys_okna = window.innerHeight;
+            var szer_okna = window.innerWidth;
+            var FOV = 45;
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                FOV, // kąt patrzenia kamery (FOV - field of view)
+                szer_okna / wys_okna, // proporcje widoku, powinny odpowiadać proporjom naszego ekranu przeglądarki
+                0.1, // minimalna renderowana odległość
+                15000 // maxymalna renderowana odległość
+            );
+            var renderer = new THREE.WebGLRenderer(
+                {
+                    antialiasing: true,
+                }
+                );
+            renderer.setClearColor(0x0e2f44);
+            renderer.shadowMapEnabled = true
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.setSize(szer_okna, wys_okna);
+            document.getElementById("div1").appendChild(renderer.domElement);
+
+            //var axis = new THREE.AxisHelper(20000);    // 200 - wielkość
+            //scene.add(axis);
+            var cienie = false;
+            var playerView = true;
+            var distancePlayerView = 100;
+            var heightPlayerView = 500;
+
+            var level = new LevelData();
+            var obj = level.getData();
+
+            var size = obj.size;
+            var wlk_pola = 500;
+
+            var cord_sr_x = size / 2 * wlk_pola;
+            var cord_sr_y = size * 800;
+            var cord_sr_z = size / 2 * wlk_pola;
+
+            
+            function camPosit(x, y, z) {
+                camera.position.x = x
+                camera.position.y = y
+                camera.position.z = z
+            }
+
+            //camPosit(cord_sr_x, cord_sr_y, cord_sr_z);
+
+            var cam_cords = [
+                    {
+                        x: cord_sr_x,
+                        y: 0,
+                        z: cord_sr_z,
+                    },
+                    {
+                        x: cord_sr_x,
+                        y: 0,
+                        z: size*100,
+                    }
+                ]
+
+            //camera.lookAt(cam_cords[0]);
+            //camera.rotateZ(Math.PI)
+
+            var tAnimations = ["Stand", "Run"];
+            var collidableMeshList = [];
+
+            var contLights  = new THREE.Object3D();
+            //console.log(contLights)
+            var tMixer = [];
+            var lvl = new Level(scene, obj, tMixer, cienie, tAnimations, contLights, collidableMeshList);
+            lvl.init();
+
+            //console.log(contLights)
+
+            var playerLoaded = false;
+            
+            var mixer = [];
+            var model = new LoadModel(scene, obj, mixer, cienie, tAnimations);
+            playerLoaded = model.init();
+
+
+            var clock = new THREE.Clock();
+
+            var up = false;
+            var left = false;
+            var right = false;
+
+            var stats = new Stats();
+            stats.showPanel(0);
+            document.body.appendChild(stats.dom);
+
+            var rotacja = 0.03;
+
+            var collision = false;
+            
+            function animateScene() {
+                stats.begin();
+
+                    var delta = clock.getDelta();
+                    //console.log(delta) // zobacz czy widać zmieniającą się cyfrę w konsoli
+                    for (i = 0; i < tMixer.length; i++) {
+                        if (tMixer[i]) (tMixer[i]).update(delta)
+                    }
+
+                    if (mixer[0]) (mixer[0]).update(delta)
+
+                    if (typeof (player) != "undefined") {
+                        //console.log(player)
+
+                        
+
+                        if (playerView) {
+                            var camVect = new THREE.Vector3(distancePlayerView, 0, 0)
+                            var camPos = camVect.applyMatrix4(player.matrixWorld);
+                            //console.log(camVect, camPos)
+                            camera.position.x = camPos.x
+                            camera.position.z = camPos.z
+                            camera.position.y = heightPlayerView
+                            camera.lookAt(player.position)
+                        }
+
+                        //console.log(collidableMeshList)
+                        var originPoint = player.position.clone();
+                        collision = false
+                        for (var vertexIndex = 0; vertexIndex < player.geometry.vertices.length; vertexIndex++) {
+                            var localVertex = player.geometry.vertices[vertexIndex].clone();
+                            var globalVertex = localVertex.applyMatrix4(player.matrix);
+                            var directionVector = globalVertex.sub(player.position);
+                            
+                            var ray = new THREE.Raycaster(originPoint, directionVector.clone().normalize());
+                            var collisionResults = ray.intersectObjects(collidableMeshList);
+                            if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()+100) {
+                                //console.log("COLLISION")
+                                collision = true;                               
+                            }
+                        }
+                        console.log(collision)
+                        if (up && !collision) {
+                            player.translateX(-10)
+                        }                        
+                        if (right) {
+                            player.rotation.y -= rotacja
+                        }
+                        if (left) {
+                            player.rotation.y += rotacja
+                        }
+
+                    }
+                
+                    requestAnimationFrame(animateScene);
+                    renderer.render(scene, camera);
+                
+                    stats.end();               
+            }
+
+            animateScene();
+
+            document.addEventListener("keydown", onKeyDown, false); 
+            document.addEventListener("keyup", onKeyUp, false); 
+
+            var licz = true;
+
+            function onKeyDown(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 65:
+                        left = true;
+                        break;
+                    case 87:
+                        up = true;
+                        if (licz == true) {
+                            console.log("Run")
+                            mixer[0].uncacheRoot(mixer[0].getRoot())
+                            mixer[0].clipAction(tAnimations[1]).play();
+                        }
+                        licz=false;
+                        break;
+                    case 68:
+                        right = true;
+                        break;
+                    }
+            }
+
+            function onKeyUp(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 65:
+                        left = false;
+                        break;
+                    case 87:
+                        up = false;
+                        licz = true;
+                        console.log("Stand")
+                        mixer[0].uncacheRoot(mixer[0].getRoot())
+                        mixer[0].clipAction(tAnimations[0]).play();
+                        break;
+                    case 68:
+                        right = false;
+                        break;
+                }
+            }
+
+
+            document.getElementById("toggle").onclick = function () {
+                if (document.getElementById("menu").style.bottom == "-160px")
+                    document.getElementById("menu").style.bottom = "0px";
+                else
+                    document.getElementById("menu").style.bottom = "-160px";
+            }
+
+            document.getElementById("cam1").value = heightPlayerView;
+            document.getElementById("cam1").oninput = function () {
+                heightPlayerView = this.value
+                console.log(heightPlayerView)
+            }
+
+            document.getElementById("cam3").value = distancePlayerView;
+            document.getElementById("cam3").oninput = function () {
+                distancePlayerView = this.value
+
+            }
+
+            document.getElementById("cam5").value = FOV;
+            document.getElementById("cam5").oninput = function () {
+                FOV = this.value
+                camera.fov = Number(FOV)
+            }
+
+            document.getElementById("cam6").onclick = function () {
+                if (this.checked == true) {
+                    playerView = false;
+                    camPosit(cord_sr_x, cord_sr_y, cam_cords[1].z);
+                    camera.lookAt(cam_cords[0]);
+                }
+                else {
+                    playerView = true;
+                }
+            }
+                       
+            document.getElementById("shadow").onclick = function () {
+                if (this.checked) {
+                    cienie = true;
+                }
+                else {
+                    cienie = false;
+                }
+                for (i = 0; i < contLights.children.length; i++)
+                {
+                    contLights.children[i].castShadow = cienie;
+                }
+            }
+
+            document.getElementById("cam7").onclick = function () {
+                distancePlayerView = -distancePlayerView;
+                console.log(distancePlayerView)
+            }
+            var lightIntensity = 0.3;
+            document.getElementById("light1").value = lightIntensity;
+            document.getElementById("light1").oninput = function () {
+                console.log(contLights)
+                lightIntensity = this.value
+                for (i = 0; i < contLights.children.length; i++) {
+                    contLights.children[i].intensity = lightIntensity;
+                }
+            }
+        })
+    </script>
+</head>
+<body>
+    <div id="div1">
+    </div>
+    <div id="menu">
+        <button id="toggle">≡</button>
+        <div class="inp"><input type="range" min="10" max="2000" id="cam1" />wys kam nad ziemią</div>
+        <div class="inp"><input type="range" min="1" max="1000" id="cam3" />odległość kamery od postaci</div>
+        <div class="inp"><input type="range" min="10" max="500" id="cam5" />fov kamery</div>
+        <div class="inp"><input type="range" step="0.01" min="0.01" max="3"id="light1" />moc świateł</div>
+        <div class="inp"><input type="checkbox" id="shadow" />cienie</div>
+        <div class="inp"><input type="checkbox" id="cam6" />widok z góry</div>
+        <div class="inp"><input type="checkbox" id="cam7" />kamera przed</div>
+    </div>
+</body>
+</html>

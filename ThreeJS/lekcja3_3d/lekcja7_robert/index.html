@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Geometry</title>
+    <meta charset="utf-8" />
+    <script src="three.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            var szerokosc = window.innerWidth
+            var wysokosc = window.innerHeight
+            var fov = 45
+            var res = 4 / 3
+            var minrender = 0.1
+            var maxrender = 10000
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                fov,
+                res,
+                minrender,
+                maxrender
+                );
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor(0xffffff);
+            renderer.setSize(szerokosc, wysokosc);
+            var geometry = new THREE.CubeGeometry(200, 200, 200, 2, 2, 2);
+            var material = new THREE.MeshPhongMaterial({
+                color: 0xffffff,
+                specular: 0xffffff,
+                shininess: 50,
+                side: THREE.DoubleSide,
+                map: THREE.ImageUtils.loadTexture("img/2.jpg"),
+            })
+            var mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(0, 0, 0);
+            scene.add(mesh);
+            var axis = new THREE.AxisHelper(500);
+            scene.add(axis);
+            document.getElementById("main").appendChild(renderer.domElement);
+            var startvalue = 500
+            camera.position.x = startvalue;
+            camera.position.y = startvalue;
+            camera.position.z = startvalue;
+            camera.lookAt(mesh.position);
+            var vertices = mesh.geometry.vertices;
+            console.log(vertices.length);
+            for (var i = 0; i < vertices.length; i++) {
+                var verticegeo = new THREE.CubeGeometry(30, 30, 30, 1, 1, 1);
+                var verticematerial = new THREE.MeshPhongMaterial({
+                    color: 0xff0000,
+                    specular: 0xffffff,
+                    shininess: 50,
+                    side: THREE.DoubleSide,
+                    map: THREE.ImageUtils.loadTexture("img/2.jpg"),
+                })
+                var verticemesh = new THREE.Mesh(verticegeo, verticematerial);
+                verticemesh.position.set(vertices[i].x, vertices[i].y, vertices[i].z);
+                verticemesh.name = "verticemesh"
+                scene.add(verticemesh);
+            }
+            console.log(vertices)
+            var redlight = {
+                posx: 200,
+                posy: 0,
+                posz: 200,
+                color: 0xff0000,
+                rotationx: 1.57,
+                rotationz: -0.79,
+                camerarotateleft: 0.1,
+                camerarotateright: -0.1,
+                name: "red"
+            }
+            var greenlight = {
+                posx: -200,
+                posy: 0,
+                posz: 200,
+                color: 0x00ff00,
+                rotationx: 1.57,
+                rotationz: 0.79,
+                camerarotateleft: 0.1,
+                camerarotateright: -0.1,
+                name: "green"
+            }
+            var bluelight = {
+                posx: 200,
+                posy: 0,
+                posz: -200,
+                color: 0x0000ff,
+                rotationx: -1.57,
+                rotationz: -0.79,
+                camerarotateleft: -0.1,
+                camerarotateright: 0.1,
+                name: "blue"
+            }
+            function myOrbit(lights) {
+                var orbita = new THREE.Object3D();
+                var light = new THREE.SpotLight(lights.color, 10, 400, 3.14);
+                light.position.set(lights.posx, lights.posy, lights.posz);
+                light.lookAt(mesh.position);
+                orbita.add(light);
+                var conegeometry = new THREE.ConeBufferGeometry(10, 30, 6);
+                var conematerial = new THREE.MeshBasicMaterial({ color: lights.color, side: THREE.DoubleSide, wireframe: true });
+                var cone = new THREE.Mesh(conegeometry, conematerial);
+                cone.position.set(lights.posx, lights.posy, lights.posz)
+                cone.rotateX(lights.rotationx)
+                cone.rotateZ(lights.rotationz)
+                cone.name = lights.name
+                orbita.add(cone)
+                return orbita
+            }
+            var redreflector = new myOrbit(redlight)
+            scene.add(redreflector)
+            var greenreflector = new myOrbit(greenlight)
+            scene.add(greenreflector)
+            var bluereflector = new myOrbit(bluelight)
+            scene.add(bluereflector)
+            var xorbit = 200
+            var zorbit = 200
+            var orbita = new THREE.Object3D();
+            var lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+            var geometry = new THREE.Geometry();
+            for (var theta = 0.1; theta < 6.40; theta += 0.1) {
+                var x = xorbit * Math.cos(theta) - zorbit * Math.sin(theta)
+                var z = zorbit * Math.cos(theta) + xorbit * Math.sin(theta)
+                orbita.position.z = z
+                orbita.position.x = x
+                geometry.vertices.push(new THREE.Vector3(x, 0, z))
+            }
+            var line = new THREE.Line(geometry, lineMaterial);
+            scene.add(line)
+            var camleft = false
+            var camright = false
+            var camup = false
+            var camdown = false
+            var verticeoption = ""
+            var vertice
+            function onKeyDown(event) {
+                var keyCode = event.which;
+                console.log(keyCode)
+                console.log(verticeselected)
+                for (var i = 0; i < vertices.length; i++) {
+                    if ((vertices[i].x == selected.position.x && vertices[i].y == selected.position.y && vertices[i].z == selected.position.z) || verticeselected == false) {
+                        vertice = vertices[i]
+                        switch (keyCode) {
+                            case 37:
+                                if (verticeselected) {
+                                    verticeoption = "-x"
+                                }
+                                else {
+                                    camleft = true
+                                }
+                                break;
+                            case 39:
+                                if (verticeselected) {
+                                    verticeoption = "+x"
+                                }
+                                else {
+                                    camright = true
+                                }
+                                break;
+                            case 38:
+                                if (verticeselected) {
+                                    verticeoption = "+y"
+                                }
+                                else {
+                                    camup = true
+                                }
+                                break;
+                            case 40:
+                                if (verticeselected) {
+                                    verticeoption = "-y"
+                                }
+                                else {
+                                    camdown = true
+                                }
+                                break;
+                            case 88:
+                                if (verticeselected) {
+                                    verticeoption = "-z"
+                                }
+                                break;
+                            case 90:
+                                if (verticeselected) {
+                                    verticeoption = "+z"
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+            function onKeyUp(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 37:
+                        verticeoption = ""
+                        camleft = false
+                        break;
+                    case 39:
+                        verticeoption = ""
+                        camright = false
+                        break;
+                    case 38:
+                        verticeoption = ""
+                        camup = false
+                        break;
+                    case 40:
+                        verticeoption = ""
+                        camdown = false
+                        break;
+                    case 88:
+                        verticeoption = ""
+                        break;
+                    case 90:
+                        verticeoption = ""
+                        break;
+                }
+            }
+            var temporary
+            var tempelement = false
+            function animateScene() {
+                document.addEventListener("keydown", onKeyDown, false);
+                document.addEventListener("keyup", onKeyUp, false);
+                var x = camera.position.x;
+                var z = camera.position.z;
+                var greenobject = greenreflector
+                var blueobject = bluereflector
+                var theta = 0.1
+                if (camup) {
+                    camera.position.y += 10
+                    camera.lookAt(mesh.position);
+                }
+                else if (camdown) {
+                    camera.position.y -= 10
+                    camera.lookAt(mesh.position);
+                }
+                if (camleft) {
+                    if (tempelement) {
+                        if (selected.name == "red") {
+                            temporary = redreflector
+                            redreflector.children[1].rotateZ(0.1)
+                        }
+                        else if (selected.name == "green") {
+                            temporary = greenreflector
+                            greenreflector.children[1].rotateZ(0.1)
+                        }
+                        else if (selected.name == "blue") {
+                            temporary = bluereflector
+                            bluereflector.children[1].rotateZ(-0.1)
+                        }
+                        var xlight = temporary.children[0].position.x;
+                        var zlight = temporary.children[0].position.z;
+                        var xmesh = temporary.children[1].position.x;
+                        var zmesh = temporary.children[1].position.z;
+                        temporary.children[0].position.x = xlight * Math.cos(theta) - zlight * Math.sin(theta)
+                        temporary.children[0].position.z = zlight * Math.cos(theta) + xlight * Math.sin(theta)
+                        temporary.children[1].position.x = xmesh * Math.cos(theta) - zmesh * Math.sin(theta)
+                        temporary.children[1].position.z = zmesh * Math.cos(theta) + xmesh * Math.sin(theta)
+                    }
+
+                    else {
+                        camera.position.x = x * Math.cos(theta) - z * Math.sin(theta)
+                        camera.position.z = z * Math.cos(theta) + x * Math.sin(theta)
+                        camera.lookAt(mesh.position);
+                    }
+                }
+                else if (camright) {
+                    if (tempelement) {
+                        if (selected.name == "red") {
+                            temporary = redreflector
+                            redreflector.children[1].rotateZ(-0.1)
+                        }
+                        else if (selected.name == "green") {
+                            temporary = greenreflector
+                            greenreflector.children[1].rotateZ(-0.1)
+                        }
+                        else if (selected.name == "blue") {
+                            temporary = bluereflector
+                            bluereflector.children[1].rotateZ(0.1)
+                        }
+                        var xlight = temporary.children[0].position.x;
+                        var zlight = temporary.children[0].position.z;
+                        var xmesh = temporary.children[1].position.x;
+                        var zmesh = temporary.children[1].position.z;
+                        temporary.children[0].position.x = xlight * Math.cos(theta) + zlight * Math.sin(theta)
+                        temporary.children[0].position.z = zlight * Math.cos(theta) - xlight * Math.sin(theta)
+                        temporary.children[1].position.x = xmesh * Math.cos(theta) + zmesh * Math.sin(theta)
+                        temporary.children[1].position.z = zmesh * Math.cos(theta) - xmesh * Math.sin(theta)
+                    }
+                    else {
+                        camera.position.x = x * Math.cos(theta) + z * Math.sin(theta)
+                        camera.position.z = z * Math.cos(theta) - x * Math.sin(theta)
+                        camera.lookAt(mesh.position);
+                    }
+                }
+                if (verticeselected) {
+                    console.log(verticeoption)
+                    switch (verticeoption) {
+                        case "-x":
+                            selected.position.x -= 10
+                            vertice.x -= 10
+                            break;
+                        case "+x":
+                            selected.position.x += 10
+                            vertice.x += 10
+                            break;
+                        case "+y":
+                            selected.position.y += 10
+                            vertice.y += 10
+                            break;
+                        case "-y":
+                            selected.position.y -= 10
+                            vertice.y -= 10
+                            break;
+                        case "-z":
+                            selected.position.z -= 10
+                            vertice.z -= 10
+                            break;
+                        case "+z":
+                            selected.position.z += 10
+                            vertice.z += 10
+                            break;
+                    }
+                    mesh.geometry.verticesNeedUpdate = true;
+                }
+                camera.updateProjectionMatrix();
+                renderer.render(scene, camera);
+                requestAnimationFrame(animateScene);
+            }
+            animateScene();
+            document.getElementById("black").onclick = function () {
+                renderer.setClearColor(0x000000)
+            }
+            document.getElementById("white").onclick = function () {
+                renderer.setClearColor(0xffffff)
+            }
+            document.addEventListener("mousedown", onMouseDown, false)
+            var raycaster = new THREE.Raycaster()
+            var mouseVector = new THREE.Vector2()
+            var verticeselected = false
+            var selected = ""
+            function onMouseDown(event) {
+                mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                raycaster.setFromCamera(mouseVector, camera);
+                var intersects = raycaster.intersectObjects(scene.children, true);
+                console.log(intersects.length)
+                if (intersects.length > 0) {
+                    selected = intersects[0].object
+                    tempelement = true
+                    console.log(selected)
+                    if (selected.name == "verticemesh") {
+                        verticeselected = true
+                    }
+                    else {
+                        verticeselected = false
+                    }
+                }
+                else {
+                    selected = {
+                        position: {
+                            x: null,
+                            y: null,
+                            z:null,
+                        }
+                    }
+                    tempelement = false
+                    verticeselected = false
+                }
+            }
+            console.log(scene)
+        })
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #menu {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 80px;
+            height: 100vh;
+            background: yellow;
+        }
+
+        #black {
+            background: black;
+            width: 50px;
+            height: 50px;
+            position: relative;
+            left: 15px;
+            top: 60px;
+        }
+
+        #white {
+            background: white;
+            width: 50px;
+            height: 50px;
+            position: relative;
+            left: 15px;
+            top: 75px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+    <div id="menu">
+        <div id="black"></div>
+        <div id="white"></div>
+    </div>
+</body>
+</html>

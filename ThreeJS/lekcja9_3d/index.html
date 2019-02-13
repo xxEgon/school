@@ -1,0 +1,592 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Awesome</title>
+    <meta charset="utf-8" />
+    <script src="js/levelData.js"></script>
+    <script src="js/Stats.js"></script>
+    <script src="js/level.js"></script>
+    <script src="js/MyLight.js"></script>
+    <script src="js/Fire.js"></script>
+    <script src="js/Laser.js"></script>
+    <script src="js/EnemyLaser.js"></script>
+    <script src="js/Score.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #menu {
+            position: absolute;
+            right: 0;
+            bottom: -160px;
+            width: 100%;
+            height: 150px;
+            z-index: 12;
+            opacity: 0.9;
+            padding: 5px;
+            background-color: black;
+            color: white;
+            border-top: 1px white solid;
+        }
+
+        #toggle {
+            background-color: black;
+            width: 30px;
+            height: 30px;
+            color: white;
+            position: absolute;
+            top: -30px;
+            right: 0px;
+            font-size: 20px;
+            border: 1px white solid;
+            z-index: 15;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .inp {
+            position: relative;
+            width: 33%;
+            height: 33%;
+            display: inline-block;
+        }
+
+        #gracz {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 200px;
+            height: 50px;   
+        }
+        #hp {
+            width: 200px;
+            height: 20px;
+            border: 1px white solid;
+            background-color: black;
+            opacity: 0.5;
+        }
+        #ammo {
+            width: 200px;
+            height: 20px;
+            margin-top: 10px;
+            border: 1px white solid;
+            background-color: black;
+            opacity: 0.5;
+        }
+        #wrog {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 200px;
+            height: 20px;
+            border: 1px white solid;
+            background-color: black;
+            opacity: 0.5;
+            display :none;
+        }
+        #death {
+            position:fixed;
+            top:0;
+            right:0;
+            width:100%;
+            height:100%;
+            background-color:black;
+            opacity:0.95;
+            color:darkred;
+            text-align:center;
+            font-size:50px;
+            line-height:500px;
+            display:none;
+        }
+    </style>
+    <script src="libs/three.js"></script>
+    <script src="js/loadModel.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+
+            var wys_okna = window.innerHeight;
+            var szer_okna = window.innerWidth;
+            var FOV = 45;
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                FOV, // kąt patrzenia kamery (FOV - field of view)
+                szer_okna / wys_okna, // proporcje widoku, powinny odpowiadać proporjom naszego ekranu przeglądarki
+                0.1, // minimalna renderowana odległość
+                15000 // maxymalna renderowana odległość
+            );
+            var renderer = new THREE.WebGLRenderer(
+                {
+                    antialiasing: true,
+                }
+            );
+            renderer.setClearColor(0x0e2f44);
+            renderer.shadowMapEnabled = true
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.setSize(szer_okna, wys_okna);
+            document.getElementById("div1").appendChild(renderer.domElement);
+
+            //var axis = new THREE.AxisHelper(20000);    // 200 - wielkość
+            //scene.add(axis);
+            var cienie = false;
+            var playerView = true;
+            var distancePlayerView = 130;
+            var heightPlayerView = 620;
+
+            var level = new LevelData();
+            var obj = level.getData();
+
+            var size = obj.size;
+            var wlk_pola = 500;
+
+            var cord_sr_x = size / 2 * wlk_pola;
+            var cord_sr_y = size * 800;
+            var cord_sr_z = size / 2 * wlk_pola;
+
+
+            function camPosit(x, y, z) {
+                camera.position.x = x
+                camera.position.y = y
+                camera.position.z = z
+            }
+
+            //camPosit(cord_sr_x, cord_sr_y, cord_sr_z);
+
+            var cam_cords = [
+                {
+                    x: cord_sr_x,
+                    y: 0,
+                    z: cord_sr_z,
+                },
+                {
+                    x: cord_sr_x,
+                    y: 0,
+                    z: size * 100,
+                }
+            ]
+
+            //camera.lookAt(cam_cords[0]);
+            //camera.rotateZ(Math.PI)
+
+            var tAnimations = ["Stand", "Run", "Attack"];
+            var tAnimations2 = ["stand", "run", "attack"];
+            var collidableMeshList = [];
+
+            var contLights = new THREE.Object3D();
+            var tabFires = [];
+            //var tabFires2 = [];
+            //console.log(contLights)
+            //scene.add(tabFires)
+            var tabEnemyLaserObj = [];
+            var tabEnemyLaser = [];
+            var tabEnemy = [];
+            var tabEnemyModel = [];
+
+            var score = new Score()
+
+            var tMixer = [];
+            var lvl = new Level(scene, obj, tMixer, cienie, tAnimations, contLights, collidableMeshList, tabFires, tabEnemyLaser, tabEnemyLaserObj, tabEnemy, tabEnemyModel, tAnimations2, score);
+            lvl.init();
+
+            var playerLoaded = false;
+
+            var mixer = [];
+            var model = new LoadModel(scene, obj, mixer, cienie, tAnimations, score);
+            playerLoaded = model.init();
+
+            var clock = new THREE.Clock();
+
+            var up = false;
+            var left = false;
+            var right = false;
+            var space = false;
+            var f = false;
+            var e = false;
+
+            var stats = new Stats();
+            stats.showPanel(0);
+            document.body.appendChild(stats.dom);
+
+            var rotacja = 0.03;
+
+            var collision = false;
+
+            var laser = new Laser();
+            var laser3D = laser.getLaser();
+            scene.add(laser3D)
+            //console.log(laser3D)
+            var raycaster = new THREE.Raycaster()
+
+            function distanceVector(v1, v2) {
+                var dx = v1.x - v2.x;
+                var dy = v1.y - v2.y;
+                var dz = v1.z - v2.z;
+
+                return Math.sqrt(dx * dx + dy * dy + dz * dz);
+            }
+
+            var liczPlayerAtak = 0;
+            var liczAtak = 0;
+            var liczNieAtak = 0;
+            var liczSpace = 0;
+
+            var lastEnemyMixer = 0;
+            var lastEnemy = 0;
+
+            var modelMaterial1 = new THREE.MeshBasicMaterial(
+                {
+                    color: 0x000000,
+                });
+
+            //================================================================================================================================= ANIMATE SCENE
+            function animateScene() {
+                stats.begin();
+
+
+
+                for (p = 0; p < tabFires.length; p++) {
+                    tabFires[p].updateFire()
+                    //console.log(tabFires)
+                }
+
+                var delta = clock.getDelta();
+                for (i = 0; i < tMixer.length; i++) {
+                    if (tMixer[i]) (tMixer[i]).update(delta)
+                }
+
+                if (mixer[0]) (mixer[0]).update(delta)
+
+                if (typeof (player) != "undefined" && player.userData.dead == false) {
+                    //console.log(player)
+
+                    var ray = new THREE.Ray(player.position, player.getWorldDirection())
+                    raycaster.ray = ray
+                    var intersects = raycaster.intersectObjects(tabEnemyModel);
+                    document.getElementById("toggle").innerHTML = intersects.length
+
+                    if (playerView) {
+                        var camVect = new THREE.Vector3(distancePlayerView, 0, 0)
+                        var camPos = camVect.applyMatrix4(player1.matrixWorld);
+                        //console.log(camVect, camPos)
+                        camera.position.x = camPos.x
+                        camera.position.z = camPos.z
+                        camera.position.y = heightPlayerView
+                        camera.lookAt(player.position)
+                    }
+
+                    if (up) {
+                        player.translateZ(10)
+                    }
+                    if (right) {
+                        player.rotation.y -= rotacja
+                    }
+                    if (left) {
+                        player.rotation.y += rotacja
+                    }
+                    if (space) {
+                        scene.remove(laser3D)
+
+                        if (player.userData.have_ammo) {
+                            laser3D.position.x = player.position.x
+                            laser3D.position.y = player.position.y
+                            laser3D.position.z = player.position.z
+
+                            laser3D.rotation.y = player.rotation.y
+
+                            laser.update();
+                            scene.add(laser3D);
+
+                            if (liczSpace % 25 == 0) {
+                                score.updatePlayerAmmo(player)
+
+                            }
+                           
+                        }
+                        liczSpace++;
+
+                    }
+                    if (e)
+                        rotacja = 0.005
+                    if (e == false)
+                        rotacja = 0.03
+
+                    var atak = false;
+                    nieAtak = true;
+                    for (var i = 0; i < tabEnemy.length; i++) {
+                        scene.remove(tabEnemyLaserObj[i])
+
+                        if (tabEnemy[i].userData.dead == false) {
+                            tabEnemy[i].lookAt(player.position)
+                        }                      
+
+                        if (distanceVector(tabEnemy[i].position, player.position) < 1000 && tabEnemy[i].userData.dead == false) {
+
+                            atak = true;
+
+                            tabEnemyLaserObj[i].position.x = tabEnemy[i].position.x
+                            tabEnemyLaserObj[i].position.y = tabEnemy[i].position.y
+                            tabEnemyLaserObj[i].position.z = tabEnemy[i].position.z
+
+                            tabEnemyLaserObj[i].rotation.y = tabEnemy[i].rotation.y
+
+                            tabEnemyLaserObj[i].lookAt(player.position)
+
+                            tabEnemyLaser[i].update()
+                            scene.add(tabEnemyLaserObj[i])
+
+                            if (liczAtak == 0) {
+                                tMixer[i].uncacheRoot(tMixer[i].getRoot())
+                                tMixer[i].clipAction(tAnimations2[2]).play();
+
+                                score.initSingleEnemy(tabEnemy[i])
+                            }
+
+                            if (liczAtak % 20 == 0) {
+                                score.updatePlayerHp(player)
+
+                                if (player.userData.dead) {
+                                    //player.uncacheRoot(tMixer[i].getRoot())
+                                    console.log("YOU DIED")
+                                    document.getElementById("death").style.display = "block"
+                                    document.getElementById("death").innerHTML = "YOU DIED"
+                                }
+                            }
+
+                            if (space) {
+                                if (liczPlayerAtak % 5 == 0 && intersects.length > 0 && intersects[0].object == tabEnemy[i].children[0] && player.userData.have_ammo) {
+                                    score.updateEnemy(tabEnemy[i])
+
+                                    if (tabEnemy[i].userData.dead) {
+                                        mixer[0].uncacheRoot(mixer[0].getRoot())
+                                        tabEnemy[i].children[0].material = modelMaterial1
+
+                                        enemyAmount--
+                                        console.log("Pozostalo:", enemyAmount)
+                                        if (enemyAmount == 0) {
+                                            console.log("YOU WIN")
+
+                                            document.getElementById("death").style.display = "block"
+                                            document.getElementById("death").innerHTML = "YOU WIN!"
+
+                                            setTimeout(function () {
+                                                document.getElementById("death").style.display = "none"
+                                                document.getElementById("death").innerHTML = "YOU DIED"
+                                            }, 2000)
+                                        }
+                                        //tabEnemy[i].children[0].material.shininess = 50
+                                        //tabEnemy[i].children[0].material.needsUpdate = true;
+
+                                    }
+
+                                }
+                                liczPlayerAtak++;
+                            }
+
+                            lastEnemy = tabEnemy[i]
+                            lastEnemyMixer = tMixer[i];
+                            liczAtak++
+                            liczNieAtak = 0;
+                        }
+
+                    }
+                    if (atak == false && liczNieAtak == 0 && lastEnemy != 0) {
+                        if (lastEnemy != 0 && lastEnemy.userData.dead == false ) {
+                            lastEnemyMixer.uncacheRoot(lastEnemyMixer.getRoot())
+                            lastEnemyMixer.clipAction(tAnimations2[0]).play();                           
+                        }    
+                        score.hideEnemy();
+
+                        liczNieAtak++
+                        liczAtak = 0;
+                    }
+
+                }
+
+                requestAnimationFrame(animateScene);
+                renderer.render(scene, camera);
+
+                stats.end();
+            }
+
+            animateScene();
+
+            document.addEventListener("keydown", onKeyDown, false);
+            document.addEventListener("keyup", onKeyUp, false);
+
+            var licz = true;
+
+            function onKeyDown(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 65:
+                        left = true;
+                        break;
+                    case 87:
+                        up = true;
+                        if (licz == true) {
+                            console.log("Run")
+                            mixer[0].uncacheRoot(mixer[0].getRoot())
+                            mixer[0].clipAction(tAnimations[1]).play();
+                        }
+                        licz = false;
+                        break;
+                    case 68:
+                        right = true;
+                        break;
+                    case 32:
+                        space = true;
+                        if (licz == true) {
+                            console.log("Attack")
+                            mixer[0].uncacheRoot(mixer[0].getRoot())
+                            mixer[0].clipAction(tAnimations[2]).play();
+                        }
+                        licz = false;
+                        break;
+                    case 70:
+                        f = true;
+                        break;
+                    case 69:
+                        e = true;
+                        break;
+                }
+            }
+
+            function onKeyUp(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 65:
+                        left = false;
+                        break;
+                    case 87:
+                        up = false;
+                        licz = true;
+                        console.log("Stand")
+                        mixer[0].uncacheRoot(mixer[0].getRoot())
+                        mixer[0].clipAction(tAnimations[0]).play();
+                        break;
+                    case 68:
+                        right = false;
+                        break;
+                    case 32:
+                        space = false;
+                        console.log("Stand")
+                        licz = true;
+                        mixer[0].uncacheRoot(mixer[0].getRoot())
+                        mixer[0].clipAction(tAnimations[0]).play();
+                        scene.remove(laser3D);
+                        break;
+                    case 70:
+                        f = false;
+                        for (var i = 0; i < tabEnemyLaser.length; i++) {
+                            scene.remove(tabEnemyLaserObj[i])
+                        }
+                        liczPlayerAtak = 0;
+                        liczSpace = 0;
+                        break;
+                    case 69:
+                        e = false;
+                        break;
+                }
+            }
+
+
+            document.getElementById("toggle").onclick = function () {
+                if (document.getElementById("menu").style.bottom == "-160px")
+                    document.getElementById("menu").style.bottom = "0px";
+                else
+                    document.getElementById("menu").style.bottom = "-160px";
+            }
+
+            document.getElementById("cam1").value = heightPlayerView;
+            document.getElementById("cam1").oninput = function () {
+                heightPlayerView = this.value
+                //console.log(heightPlayerView)
+            }
+
+            document.getElementById("cam3").value = distancePlayerView;
+            document.getElementById("cam3").oninput = function () {
+                distancePlayerView = this.value
+
+            }
+
+            document.getElementById("cam5").value = FOV;
+            document.getElementById("cam5").oninput = function () {
+                FOV = this.value
+                camera.fov = Number(FOV)
+            }
+
+            document.getElementById("cam6").onclick = function () {
+                if (this.checked == true) {
+                    playerView = false;
+                    camPosit(cord_sr_x, cord_sr_y, cam_cords[1].z);
+                    camera.lookAt(cam_cords[0]);
+                }
+                else {
+                    playerView = true;
+                }
+            }
+
+            document.getElementById("shadow").onclick = function () {
+                if (this.checked) {
+                    cienie = true;
+                }
+                else {
+                    cienie = false;
+                }
+                for (i = 0; i < contLights.children.length; i++) {
+                    contLights.children[i].castShadow = cienie;
+                }
+            }
+
+            document.getElementById("cam7").onclick = function () {
+                distancePlayerView = -distancePlayerView;
+                console.log(distancePlayerView)
+            }
+            var lightIntensity = 0.3;
+            document.getElementById("light1").value = lightIntensity;
+            document.getElementById("light1").oninput = function () {
+                //console.log(contLights)
+                lightIntensity = this.value
+                for (i = 0; i < contLights.children.length; i++) {
+                    contLights.children[i].intensity = lightIntensity;
+                }
+            }
+
+            var fireSpeed = 1;
+            document.getElementById("fire1").value = lightIntensity;
+            document.getElementById("fire1").oninput = function () {
+                //console.log()
+                fireSpeed = this.value
+                for (i = 0; i < tabFires.length; i++) {
+                    tabFires[i].setSpeed(fireSpeed);
+                    //console.log(tabFires[i])
+                }
+            }
+        })
+    </script>
+</head>
+<body>
+    <div id="div1">
+    </div>
+    <div id="menu">
+        <button id="toggle">≡</button>
+        <div class="inp"><input type="range" min="10" max="2000" id="cam1" />wys kam nad ziemią</div>
+        <div class="inp"><input type="range" min="1" max="1500" id="cam3" />odległość kamery od postaci</div>
+        <div class="inp"><input type="range" min="10" max="500" id="cam5" />fov kamery</div>
+        <div class="inp"><input type="range" step="0.01" min="0.01" max="3" id="light1" />moc świateł</div>
+        <div class="inp"><input type="range" min="1" max="30" id="fire1" />szybkosc ognisk</div>
+        <div class="inp"><input type="checkbox" id="shadow" />cienie</div>
+        <div class="inp"><input type="checkbox" id="cam6" />widok z góry</div>
+        <div class="inp"><input type="checkbox" id="cam7" />kamera przed</div>
+    </div>
+    <div id="gracz">
+        <div id="hp"></div>
+        <div id="ammo"></div>       
+    </div>
+    <div id="wrog">
+    </div>
+    <div id="death">YOU DIED</div>
+</body>
+</html>

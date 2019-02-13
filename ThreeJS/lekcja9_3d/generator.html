@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Kreator poziomów</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script src="js/levelData.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #main{
+            position:relative;
+            margin:0 auto;
+            width:1000px;
+            height:600px;
+        }
+        #plansza {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 350px;
+            height: 350px;
+            background-color: white;
+        }
+
+        #menu {
+            position: absolute;
+            top: 20px;
+            right: 400px;
+            width: 200px;
+            height: 500px;
+        }
+
+        #area {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            overflow: auto;
+            background-color: black;
+            color: white;
+        }
+        #genPlansza {
+            position:absolute;
+            right:110px;
+            bottom:30px;
+            z-index:10;
+            height:35px;
+        }
+
+        .elMenu, .btn {
+            width: 90%;
+            height: 35px;
+            margin: 10px;
+            border:2px black solid;
+            outline:none;
+        }
+        #del{
+            background-color:red;
+            color:white;
+            border-radius:20px;
+        }
+
+        .d {
+            position: relative;
+            background-color: white;
+            display: inline-block;
+            border: 1px black solid;
+            margin:-2px 0px;
+        }
+    </style>
+    <script>
+        window.addEventListener("load", function () {
+
+            for (i = 4; i <= 20; i++) {
+                var opt = $("<option>")
+                opt.attr("class", "opt");
+                opt.attr("id", "opt" + i);
+                opt.html(i);
+                opt.attr("value", i);
+                $("#size").append(opt)
+            }
+            var v = 4;
+            generuj(v);
+
+            function generuj(v) {
+                $("#plansza").empty();
+                //console.log(v)
+                var k = 0;
+                for (i = 0; i < v; i++) {
+                    for (j = 0; j < v; j++) {
+                        k++;
+                        var d = $("<div>")
+                        d.attr("class", "d");
+                        d.attr("id", i + "," + j + "," + k);
+                        d.css("width", (350 / v) - 2 + "px")
+                        d.css("height", (350 / v) -2 + "px")
+                        //d.html(i + "," + j);
+                        $("#plansza").append(d)
+
+                    }
+                }
+            }
+
+            var obj = {
+                size: 4,
+                level:[]
+            }
+
+            $("#size").on("change", function () {
+                v = $("#size").val()
+                generuj(v);
+                obj.size = v;
+                obj.level = [];
+            })
+
+            var btns = [
+                {
+                    id: "wall",
+                    color: "lightgreen",
+                },
+                {
+                    id: "enemy",
+                    color: "red",
+                },
+                {
+                    id: "treasure",
+                    color: "lightblue",
+                },
+                {
+                    id: "light",
+                    color: "yellow",
+                },
+                {
+                    id: "item1",
+                    color: "pink",
+                },
+                {
+                    id: "item2",
+                    color: "cyan",
+                },
+            ]
+
+            for (i = 0; i < btns.length; i++) {
+                var d = $("<button>")
+                d.attr("class", "btn");
+                d.attr("id", i);
+                d.attr("value", btns[i].color);
+                d.css("background-color", btns[i].color)
+                d.html(btns[i].id);
+                $("#menu").append(d)
+            }
+
+            var ch_id;
+            var ch_col;
+
+            var licz = 0;
+            var last = 0;;
+
+            function delD() {
+                if (last != 0)
+                    last.css("border-style", "solid");
+                $(".d").on("click", function () {
+                    console.log("delete")
+
+                    $(this).css("background-color", "white");
+
+                    var idd = this.id.split(",");
+                    var nr = idd[2];
+                    
+                    var id_jest = false;
+                    for (i = 0; i < obj.level.length; i++) {
+                        if (obj.level[i].id == nr) {
+                            id_jest = true;
+                            obj.level.splice(i,1)
+                        }
+                    }
+
+                    $("#area").html(" ")
+                    $("#area").html(JSON.stringify(obj, null, 3))
+                })
+            }
+
+            $(".btn").on("click", function () {
+                $(".d").off("click")
+                if (this.id == "del") {
+                    delD();
+                }
+                else {
+                    ch_id = btns[this.id].id;
+                    ch_col = btns[this.id].color;
+                    //ch_col = this.style.backgroundColor
+                    $(this).css("border-style", "dashed");
+                    if (last != 0)
+                        last.css("border-style", "solid");
+                    last = $(this)
+                    console.log(ch_id, ch_col)
+
+                    klik();
+                }
+            })
+            function klik() {
+                $(".d").on("click", function () {
+                    console.log("klik")
+                    $(this).css("background-color", ch_col);
+
+                    var idd = this.id.split(",");
+                    var x = idd[0];
+                    var z = idd[1];
+                    var nr = idd[2];
+
+                    var id_jest = false;
+
+                    for (i = 0; i < obj.level.length; i++) {
+                        if (obj.level[i].id == nr) {
+                            id_jest = true;
+                            obj.level[i] = {
+                                id: nr,
+                                x: x,
+                                z: z,
+                                type: ch_id,
+                            }
+                        }
+                    }
+                    if (!id_jest) {
+                        obj.level.push(
+                            {
+                                id: nr,
+                                x: x,
+                                z: z,
+                                type: ch_id,
+                            }
+                        )
+                    }
+                    console.log(obj)
+                    $("#area").html(" ")
+                    $("#area").html(JSON.stringify(obj, null, 3))
+
+                })
+            }
+            $("#genPlansza").on("click", function () {
+                console.log("generuj")
+                //console.log($("#area").html())
+                try {
+                    var obiekt = JSON.parse($("#area").val());
+                    console.log(obiekt)
+                
+                v = Number(obiekt.size);
+                $("#size").val(v);
+                generuj(v)
+
+                for (i = 0; i < obiekt.level.length; i++) {
+                    var ob = obiekt.level[i];
+                    //console.log($("#" + ob.x + "," + ob.z + "," + ob.id))
+                    var strID = ob.x + "," + ob.z + "," + ob.id;
+                    console.log(strID)
+
+                    for (j = 0; j < btns.length; j++) {
+                        if (btns[j].id == ob.type)
+                            ch_col = btns[j].color
+                    }
+
+                    document.getElementById(strID).style.backgroundColor = ch_col;
+                }
+                }
+                catch (err) {
+                    window.alert("ERROR: " + err)
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <div id="main">
+        <div id="plansza">
+        </div>
+        <div id="menu">
+            <button class="btn" id="del">DELETE</button>
+            <select class="elMenu" id="size"></select>
+        </div>
+        <textarea id="area"></textarea>
+        <button id="genPlansza">Generuj planszę z JSONa</button>
+    </div>
+</body>
+</html>

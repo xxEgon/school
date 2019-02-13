@@ -1,0 +1,435 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>3D</title>
+    <meta charset="utf-8" />
+    <script src="libs/three.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #menu {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 250px;
+            height: 100px;
+            background-color: crimson;
+            z-index: 10;
+            opacity:0.7;
+            border:1px black solid;
+            padding:5px;
+            color:white;
+        }
+
+        .square {
+            position: relative;
+            display:inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 2px;
+            border:1px black solid;
+        }
+        #ch_col_1 {
+            background-color: white;
+        }
+        #ch_col_2 {
+            background-color: black;
+        }
+        #ch_cone_r {
+            margin-left:15px;
+            background-color: red;
+        }
+        #ch_cone_g {
+            background-color: green;
+        }
+        #ch_cone_b {
+            background-color: blue;
+        }
+        select {
+            margin-top:5px;
+        }
+    </style>
+    <script>
+        window.addEventListener("load", function () {
+            var wys_okna = window.innerHeight;
+            var szer_okna = window.innerWidth;
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                45, // kąt patrzenia kamery (FOV - field of view)
+                szer_okna / wys_okna, // proporcje widoku, powinny odpowiadać proporjom naszego ekranu przeglądarki
+                0.1, // minimalna renderowana odległość
+                10000 // maxymalna renderowana odległość
+            );
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor(0xffffff);
+
+            renderer.setSize(szer_okna, wys_okna);
+
+            document.getElementById("div1").appendChild(renderer.domElement);
+
+            var tab_ob = [
+                ["Cube", new THREE.CubeGeometry(60, 60, 60, 1, 1, 1)],
+                ["Dodecahedron", new THREE.DodecahedronGeometry(50, 0)],
+                ["Icosahedron", new THREE.IcosahedronGeometry(50, 0)],
+                ["Octahedron", new THREE.OctahedronGeometry(50, 0)],
+                ["Plane", new THREE.PlaneGeometry(80, 80, 1)],
+                ["Tetrahedron", new THREE.TetrahedronGeometry(40, 0)],
+            ];
+
+            //console.log(tab_ob)
+
+            var index = 0;
+            var mesh;
+            var bryla;
+            start();
+            
+            function start() {
+                bryla = new THREE.Object3D();
+
+                var geometry = tab_ob[index][1];
+                var material = new THREE.MeshPhongMaterial({
+                    color: 0xffffff,
+                    specular: 0xffffff,
+                    shininess: 50,
+                    side: THREE.DoubleSide,
+                    map: THREE.ImageUtils.loadTexture("mats/p.png")
+                })
+                mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(0, 0, 0);
+                bryla.add(mesh);
+                console.log(bryla)
+                var vertices = mesh.geometry.vertices;
+                //console.log(vertices)
+                for (i = 0; i < vertices.length; i++) {
+                    var geometry = new THREE.CubeGeometry(10, 10, 10, 3, 3, 3);
+                    var material = new THREE.MeshPhongMaterial({
+                        color: 0xffffff,
+                        specular: 0xffffff,
+                        shininess: 50,
+                        side: THREE.DoubleSide,
+                        map: THREE.ImageUtils.loadTexture("mats/p.png")
+                    })
+                    var mesh2 = new THREE.Mesh(geometry, material);
+                    mesh2.name = "vertex" + i
+                    mesh2.position.set(vertices[i].x, vertices[i].y, vertices[i].z);
+                    bryla.add(mesh2);
+                }
+                mesh.geometry.verticesNeedUpdate = true;
+                scene.add(bryla)
+                //console.log(bryla)
+            }
+           
+
+            //console.log(mesh.position)
+            function MyOrbit(cord_x, cord_z, lightColor, rot_x, rot_z) {
+                var orbita = new THREE.Object3D();
+
+                var geo = new THREE.ConeGeometry(15, 50, 20); //stozek
+                var mat = new THREE.MeshBasicMaterial({
+                    color: lightColor, side: THREE.DoubleSide, wireframe: true
+                });
+                var cone = new THREE.Mesh(geo, mat);
+                cone.position.set(cord_x, 0, cord_z)
+                cone.rotateX(rot_x)
+                cone.rotateZ(rot_z)
+                cone.name="stozek"
+                orbita.add(cone);
+
+                var lineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+                var geometry = new THREE.Geometry();
+                var pr = 120;
+                for (i = 0.1; i < 6.4; i += 0.1) {
+                    //geometry.vertices.push(new THREE.Vector3(0, 0, 0));
+                    var x = pr * Math.cos(i)
+                    var z = pr * Math.sin(i)
+                    geometry.vertices.push(new THREE.Vector3(x, 0, z));
+                }
+                var line = new THREE.Line(geometry, lineMaterial);         // linia łamana, czyli wielokąt
+                orbita.add(line);
+
+                var light = new THREE.SpotLight(lightColor, 30, 140, 3.14); //swiatlo
+                light.position.set(cord_x, 0, cord_z);
+                light.lookAt(mesh.position);
+                orbita.add(light)
+                orbita.name = "orbita"
+                //console.log(orbita.name)
+                return orbita
+            }
+            var pi2 = Math.PI/2
+            var pi4 = Math.PI/4
+
+            var light1 = new MyOrbit(100, 100, 0x0000ff, pi2, -pi4)
+            scene.add(light1)
+
+            var light2 = new MyOrbit(100, -100, 0xff0000, pi2, 5*pi4)
+            scene.add(light2)
+
+            var light3 = new MyOrbit(-100, 100, 0x00ff00, -pi2, 3*pi4)
+            scene.add(light3)
+
+            camera.lookAt(mesh.position);
+
+            var up = false;
+            var down = false;
+            var left = false;
+            var right = false;
+            var leftRot1 = false;
+            var rightRot1 = false;
+            var r = 300;
+            var kat = 0.78;
+            camera.position.y = 100;
+            camera.position.x = r * Math.cos(kat)
+            camera.position.z = r * Math.sin(kat)
+            
+            function animateScene() {            
+                camera.lookAt(mesh.position);
+                if (up) {
+                    camera.position.y += 10;
+                }
+                if (down) {
+                    camera.position.y -= 10;
+                }
+                if (left) {
+                    var X= camera.position.x;
+                    var Z = camera.position.z;                   
+                    kat += 0.1;
+                    camera.position.x = r * Math.cos(kat)
+                    camera.position.z = r * Math.sin(kat)
+                }
+                if (right) {
+                    var X= camera.position.x;
+                    var Z = camera.position.z;                   
+                    kat -= 0.1;
+                    camera.position.x = r * Math.cos(kat)
+                    camera.position.z = r * Math.sin(kat)
+                }
+                if (rightRot1) {
+                    chosenBlock.rotation.y += 0.1;
+                }
+                if (leftRot1) {
+                    chosenBlock.rotation.y -= 0.1;
+                }
+                if (rotacja) {
+                    bryla.rotation.y += 0.1;
+                }
+                camera.lookAt(mesh.position);
+                requestAnimationFrame(animateScene);
+                renderer.render(scene, camera);
+            }
+            animateScene();
+            
+            document.getElementById("ch_col_1").onclick = function () {
+                renderer.setClearColor(0xffffff);
+            }
+
+            document.getElementById("ch_col_2").onclick = function () {
+                renderer.setClearColor(0x000000);
+            }
+
+            var axis = new THREE.AxisHelper(200);    // 200 - wielkość 
+            scene.add(axis);
+
+            var raycaster = new THREE.Raycaster(); // obiekt symulujący "rzucanie" promieni
+            var mouseVector = new THREE.Vector2() // wektor (x,y) wykorzystany będzie do określenie pozycji myszy na ekranie
+
+            document.addEventListener("keydown", onKeyDown, false); // naciśnięcie dowolnego klawisza
+            document.addEventListener("keyup", onKeyUp, false); //zwolnienie dowolnego klawisza
+            document.addEventListener("mousedown", onMouseDown, false);
+
+            var r2 = 300;
+            var kat2 = 0.78;
+            function onKeyDown(event) {
+                var keyCode = event.which;
+                console.log(keyCode); // wyloguj kod klawisza
+                if (chosenBlock == "0")
+                    switch (keyCode) {
+                        case 37:
+                            left = true;
+                            break;
+                        case 38:
+                            up = true;
+                            break;
+                        case 39:
+                            right = true;
+                            break;
+                        case 40:
+                            down = true;
+                            break;
+                    }
+                else {
+                    if (chosenBlock.name != "orbita") {
+                        var vert=  mesh.geometry.vertices;
+                        switch (keyCode) {
+                            case 37:
+                                chosenBlock.position.z += 10;
+                                vert[vertexNr].z += 10;
+                                break;
+                            case 38:
+                                chosenBlock.position.x += 10;
+                                vert[vertexNr].x += 10;
+                                break;
+                            case 39:
+                                chosenBlock.position.z -= 10;
+                                vert[vertexNr].z -= 10;
+                                break;
+                            case 40:
+                                chosenBlock.position.x -= 10;
+                                vert[vertexNr].x -= 10;
+                                break;
+                            case 87: //"W"
+                                chosenBlock.position.y += 10;
+                                vert[vertexNr].y += 10;
+                                break;
+                            case 83: //"S"
+                                chosenBlock.position.y -= 10;
+                                vert[vertexNr].y -= 10;
+                                break;
+
+                        }
+                        mesh.geometry.verticesNeedUpdate = true;
+                    }
+                    else {
+                        switch (keyCode) {
+                            case 39:
+                                rightRot1 = true;
+                                break;
+                            case 37:
+                                leftRot1 = true;
+                                break;
+                        }
+                    }
+                }
+            }
+            function onKeyUp(event) {
+                var keyCode = event.which;
+                //console.log(keyCode); // wyloguj kod klawisza
+                if (chosenBlock == "0")
+                    switch (keyCode) {
+                        case 37:
+                            left = false;
+                            break;
+                        case 38:
+                            up = false;
+                            break;
+                        case 39:
+                            right = false;
+                            break;
+                        case 40:
+                            down = false;
+                            break;
+                    }
+                if(chosenBlock.name == "orbita")
+                    switch (keyCode) {
+                        case 39:
+                            rightRot1 = false;
+                            break;
+                        case 37:
+                            leftRot1 = false;
+                            break;
+                    }
+                //console.log(camera.position.x, camera.position.z, camera.position.y, mesh.position)
+            }
+            var chosenBlock = "0";
+            var MamOrbite = false;
+            var vertexNr = -1;
+            function onMouseDown(event) {
+                mouseVector.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseVector.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                raycaster.setFromCamera(mouseVector, camera);
+                var intersects = raycaster.intersectObjects(scene.children, true);
+                if (intersects.length > 0) {
+                    chosenBlock = intersects[0].object;
+                    console.log(chosenBlock)
+                    if (chosenBlock.name == "stozek") {
+                        chosenBlock = chosenBlock.parent
+                        if (chosenBlock.name == "orbita") {
+                            console.log(chosenBlock)
+                            console.log("Mam orbitę")
+                        }
+                        else
+                            console.log("Mam stozek")
+                        MamOrbite = true;
+                    }
+                    else {
+                        MamOrbite = false;
+                        if((chosenBlock.name).indexOf("vertex")==-1)
+                            chosenBlock = "0";
+                        else {
+                            vertexNr = (chosenBlock.name).charAt(6)
+                            console.log(vertexNr)
+                        }
+                    }
+                }
+                else {
+                    chosenBlock = "0";
+                }
+            }
+            var rotacja = false;
+            var widocznosc = true;
+            document.getElementById("ch1").onclick = function () {
+                if (rotacja)
+                    rotacja = false;
+                else
+                    rotacja = true;
+            };
+            document.getElementById("ch2").onclick = function () {
+                if (widocznosc) {
+                    mesh.visible = false;
+                    widocznosc = false;
+                }
+                else {
+                    mesh.visible = true;
+                    widocznosc = true;
+                }
+            };
+            document.getElementById("ch_cone_r").onclick = function () {
+                chosenBlock = light2;
+            };
+            document.getElementById("ch_cone_g").onclick = function () {
+                chosenBlock = light3;
+            };
+            document.getElementById("ch_cone_b").onclick = function () {
+                chosenBlock = light1;
+            };
+            
+
+            for (i = 0; i < tab_ob.length; i++) {
+                var opt = document.createElement("OPTION");
+                opt.setAttribute("id", "option" + i);
+                opt.setAttribute("class", "option");
+                opt.setAttribute("value", i);
+                opt.innerHTML = tab_ob[i][0];
+                document.getElementById("select").appendChild(opt);
+            }
+
+            document.getElementById("select").onchange = function () {
+                var sel = document.getElementById("select");
+                index = sel.selectedIndex
+                console.log(index)
+                scene.remove(bryla)
+                geometry = tab_ob[index][1];
+                console.log(tab_ob[index][0])
+                start();
+            }
+        })
+    </script>
+</head>
+<body>
+    <div id="div1">
+    </div>
+    <div id="menu">
+        <div id="ch_col_1" class="square"></div>
+        <div id="ch_col_2" class="square"></div>
+        <div id="ch_cone_r" class="square"></div>
+        <div id="ch_cone_g" class="square"></div>
+        <div id="ch_cone_b" class="square"></div>
+        <div>Rotacja<input type="checkbox" id="ch1"/></div>
+        <div>Widoczność<input type="checkbox" id="ch2" checked/></div>
+        <select id="select"></select>
+    </div>
+</body>
+</html>

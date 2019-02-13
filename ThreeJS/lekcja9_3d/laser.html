@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Awesome</title>
+    <meta charset="utf-8" />
+    <script src="js/levelData.js"></script>
+    <script src="js/Stats.js"></script>
+    <script src="js/level.js"></script>
+    <script src="js/MyLight.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        .btn {
+            position:absolute;
+            top: 10px;
+            right:10px;
+            z-index:100;
+        }
+        #btnStep {
+            top: 40px;
+        }
+        #size {
+            top:70px;
+        }
+        #motion {
+            top:100px;
+        }
+    </style>
+    <script src="libs/three.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+
+            var wys_okna = window.innerHeight;
+            var szer_okna = window.innerWidth;
+            var FOV = 45;
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                FOV, // kąt patrzenia kamery (FOV - field of view)
+                szer_okna / wys_okna, // proporcje widoku, powinny odpowiadać proporjom naszego ekranu przeglądarki
+                0.1, // minimalna renderowana odległość
+                15000 // maxymalna renderowana odległość
+            );
+            var renderer = new THREE.WebGLRenderer(
+                {
+                    antialiasing: true,
+                }
+                );
+            renderer.setClearColor(0x0e2f44);
+            renderer.shadowMapEnabled = true
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.setSize(szer_okna, wys_okna);
+            document.getElementById("div1").appendChild(renderer.domElement);
+
+            var axis = new THREE.AxisHelper(20000);    // 200 - wielkość
+            scene.add(axis);
+
+            camera.position.x = -250;
+            camera.position.y = 100;
+            camera.position.z = 250;
+            //camera.lookAt(scene.position)
+
+            var camVec = new THREE.Vector3(100, 100, 100)
+            camera.lookAt(camVec)
+
+            var stats = new Stats();
+            stats.showPanel(0);
+            document.body.appendChild(stats.dom);
+
+            var geom2 = new THREE.BoxGeometry(45, 45, 45);
+            var mat = new THREE.MeshBasicMaterial({
+                side: THREE.DoubleSide,
+                color: 0x0000ff,
+            })
+            var blue = new THREE.Mesh(geom2, mat);
+            scene.add(blue)
+
+            var geom = new THREE.SphereGeometry(30, 100, 32);
+            var mat2 = new THREE.MeshBasicMaterial({
+                side: THREE.DoubleSide,
+                color: 0x00ff00,
+            })
+            var green = new THREE.Mesh(geom, mat2);
+            scene.add(green)
+
+            var mat3 = new THREE.MeshBasicMaterial({
+                side: THREE.DoubleSide,
+                color: 0xff0000,
+            })
+            var red = new THREE.Mesh(geom, mat3);
+            scene.add(red)
+
+            var v1 = new THREE.Vector3(50, 50, 50)
+            var v2 = new THREE.Vector3(200, 200, 200)
+
+            red.position.copy(v1)
+            blue.position.copy(v1)
+            green.position.copy(v2)          
+
+            var up = false;
+
+            document.getElementById("btnUpdown").onclick = function () {
+                console.log("UP / DOWN")
+
+                var v1 = new THREE.Vector3(50, 50, 50)
+
+                if (up) {
+                    blue.position.copy(v1)
+                    up = false
+                }
+                else {
+                    blue.position.copy(v2)
+                    up = true
+                }
+            }
+
+            var v4 = new THREE.Vector3(10,10,10);
+            document.getElementById("btnStep").onclick = function () {
+                console.log("STEP")
+
+                if (up) 
+                    blue.position.sub(v4)                   
+                else 
+                    blue.position.add(v4)
+                if (blue.position.x == v2.x) 
+                    up = true;                
+                if (blue.position.x == v1.x) 
+                    up = false;                
+            }
+
+            var v9 = new THREE.Vector3(65, 50, 65)
+            var v10 = new THREE.Vector3(220, 160, 220)
+
+            var particles = new THREE.Geometry() // geometria - tablica cząsteczek
+
+            var particleSize = document.getElementById("size").value;
+
+            var particleMaterial = new THREE.PointsMaterial(
+            {
+                color: 0xff3300,
+                size: particleSize, // ta wartośc zmieniamy suwakiem skali
+                map: THREE.ImageUtils.loadTexture("mats/particle.png"), // grafika zapewniająca "okrągły" kształt cząsteczki
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                depthWrite: false,
+                opacity: 0.6
+            });
+
+            function getDifference(v1, v2) {
+
+                var subV = new THREE.Vector3(
+	                v2.x - v1.x,
+	                v2.y - v1.y,
+	                v2.z - v1.z
+                )
+                return subV
+            }
+
+            var subV = getDifference(v9, v10)
+
+            console.log(subV)
+
+            var particlesCount = 50;
+            var stepV = subV.divideScalar(particlesCount) // particlesCount - przewidywana ilość cząsteczek
+
+            function genParticles() {
+                for(var i=0;i<particlesCount;i++){
+	                var particle = new THREE.Vector3(
+		                v9.x + stepV.x * i,
+		                v9.y + stepV.y * i,
+		                v9.z + stepV.z * i) 
+	                particles.vertices.push(particle);
+                }
+            }
+
+            genParticles()
+
+            var particleSystem = new THREE.Points(particles, particleMaterial);
+            scene.add(particleSystem)
+
+            var rozstrzal = document.getElementById("motion").value;
+
+            function update() {
+                console.log("update")
+                var verts = particles.vertices
+                for (var i = 0; i < verts.length; i++) {
+                    var particle = verts[i];  
+                    particle.x = Math.random() * rozstrzal
+                }
+                particleSystem.geometry.verticesNeedUpdate = true;
+                particleSystem.material.size = particleSize
+            }
+
+            document.getElementById("size").oninput = function () {
+                console.log("SIZE")
+                particleSize = this.value
+            }
+
+            document.getElementById("motion").oninput = function () {
+                console.log("MOTION")
+                rozstrzal = this.value
+            }
+
+            
+            function animateScene() {
+                stats.begin();
+
+                update();
+
+                requestAnimationFrame(animateScene);
+                renderer.render(scene, camera);
+
+                stats.end();
+            }
+
+            animateScene();
+
+        })
+    </script>
+</head>
+<body>
+    <button id="btnUpdown" class="btn"> UP/DOWN </button>
+    <button id="btnStep" class="btn" > STEP </button>
+    <input type="range" class="btn" min="30" max="300" id="size" value="30" />
+    <input type="range" class="btn" min="0" max="100" id="motion" value="50"/>
+    <div id="div1">
+    </div>
+    
+</body>
+</html>

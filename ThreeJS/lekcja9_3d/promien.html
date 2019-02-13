@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Awesome</title>
+    <meta charset="utf-8" />
+    <script src="js/levelData.js"></script>
+    <script src="js/Stats.js"></script>
+    <script src="js/level.js"></script>
+    <script src="js/MyLight.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+        }
+
+        #btnStep {
+            top: 40px;
+        }
+
+        #size {
+            top: 70px;
+        }
+
+        #motion {
+            top: 100px;
+        }
+    </style>
+    <script src="libs/three.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+
+            var wys_okna = window.innerHeight;
+            var szer_okna = window.innerWidth;
+            var FOV = 45;
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                FOV, // kąt patrzenia kamery (FOV - field of view)
+                szer_okna / wys_okna, // proporcje widoku, powinny odpowiadać proporjom naszego ekranu przeglądarki
+                0.1, // minimalna renderowana odległość
+                15000 // maxymalna renderowana odległość
+            );
+            var renderer = new THREE.WebGLRenderer(
+                {
+                    antialiasing: true,
+                }
+                );
+            renderer.setClearColor(0x0e2f44);
+            renderer.shadowMapEnabled = true
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.setSize(szer_okna, wys_okna);
+            document.getElementById("div1").appendChild(renderer.domElement);
+
+            var axis = new THREE.AxisHelper(20000);    // 200 - wielkość
+            scene.add(axis);
+
+            camera.position.x = 0;
+            camera.position.y = 400;
+            camera.position.z = 0;
+            //camera.lookAt(scene.position)
+
+            var camVec = new THREE.Vector3(0, 0, 0)
+            camera.lookAt(camVec)
+
+            var stats = new Stats();
+            stats.showPanel(0);
+            document.body.appendChild(stats.dom);
+
+            var geom1 = new THREE.BoxGeometry(20, 20, 20);
+            var mat1 = new THREE.MeshBasicMaterial({
+                side: THREE.FrontSide,
+                color: 0x0000ff,
+            })
+            var blue1 = new THREE.Mesh(geom1, mat1);
+            scene.add(blue1)
+
+            var axis1 = new THREE.AxisHelper(200);    // 200 - wielkość
+            blue1.add(axis1);
+
+            var tabMesh = [];
+            for (var i = 0; i < 10; i++)
+            {
+                var mesh = new THREE.Mesh(geom1, mat1);
+                var r1 = Math.round(Math.random())
+                var r2 = Math.round(Math.random())
+                if(r1 == 0)
+                    mesh.position.z = Math.random() * 100
+                else
+                    mesh.position.z = (Math.random() * 100) * -1
+                if (r2 == 0)
+                    mesh.position.x = Math.random() * 100
+                else
+                    mesh.position.x = (Math.random() * 100) * -1
+                scene.add(mesh)
+                tabMesh.push(mesh)
+            }          
+
+            var raycaster = new THREE.Raycaster()
+
+            var up = false;
+            var right = false;
+            var left = false;
+            
+            function animateScene() {
+                stats.begin();
+
+                if (up) {
+                    blue1.translateZ(2);
+                }
+                if (left) {
+                    blue1.rotation.y+=0.1;
+                }
+                if (right) {
+                    blue1.rotation.y-=0.1;
+                }
+
+                var ray = new THREE.Ray(blue1.position, blue1.getWorldDirection())
+                raycaster.ray = ray
+                var intersects = raycaster.intersectObjects(tabMesh);
+
+                document.getElementById("btnUpdown").innerHTML = intersects.length
+
+                for (var i = 0; i < tabMesh.length; i++) {
+                    tabMesh[i].lookAt(blue1.position)
+                }
+
+
+                requestAnimationFrame(animateScene);
+                renderer.render(scene, camera);
+
+                stats.end();
+            }
+            
+
+            document.addEventListener("keydown", onKeyDown, false);
+            document.addEventListener("keyup", onKeyUp, false);
+
+            function onKeyDown(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 65:
+                        left = true;
+                        break;
+                    case 87:
+                        up = true;
+                        break;
+                    case 68:
+                        right = true;
+                        break;
+                }
+            }
+
+            function onKeyUp(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 65:
+                        left = false;
+                        break;
+                    case 87:
+                        up = false;
+                        break;
+                    case 68:
+                        right = false;
+                        break;
+                }
+            }
+
+            animateScene();
+
+        })
+    </script>
+</head>
+<body>
+    <button id="btnUpdown" class="btn"> UP/DOWN </button>
+    <button id="btnStep" class="btn"> STEP </button>
+    <input type="range" class="btn" min="30" max="300" id="size" value="30" />
+    <input type="range" class="btn" min="0" max="100" id="motion" value="50" />
+    <div id="div1">
+    </div>
+
+</body>
+</html>
