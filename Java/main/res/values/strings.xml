@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Filipowski</string>
+    <string name="main_a">Zdjęcie</string>
+    <string name="main_b">Albumy</string>
+    <string name="main_c">Kolaż</string>
+    <string name="main_d">W sieci</string>
+    <string name="main_e">Notatki</string>
+    <string name="accept">Akceptuj</string>
+    <string name="cancel">Anuluj</string>
+</resources>

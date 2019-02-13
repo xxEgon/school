@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="5">
+
+    <EditText
+        android:id="@+id/dialogAddNotesTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Tytuł"
+        android:hint="Tytuł"/>
+    <EditText
+        android:id="@+id/dialogAddNotesText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Treść"
+        android:hint="Treść"/>
+    <LinearLayout
+        android:id="@+id/dialogAddNotesColors"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:weightSum="1"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+</LinearLayout>
