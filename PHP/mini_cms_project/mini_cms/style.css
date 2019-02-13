@@ -1,0 +1,249 @@
+body,
+* {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.mainDiv {
+    margin: 0 auto;
+    width: 800px;
+    position: relative;
+}
+
+.errorDiv {
+    color: #024959;
+    font-weight: 700;
+    width: 100%;
+    text-align: right;
+    margin: 20px 0px;
+}
+
+.headerDiv {
+    width: calc(100% -20px);
+    padding: 10px;
+    margin-bottom: 30px;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    height: 100px;
+}
+
+.title {
+    font-size: 60px;
+    color: #024959;
+    font-weight: bold;
+    position: relative;
+    float: left;
+    top: 5px;
+}
+
+.logDiv {
+    width: 230px;
+    position: relative;
+    float: right;
+}
+
+.logDiv div {
+    width: 100%;
+    height: 30px;
+    text-align: right;
+    margin-bottom: 5px;
+    color: #024959;
+    font-size: 17px;
+}
+
+.inp {
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+    margin-bottom: 5px;
+    background-color: white;
+    border: 1px #024959 solid;
+    color: #024959;
+    outline: none;
+    padding: 0px 5px;
+}
+
+.btn {
+    font-size: 15px;
+    width: 150px;
+    background-color: white;
+    border: 1px #024959 solid;
+    color: #024959;
+    cursor: pointer;
+    transition-duration: .3s;
+}
+
+.btn:hover {
+    background-color: #024959;
+    border: 1px #024959 solid;
+    color: white;
+}
+
+.ponownie {
+    width: 200px;
+}
+
+.dodajDiv {
+    position: relative;
+    margin-bottom: 30px;
+    width: calc(100% -20px);
+    padding: 10px;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+}
+
+.dodaj_area {
+    display: inline-block;
+    width: 33%;
+    height: 200px;
+    resize: none;
+    outline: none;
+    border: 1px #024959 solid;
+    padding: 10px;
+}
+
+.dodaj_zdj {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+    top: 10px;
+    margin-left: 5px;
+}
+
+.dodaj_zdj+label {
+    width: calc(33% - 20px);
+    text-align: center;
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    margin-left: 5px;
+    background-color: white;
+    border: 1px #024959 solid;
+    color: #024959;
+    padding: 5px;
+    cursor: pointer;
+    transition-duration: .2s;
+}
+
+.dodaj_zdj:focus+label,
+.dodaj_zdj+label:hover {
+    background-color: #024959;
+    color: white;
+}
+
+.zatwierdz {
+    display: inline-block;
+    position: absolute;
+    top: 60px;
+    height: 34px;
+    width: calc(33% - 7px);
+    margin-left: 5px;
+}
+
+.anuluj {
+    right: 9px;
+    top: 114px;
+}
+.dodaj_miniaturka {
+    width:80px;
+    height:50px;
+    border:1px black solid;
+    position:absolute;
+    display: inline-block;
+    top:160px;
+    right:9px;
+    overflow:hidden;
+    border:1px #024959 solid;
+}
+.dodaj_miniaturka img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    display: block;
+}
+
+.articlesDiv {
+    position:relative;
+}
+
+.art {
+    position: relative;
+    margin-bottom: 30px;
+    width: calc(100% -20px);
+    padding: 10px;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+}
+
+.editing {
+    border:2px red solid;
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.5);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.5);
+    box-shadow: 0px 0px 20px 0px rgba(255, 0, 0, 0.5);
+}
+
+.art-title {
+    font-size: 23px;
+    color: #024959;
+    font-weight: 600;
+}
+
+.art-text {
+    text-align: justify;
+    margin: 10px 0px;
+    width:68%;
+    position: relative;
+    min-height: 150px;
+}
+
+.art-author {
+    width: 100%;
+    color: #024959;
+    text-align: right;
+}
+
+.art-cont {
+    position: relative;
+    width: 100%;
+}
+
+.art-zdj {
+    width: 30%;
+    height: 150px;
+    overflow: hidden;
+    position: absolute;
+    right:0px;
+    top:4px;
+    border:1px #024959 solid;
+}
+
+.art-zdj img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    display: block;
+}
+
+.art-edit {
+    position:absolute;
+    right:-85px;
+    top:0px;
+    width:70px;
+}
+
+.art-edit input {
+    width:100%;
+    margin-bottom: -10px;
+    border:1px 	#808080 solid;
+    color:	#808080;
+}
