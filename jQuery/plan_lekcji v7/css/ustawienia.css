@@ -1,0 +1,73 @@
+﻿.closeLeftPanel {
+    position:absolute;
+    right:1%;
+    font-size: 8vh;
+    font-weight:bold;
+    cursor:pointer;
+    z-index:6;
+}
+.leftPaneltitle {
+    position:absolute;
+    font-size: 4vh;
+    left: 3%;
+    top:2.5%;
+}
+#leftPanelsettings {
+    height:100%;
+    position:fixed;
+    top:0;
+    z-index:5;
+    opacity:0.95;
+    left:0%;
+}
+.leftPanelsettingsBtn {
+    width:100%;
+    height:10%;
+    float: left;
+    position: relative;
+    width: 100%;
+}
+#leftPanelsettingsBtn1 {
+    margin-top:30%;
+}
+.leftPanelsettingsBtnicon img {
+    padding-top:8%;
+    height: 70%;
+    margin: 0 auto;
+}
+.leftPanelsettingsBtnicon, .leftPanelsettingsBtntext{
+    width: 20%;
+    height: 100%;
+    text-align: center;
+    font-size: 3vh;
+    cursor: pointer;
+    float:left;
+}
+.leftPanelsettingsBtntext{
+    width: 80%;
+    padding-top: 1em;
+}
+@media only screen and (orientation: landscape) {
+    #leftPanelsettings {
+        width:30%;  
+        left:-100%;    
+    }
+}
+@media only screen and (orientation: portrait) {
+    .leftPanel {
+        width:100%;
+        left:0;
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+        -webkit-transition-duration: .5s;
+        transition-duration: .5s;
+        animation-timing-function: ease-in;
+    }
+    .leftPanel.animleftPanel {
+        -webkit-transition-duration: .5s;
+        transition-duration: .5s;
+        animation-timing-function: ease-in;
+        -webkit-transform: translate3d(0%, 0, 0);
+        transform: translate3d(0%, 0, 0);
+    }
+}

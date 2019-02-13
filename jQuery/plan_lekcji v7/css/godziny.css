@@ -1,0 +1,114 @@
+﻿#leftPanelhours {
+    height:100%;
+    position:fixed;
+    top:0;
+    z-index:5;
+    opacity:0.95;
+}
+#hoursTable {
+    display:inline-block;  
+    overflow:auto;
+    font-size:4vh;
+    text-align:right;
+    padding:2%;
+}
+#hoursTable td{
+    width:10vw;
+    text-align:center;
+    cursor:pointer;
+}
+#parentHours {
+    margin:8% auto;
+    text-align:center;
+}
+
+
+#changeHoursDiv {
+    display:none;
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;
+    left:0%;
+    z-index:5;
+    opacity:0.95;
+}
+#closeChangeHoursDiv {
+    position:absolute;
+    right:1%;
+    font-size: 8vh;
+    font-weight:bold;
+    cursor:pointer;
+    z-index:6;
+}
+#changeHoursDivTime {
+        margin:0 auto;
+        width:30%;
+        height:11vw;
+        text-align:center;
+        font-size:8vw;
+        margin-top:2%;
+    }
+     #changeHoursDivHours {
+        margin:0 auto;
+        width:70%;
+        height:20%;
+        text-align:center;
+        margin-top:20px;
+    }
+      #changeHoursDivMinutes {
+        margin:0 auto;
+        width:70%;
+        height:20%;
+        text-align:center;
+        margin-top:20px;
+    }
+    .changeHoursDivHour, .changeHoursDivMin {
+        text-align:center;
+        border:1px white solid;
+        position:relative;
+        float:left;
+        margin-bottom:2%;
+        margin-right:2%;
+        padding:0.5em;
+        font-size:3vh;
+        cursor:pointer;
+    }
+    .changeHoursDivHour:hover, .changeHoursDivMin:hover {
+        font-weight:bold;
+    }
+    #changeHoursDivTimeH, #changeHoursDivTimeM {
+        width:40%;
+        height:100%;
+        float:left;
+        font-size:8vw;
+    }
+    #changeHoursDivTimeZnak {
+        width:20%;
+        height:100%;
+        float:left;
+        font-size:8vw;
+    }
+@media only screen and (orientation: landscape) {
+    #leftPanelhours {
+        width:100%;
+        left:-100%;
+    }
+}
+@media only screen and (orientation: portrait) {
+    #parentHours {
+        margin-top:20%;
+    }
+    #changeHoursDivTime {
+        margin-top: 30%;
+    }
+    #changeHoursDivHours {
+        margin-top:10%;;
+    }
+      #changeHoursDivMinutes {
+        margin-top:10%;
+    }
+    #hoursTable td{
+        width:30vw;
+    }
+}

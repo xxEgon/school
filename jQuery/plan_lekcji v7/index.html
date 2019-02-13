@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Plan lekcji</title>
+	<meta charset="utf-8" />
+    <meta name="author" content="damian filipowski"/>
+    <link rel="icon" type="image/png" href="gfx/favicon.png">
+    <link href="css/main.css" rel="stylesheet" />
+    <link href="css/dzisiaj.css" rel="stylesheet" />
+    <link href="css/ustawienia.css" rel="stylesheet" />
+    <link href="css/tydzien.css" rel="stylesheet" />
+    <link href="css/database.css" rel="stylesheet" />
+    <link href="css/godziny.css" rel="stylesheet" />
+    <link href="css/captcha.css" rel="stylesheet" />
+    <link href="css/Form.css" rel="stylesheet" />
+    <link href="css/color.css" rel="stylesheet" />
+    <script src="libs/jquery-3.1.0.min.js"></script>
+    <script src="js/Form.js"></script>
+    <script src="js/Color.js"></script>
+    <script src="js/hours.js"></script>
+    <script src="js/today.js"></script>
+    <script src="js/week.js"></script>
+    <script src="js/Captcha.js"></script>
+    <script src="js/Settings.js"></script>
+    <script src="js/UI.js"></script>
+    <script src="js/Clock.js"></script>
+    <script src="js/Ajax.js"></script>
+    <script src="js/Database.js"></script>   
+    <script src="js/Main.js"></script>    
+    <script>
+        $(document).ready(function () {         
+            UI.init();
+            Clock.init();
+            Main.init();
+            Captcha.methods.createCaptcha();
+            Captcha.methods.randomCaptcha();
+            Color.methods.create();
+        })
+    </script>
+</head>
+<body>
+    <noscript>
+        <div id="noJS">Włącz JavaScript w przeglądarce, aby uzyskać dostęp</div>
+    </noscript>
+    <div id="main">
+        <div id="menuBtn">≡</div>
+        <div id="zegar"></div>
+        <div id="lekcje">
+            <div id="lekcjaTeraz" class="lekcja"></div>
+            <div id="lekcjaZaChwile" class="lekcja"></div>
+        </div>
+        <div id="bottomPanel">
+            <div id="ustawieniaBtn" class="panelBtn">
+                <div class="icon"><img alt="icon" src="gfx/settings.png"/></div>
+                <div class="text">Ustawienia</div>
+            </div>
+            <div id="dzisiajBtn" class="panelBtn">
+                <div class="icon"><img alt="icon" src="gfx/today.png" /></div>
+                <div class="text">Dzisiaj</div>
+            </div>
+            <div id="tydzienBtn" class="panelBtn">
+                <div class="icon"><img alt="icon" src="gfx/week.png" /></div>
+                <div class="text">Tydzień</div>
+            </div>
+        </div>
+    </div>
+    <div id="leftPanelsettings" class="leftPanel">
+        <div class="leftPaneltitle">USTAWIENIA</div>
+        <div class="closeLeftPanel">×</div>
+        <div id="leftPanelsettingsBtn1" class="leftPanelsettingsBtn">
+            <div class="leftPanelsettingsBtnicon"><img alt="icon" src="gfx/leftPanelsettingsBtn1.png" /></div>
+            <div class="leftPanelsettingsBtntext">Godziny</div>
+        </div>
+        <div id="leftPanelsettingsBtn2" class="leftPanelsettingsBtn">
+            <div class="leftPanelsettingsBtnicon"><img alt="icon" src="gfx/leftPanelsettingsBtn2.png" /></div>
+            <div class="leftPanelsettingsBtntext">Kolorystyka</div>
+        </div>
+        <div id="leftPanelsettingsBtn3" class="leftPanelsettingsBtn">
+            <div class="leftPanelsettingsBtnicon"><img alt="icon" src="gfx/leftPanelsettingsBtn3.png" /></div>
+            <div class="leftPanelsettingsBtntext">Ekran główny</div>
+        </div>
+        <div id="leftPanelsettingsBtn4" class="leftPanelsettingsBtn">
+            <div class="leftPanelsettingsBtnicon"><img alt="icon" src="gfx/leftPanelsettingsBtn4.png" /></div>
+            <div class="leftPanelsettingsBtntext">Baza danych</div>
+        </div>
+    </div>
+        <div id="leftPaneldatabase" class="leftPanel">
+            <div class="leftPaneltitle">BAZA DANYCH</div>
+            <div class="closeLeftPanel">×</div>
+            <div id="leftPaneldatabaseBtn1" class="leftPaneldatabaseBtn">
+                <div class="leftPaneldatabaseBtnicon"><img alt="icon" src="gfx/leftPanelsettingsBtn4.png" /></div>
+                <div class="leftPaneldatabaseBtntext">Dodaj tabele</div>
+            </div>
+            <div id="leftPaneldatabaseBtn2" class="leftPaneldatabaseBtn">
+                <div class="leftPaneldatabaseBtnicon"><img alt="icon" src="gfx/leftPanelsettingsBtn4.png" /></div>
+                <div class="leftPaneldatabaseBtntext">Usuń tabele</div>
+            </div>
+            <div id="leftPaneldatabaseBtn3" class="leftPaneldatabaseBtn">
+                <div class="leftPaneldatabaseBtnicon"><img alt="icon" src="gfx/leftPanelsettingsBtn4.png" /></div>
+                <div class="leftPaneldatabaseBtntext">Dodaj dane</div>
+            </div>
+            <div id="leftPaneldatabaseBtn4" class="leftPaneldatabaseBtn">
+                <div class="leftPaneldatabaseBtnicon"><img alt="icon" src="gfx/leftPanelsettingsBtn4.png" /></div>
+                <div class="leftPaneldatabaseBtntext">Usuń dane</div>
+            </div>
+            <div id="leftPaneldatabaseBtn5" class="leftPaneldatabaseBtn">
+                <div class="leftPaneldatabaseBtnicon"><img alt="icon" src="gfx/leftPanelsettingsBtn4.png" /></div>
+                <div class="leftPaneldatabaseBtntext">Pobierz dane</div>
+            </div>
+        </div>
+        <div id="leftPanelhours" class="leftPanel">
+            <div class="leftPaneltitle">GODZINY</div>
+            <div class="closeLeftPanel">×</div>
+            <div id="parentHours">
+            </div>
+        </div>
+        <div id="leftPaneltoday" class="leftPanel">
+            <div class="leftPaneltitle">DZISIAJ</div>
+            <div class="closeLeftPanel">×</div>
+            <div id="parentToday">
+            </div>
+        </div>
+        <div id="leftPanelweek" class="leftPanel">
+            <div class="leftPaneltitle">TYDZIEŃ</div>
+            <div class="closeLeftPanel">×</div>
+            <div id="parentWeek">
+            </div>
+        </div>
+        <div id="leftPanelColor" class="leftPanel">
+            <div class="leftPaneltitle">ZMIEŃ KOLOR</div>
+            <div class="closeLeftPanel">×</div>
+            <div id="acceptColor">ZAPISZ</div>
+            <div id="defaultColor">PRZYWRÓĆ DOMYŚLNE</div>
+            <div id="parentColor"></div>
+        </div>
+        <div id="databaseAlertDiv">
+            <div id="databaseAlertDivText"></div>
+        </div>
+        <div id="changeHoursDiv">
+            <div class="leftPaneltitle">WYBÓR GODZINY</div>
+            <div id="closeChangeHoursDiv">×</div>
+            <div id="changeHoursDivTime">
+                <div id="changeHoursDivTimeH">00</div><div id="changeHoursDivTimeZnak">:</div><div id="changeHoursDivTimeM">00</div>
+            </div>
+            <div id="changeHoursDivHours"></div>
+            <div id="changeHoursDivMinutes"></div>
+        </div>
+        <div id="startDiv"></div>
+</body>
+</html>

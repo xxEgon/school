@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>KiK</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="damian filipowski" />
+    <link rel="shortcut icon" href="favicon.png" />
+    <script src="libs/jquery-3.1.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var backColor = "blue"
+            var pole = 9
+
+            function kik() {
+                var pole3 = Math.pow(pole, (0.5))
+                for (var i = 0; i < pole; i++) {
+
+                    var d = $("<div>")
+                    d.attr("class", "blok remis")
+                    d.attr("id", "blok" + (i + 1))
+                    d.width((93 / pole3) + "%")
+                    d.css("padding-top", (93 / pole3) + "%")
+                    d.css("background", backColor)
+                    d.css("border", "2px black solid")
+                    d.css("border-collapse", "collapse")
+                    d.css("float", "left")
+
+                    $('#glowny').append(d)
+
+                    var u = false
+                    $("#h2").text("Ruch kółka")
+                    d.on("click", function () {
+                        if (u == true) {
+                            ($(this)).attr("class", "blok x");
+                            ($(this)).css({
+                                "background-image": "url('X.png')",
+                                "background-repeat": "no-repeat",
+                                "background-size": "90%",
+                                "background-position": "center"
+                            });
+                            u = false;
+                            $("#h2").text("Ruch kółka");
+                            ($(this)).off("click");
+                        }
+                        else {
+                            ($(this)).attr("class", "blok o");
+                            ($(this)).css({
+                                "background-image": "url('O.png')",
+                                "background-repeat": "no-repeat",
+                                "background-size": "90%",
+                                "background-position": "center"
+                            });
+                            u = true;
+                            $("#h2").text("Ruch krzyżyka");
+                            ($(this)).off("click");
+                        }
+                        if (pole == 9) {
+                            if ($("#blok1").hasClass("x") && $("#blok2").hasClass("x") && $("#blok3").hasClass("x")
+                            ||
+                               $("#blok4").hasClass("x") && $("#blok5").hasClass("x") && $("#blok6").hasClass("x")
+                            ||
+                               $("#blok7").hasClass("x") && $("#blok8").hasClass("x") && $("#blok9").hasClass("x")
+                            ||
+                               $("#blok1").hasClass("x") && $("#blok4").hasClass("x") && $("#blok7").hasClass("x")
+                            ||
+                               $("#blok2").hasClass("x") && $("#blok5").hasClass("x") && $("#blok8").hasClass("x")
+                            ||
+                               $("#blok3").hasClass("x") && $("#blok6").hasClass("x") && $("#blok9").hasClass("x")
+                            ||
+                               $("#blok1").hasClass("x") && $("#blok5").hasClass("x") && $("#blok9").hasClass("x")
+                            ||
+                               $("#blok3").hasClass("x") && $("#blok5").hasClass("x") && $("#blok7").hasClass("x")
+
+                            ) {
+                                alert("WYGRAŁ KRZYŻYK! GRATULACJE!")
+                                $("#glowny").empty()
+                                kik()
+                            }
+                            else {
+                                if ($("#blok1").hasClass("o") && $("#blok2").hasClass("o") && $("#blok3").hasClass("o")
+                                ||
+                                   $("#blok4").hasClass("o") && $("#blok5").hasClass("o") && $("#blok6").hasClass("o")
+                                ||
+                                   $("#blok7").hasClass("o") && $("#blok8").hasClass("o") && $("#blok9").hasClass("o")
+                                ||
+                                   $("#blok1").hasClass("o") && $("#blok4").hasClass("o") && $("#blok7").hasClass("o")
+                                ||
+                                   $("#blok2").hasClass("o") && $("#blok5").hasClass("o") && $("#blok8").hasClass("o")
+                                ||
+                                   $("#blok3").hasClass("o") && $("#blok6").hasClass("o") && $("#blok9").hasClass("o")
+                                ||
+                                   $("#blok1").hasClass("o") && $("#blok5").hasClass("o") && $("#blok9").hasClass("o")
+                                ||
+                                   $("#blok3").hasClass("o") && $("#blok5").hasClass("o") && $("#blok7").hasClass("o")
+
+                                ) {
+                                    alert("WYGRAŁO KÓŁKO! GRATULACJE!")
+                                    $("#glowny").empty()
+                                    kik()
+                                }
+                                else {
+                                    if ($(".blok").hasClass("remis") == 0) {
+                                        alert("REMIS")
+                                        $("#glowny").empty()
+                                        kik()
+                                    }
+                                        
+                                }
+                            }
+                        }
+                    })
+                }
+            }
+            kik()
+            $("#s1").on("change", function () {
+                var x = $("#s1").val()
+                if (x == "3x3")
+                    pole = 9
+                if (x == "4x4")
+                    pole = 16
+                if (x == "5x5")
+                    pole = 25
+                if (x == "6x6")
+                    pole = 36
+
+                $("#glowny").empty()
+                kik()
+            })
+            $("#btn1").on("click", function () {
+                $("#glowny").empty()
+                kik()
+            })
+            $("#s2").on("change", function () {
+                backColor = $("#s2").val()
+                if (backColor == "czerwony")
+                    backColor = "red"
+                if (backColor == "niebieski")
+                    backColor = "blue"
+                if (backColor == "zielony")
+                    backColor = "green"
+                if (backColor == "fioletowy")
+                    backColor = "purple"
+                if (backColor == "szary")
+                    backColor = "grey"
+                $(".blok").css("background-color", backColor)
+            })
+        })
+    </script>
+    <style>
+        h1,h2 {
+            font-size: 30px;
+            text-align: center;
+            font-family: Arial,sans-serif;
+            margin-top: 30px;
+        }
+        #h2 {
+            margin-top:-30px;
+        }
+        #sterowanie {
+            width: 90%;
+            margin: 0 auto;
+            margin-bottom: 50px;
+            margin-top: 30px;
+        }
+
+        #s1, #s2, #btn1 {
+            width: 31%;
+            height: 50px;
+            font-size: 25px;
+        }
+
+        #glowny {
+            width: 90%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>KÓŁKO I KRZYŻYK </h1>
+    <div id="sterowanie">
+        <select id="s1">
+            <option value="3x3">Rozmiar</option>
+            <option value="3x3">3x3</option>
+            <option value="4x4">4x4</option>
+            <option value="5x5">5x5</option>
+            <option value="6x6">6x6</option>
+
+        </select>
+        <select id="s2">
+            <option value="niebieski">Kolor</option>
+            <option value="niebieski">niebieski</option>
+            <option value="czerwony">czerwony</option>
+            <option value="zielony">zielony</option>
+            <option value="fioletowy">fioletowy</option>
+            <option value="szary">szary</option>
+        </select>
+        <button id="btn1" value="btn1">Restart</button><br>
+    </div>
+    <h2 id="h2"></h2>
+    <div id="glowny"></div>
+</body>
+</html>

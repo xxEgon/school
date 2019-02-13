@@ -1,0 +1,93 @@
+﻿@font-face {
+    font-family: Aladin;
+    src: url("../fonts/Aladin.ttf");
+}
+@font-face {
+    font-family: Amiko;
+    src: url("../fonts/Amiko.ttf");
+}
+@font-face {
+    font-family: Anonymous;
+    src: url("../fonts/AnonymousPro.ttf");
+}
+@font-face {
+    font-family: FiraMono;
+    src: url("../fonts/FiraMono.ttf");
+}
+@font-face {
+    font-family: Gruppo;
+    src: url("../fonts/Gruppo.ttf");
+}
+@font-face {
+    font-family: Stoke;
+    src: url("../fonts/Stoke.ttf");
+}
+#acceptColor {
+    position: absolute;
+    font-size: 4vh;
+    right: 6%;
+    top: 2.5%;
+    cursor:pointer;
+}
+#defaultColor {
+    position: absolute;
+    font-size: 3vh;
+    right: 2%;
+    top: 8%;
+    cursor:pointer;
+}
+#acceptColor:hover, #defaultColor:hover{
+   text-decoration:underline;
+}
+#leftPanelColor {
+    height:100%;
+    position:fixed;
+    top:0;
+    z-index:5;
+    opacity:0.95;
+    overflow:auto;
+}
+
+#parentColor {
+    width: 90%;
+    height: 70%;
+    position: relative;
+    margin:0 auto;
+    margin-top:15%;
+}
+
+.select {
+    width:100%;
+    height:100px;
+    margin-bottom:60px;
+}
+ .ColorTitle {
+     width:100%;
+     height:50px;
+     font-size:3vh;
+ }
+.option1, .option11, .option2, .option3 {
+    position:relative;
+    height:50px;
+    width:50px;
+    display:inline-block;
+    cursor:pointer;
+}
+.option3 {
+    width:150px;
+    font-size:2.5vh;
+}
+.option3:hover {
+    text-decoration:underline;
+}
+.option1:hover , .option11:hover, .option2:hover {
+    width:44px;
+    height:44px;
+    border: 3px black solid;
+}
+@media only screen and (orientation: landscape) {
+    #leftPanelColor {
+        width:100%;
+        left:-100%;
+    }
+}

@@ -1,0 +1,858 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Projekt mapa</title>
+    <script src="libs/jquery-3.1.0.min.js"></script>
+    <script src="libs/gmap3.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAhjag0VZVoufXMJFbPaQkLWQfr4kWlQ8&region=PL">  //AIzaSyCAhjag0VZVoufXMJFbPaQkLWQfr4kWlQ8 //klucz mój</script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script>
+        $(document).ready(function () {
+            var ls = window.localStorage;
+            var n = 0;
+            var szero;
+            var dlugo;
+            var zoo;
+            var tab = [];
+            var tab2 = [];
+            var tourColor = "rgb(63, 81, 181)";
+            //czy jest "poz" w localStorage
+            if (localStorage.getItem("poz") != null)
+                wczytaj();
+            //zaladowanie z ls
+            function wczytaj() {
+                var tablica = JSON.parse(ls.getItem("poz"));
+                for (n = 0; n < tablica.length;n++)
+                {
+                    szero = tablica[n].lat;
+                    dlugo = tablica[n].lng;
+                    zoo = tablica[n].zoom;
+                    var pozMarkera = {
+                        lat: szero,
+                        lng: dlugo,
+                        zoom: zoo
+                    };
+                    tab.push({ lat: szero, lng: dlugo, zoom: zoo });
+                    console.log(tab);
+                    addLista(n);
+                    markerek(szero, dlugo, n);
+                }
+                console.log("WCZYTANO POZYCJE")
+                console.log("ILOŚĆ " + tablica.length)
+            }
+            $("#mapDiv").gmap3({
+                map: {
+                    options: {
+                        center: [0, 0],
+                        zoom: 3,
+                        disableDefaultUI: true,
+                    }
+                }
+            })
+            //obsluga suwakow
+            $("#r1, #r2, #r3").on("input", function () {
+                var szer = parseInt($("#r1").val());
+                var dlg = parseInt($("#r2").val());
+                var zo = parseInt($("#r3").val())
+                $("#mapDiv").gmap3({
+                    map: {
+                        options: {
+                            center: [szer, dlg],
+                            zoom: zo,
+                            disableDefaultUI: true,
+                        }
+                    }
+                })
+            })
+            //glowna obsluga mapy, marker, streetView, lista, dane do tablicy
+            $("#mapDiv").gmap3({
+                map: {
+                    events: {
+                        click: function (map, event, marker) {
+                            szero = event.latLng.lat();
+                            dlugo = event.latLng.lng();
+                            zoo = map.getZoom();
+                            var pozMarkera = {
+                                lat: szero,
+                                lng: dlugo,
+                                zoom: zoo
+                            };
+                            tab.push({ lat: szero, lng: dlugo, zoom: zoo });
+                            tab2.push([szero,dlugo,zoo])
+                            console.log(tab);
+                            addLista(n);
+                            markerek(szero, dlugo, n);
+                            n++;
+                            streetView(szero, dlugo, zoo);
+                        }
+                    }
+                }
+            })
+            //dodawanie pozycji na liscie
+            function addLista(n) {
+                var div = $("<div>");
+                var div2 = $("<div>");
+                div.addClass("lista");
+                div.html("POZYCJA " + n);
+                div.attr("id", n);
+                div2.attr("id", "usun" + n);
+                div2.addClass("usun");
+                div2.html("X");
+                $("#rightList").append(div);
+                $("#" + n).append(div2);
+            }
+            //przenoszenie do elementu listy
+            $("#rightList").on("click", "div", function () {               
+                var index = $(this).index();
+                $("#mapDiv").gmap3({
+                    map: {
+                        options: {
+                            center: [tab[index].lat, tab[index].lng],
+                            zoom: tab[index].zoom,
+                        },
+                    }
+                })
+                szero = tab[index].lat
+                dlugo = tab[index].lng
+                zoo = tab[index].zoom
+                streetView(szero, dlugo, zoo);
+            })
+            $("#rightList").on("click", ".usun", function (e) {
+                
+                var potwierdz = confirm("Wybrana lokalizacja zostanie usunięta");
+                if (potwierdz == true) {
+                    var index = $(this).parent().index();
+                    var item = $(this).parent();
+                    item.remove();
+                    tab.splice(index, 1);
+                    $('#mapDiv').gmap3({
+                        clear: "mark" + $(this).parent().prop("id")
+                    });
+                }
+                e.stopPropagation();
+            })
+            //stawianie markera
+            function markerek(szero, dlugo, n) {
+                $("#mapDiv").gmap3({
+                    marker: {
+                        id: "mark" + n,
+                        options: {
+                            draggable: true
+                        },
+                        latLng: [szero, dlugo]
+                    }
+                })
+            }
+            //lewy panel wysuwany
+            var klik = true;
+            $("#btnDiv").on("click", function () {
+                if (klik == true) {
+                    $("#leftDiv").animate({ 'left': '0px' }, 500);
+                    klik = false;
+                }
+                else {
+                    $("#leftDiv").animate({ 'left': '-100%' }, 500);
+                    klik = true;
+                }
+
+            })
+            //obsluga streetView
+            function streetView() {
+                
+                $("#mapDiv").gmap3({
+                    map: {
+                        options: {
+                            zoom: (zoo),
+                            //mapTypeId: google.maps.MapTypeId.ROADMAP,
+                            streetViewControl: false,
+                            //center: [szero,dlugo]
+                        }
+                    },
+                    streetviewpanorama: {
+                        options: {
+                            container: $("#streetDiv"),
+                            opts: {
+                                position: [szero, dlugo],
+                                pov: {
+                                    heading: 34,
+                                    pitch: 10,
+                                    zoom: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            //zapisywanie w localStorage
+            $("#saveDiv").on("click", function () {
+                ls.setItem("poz", JSON.stringify(tab));
+                console.log("ZAPISANO POZYCJE")
+                console.log("ILOŚĆ "+ tab.length)
+            })
+            //usuwanie z ls, czyszczenie mapy
+            $("#deleteDiv").on("click", function () {
+                ls.removeItem("poz");
+                $('#mapDiv').gmap3({
+                    clear: {
+                    }
+                });
+                $("#rightList").empty();
+                tab.splice(0, tab.length);
+                n = 0;
+                console.log("USUNIĘTO POZYCJE")
+            })
+            // rysowanie trasy wycieczki
+            function rysuj(tourColor) {
+                $("#mapDiv").gmap3({
+                    marker: {
+                        clear: "pogrubienie",
+                        values: tab
+                    },
+                    polyline: {
+                        id: "pogrubienie",
+                        options: {
+                            strokeColor: tourColor,
+                            strokeOpacity: 0.8,
+                            strokeWeight: 4,
+                            path: tab
+                        }
+                    }
+                });
+            }
+            //div rysujacy trase
+            $("#drawDiv").on("click", function () {
+                rysuj(tourColor);
+            })
+            //lokalizowanie
+            $("#locationDiv").on("click", function () {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        //bieżąca pozycja lat i lng                        
+                        szero = position.coords.latitude;
+                        dlugo = position.coords.longitude;
+                        zoo = 13;
+                        var pozMarkera = {
+                            lat: szero,
+                            lng: dlugo,
+                            zoom: zoo
+                        };
+                        tab.push({ lat: szero, lng: dlugo, zoom: zoo });
+                        console.log(tab);
+                        addLista(n);
+                        markerek(szero, dlugo, n);
+                        $("#mapDiv").gmap3({
+                            map: {
+                                options: {
+                                    center: [szero, dlugo],
+                                    zoom: 13,
+                                    disableDefaultUI: true,
+                                }
+                            },
+                            streetviewpanorama: {
+                                options: {
+                                    container: $("#streetDiv"),
+                                    opts: {
+                                        position: [szero, dlugo],
+                                        pov: {
+                                            heading: 34,
+                                            pitch: 10,
+                                            zoom: 1
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                        n++;
+                    },
+                    function (error) {
+                        console.log("Problem z lokalizacją")
+                    },
+                    {
+                        maximumAge: 10000, // czas dostępu do danych
+                        timeout: 15000, // po tym czasie error jeśli brak danych
+                        enableHighAccuracy: true // dokładność
+                    }
+                )               
+            })
+            //zmiana typu mapy
+            $("#maptypeDiv").on("click", function () {
+                $("#fadeDiv").fadeIn(500, function () {                   
+                })
+            })
+            $("#zamknij").on("click", function () {
+                $("#fadeDiv").fadeOut(500, function () {
+                });
+            })
+            $("#roadmap").on("click", function () {
+                var map = $("#mapDiv").gmap3("get");
+                map.setMapTypeId(google.maps.MapTypeId.ROADMAP)
+            })
+            $("#satellite").on("click", function () {
+                var map = $("#mapDiv").gmap3("get");
+                map.setMapTypeId(google.maps.MapTypeId.SATELLITE)
+            })
+            $("#hybrid").on("click", function () {
+                var map = $("#mapDiv").gmap3("get");
+                map.setMapTypeId(google.maps.MapTypeId.HYBRID)
+            })
+            $("#terrain").on("click", function () {
+                var map = $("#mapDiv").gmap3("get");
+                map.setMapTypeId(google.maps.MapTypeId.TERRAIN)
+            })
+            //tablica kolorow podstawowych
+            var tabColors = ["(244,67,54)", "(63,81,181)", "(0,150,136)", "(255,193,7)","(233,30,99)", "(33,150,243)", "(76,175,80)", "(255,235,59)", "(156,39,176)", "(3,169,244)", "(139,195,74)", "(255,152,0)", "(103,58,183)", "(0,188,212)", "(205,220,57)", "(255,87,34)"];
+            //kolornik
+            var poprzednieIDcb = -1;
+            var poprzednieIDcs = -1;
+            $("#colorDiv").on("click", function () {
+                $("#fadeDiv2").fadeIn(500, function () {
+                    for (i = 0; i < 16; i++) {
+                        var cb = $("<div>")
+                        cb.attr("class", "cb")
+                        cb.attr("id", "cb" + i)
+                        cb.css("background-color", "rgb" + (tabColors[i]))
+                        $('#basicColors').append(cb)                       
+                    }
+                    $("#basicColors").fadeIn(600);
+                    $(".cb").on("click", function () {
+                        $(".cs").fadeOut(300, function () {
+                            $(".cs").remove();
+                        });
+                        /*
+                        $(".cs").animate({ "top": "-600px" }, 300);
+                        setTimeout(function () {
+                            $(".cs").remove();
+                        },300)
+                        */
+                        // var moreColors = $("<div>")
+                        //moreColors.attr("id", "moreColors")
+                        //$('#fadeDiv2').append(moreColors)
+                        var thisColor = $(this).css("backgroundColor");
+                        thisColor = thisColor.replace("rgb(","");
+                        thisColor = thisColor.replace(")","");
+                        thisColor = thisColor.split(", ");
+                        thisColor = eval("thisColor");
+                        var p0 = Number(thisColor[0]);
+                        var p1 = Number(thisColor[1]);
+                        var p2 = Number(thisColor[2]);
+                        var pos = $(this).position();
+                        setTimeout(function () {
+                            for (i = 0; i < 8; i++) {
+                                var cs = $("<div>")
+                                cs.attr("class", "cs")
+                                cs.attr("id", "cs" + i)
+                                cs.css("background-color", "rgb(" + (p0 + i * 12) + "," + (p1 + i * 18) + "," + (p2 + i * 12) + ")");
+                                cs.css("top", pos.top)
+                                cs.css("left", pos.left)
+                                $("#fadeDiv2").append(cs)
+                                // $("#moreColors").append(cs)
+                                cs.animate({ "left": "300px","top": i*80+"px"}, 500);
+                            }
+                            $(".cs").on("click", function () {
+                                tourColor = $(this).css("backgroundColor");
+                                var obecneIDcs = this.id;
+                                $("#" + poprzednieIDcs).css("transform", "scale(1.0,1.0)");
+                                $("#" + obecneIDcs).css("transform", "scale(1.3,1.3)");
+                                poprzednieIDcs = obecneIDcs;
+                            })
+                        }, 400);
+                        var obecneIDcb = this.id;
+                        $("#"+poprzednieIDcb).css("transform", "scale(1.0,1.0)");
+                        $("#"+obecneIDcb).css("transform", "scale(1.3,1.3)");
+                        poprzednieIDcb = obecneIDcb;
+                        
+                    })                   
+                })
+            })
+            $("#zamknij2").on("click", function () {
+                $("#fadeDiv2").fadeOut(500, function () {
+                    $("#basicColors").fadeOut(50, function () {
+                        $("#basicColors").empty();
+                        $(".cs").remove();
+                    });
+                });
+            })
+            var nowDate;
+            function time() {
+                var t = new Date();
+                var year = t.getFullYear();
+                var month = t.getMonth();
+                month++;
+                if (month.toString().length == 1)
+                {
+                    month="0"+month
+                }
+                var day = t.getDate();
+                if (day.toString().length == 1) {
+                    day = "0" + day
+                }
+                var hour = t.getHours();
+                if (hour.toString().length == 1) {
+                    hour = "0" + hour
+                }
+                var minute = t.getMinutes();
+                if (minute.toString().length == 1) {
+                    minute = "0" + minute
+                }
+                var second = t.getSeconds();
+                if (second.toString().length == 1) {
+                    second = "0" + second
+                }               
+                nowDate = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+            }
+            $("#sendserverDiv").on("click", function () {
+                if (tab[0] != null) {
+                    //console.log(tab[0])
+                    var tourName = window.prompt("Podaj nazwę wycieczki");
+                    //console.log(tourName);
+                    time();
+                    //console.log(nowDate);
+                    var serverTab = [];
+                    //serverTab.push({ name: tourName, colour: tourColor, nowDate })
+                    serverTab.push(tourName);
+                    serverTab.push(tourColor);
+                    serverTab.push(nowDate);
+                    for (i = 0; i < tab2.length; i++) {
+                        serverTab.push(tab2[i]);
+                    }
+                    console.log(serverTab)
+                    var obj = {
+                        trasa: JSON.stringify(serverTab)+","
+                    }
+                    console.log(obj);
+                    $.ajax({
+                        type: "POST",
+                        url: "http://localhost:52454/save.aspx",
+                        data: obj,
+                        dataType: "text",
+                        success: function (response) {
+                            $("#fadeDiv3").fadeIn(500)
+                            $("#pdata").html(response);
+                        },
+                        error: function (xhr) {
+                            alert("Error: " + xhr.responseText)
+                        }
+                    })
+                }
+                else {
+                    $("#fadeDiv3").fadeIn(500)
+                    $("#pdata").html("Najpierw narysuj trasę");
+                }
+            })
+            $("#readserverDiv").on("click", function () {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:52454/read.aspx",
+                    dataType: "text",
+                    success: onSuccess,
+                    error: function (response) {
+                        alert(response.responseText)
+                    }
+                });               
+            })
+            $("#zamknij3").on("click", function () {
+                $("#leftDiv2").animate({ 'left': '-100%' }, 500);
+                $(".listaTrip").remove();
+            })
+            function onSuccess(response) {               
+                //wysuwanie panelu
+                $("#leftDiv2").animate({ 'left': '0px' }, 500);
+                $("#leftDiv").animate({ 'left': '-100%' }, 500);
+                klik = true;
+                                         
+                //czytam wszystko z serwera
+                //alert(response)
+                var allTripsOnServer = JSON.parse(response);
+                //console.log(allTripsOnServer.length)
+                for (i = 0; i < allTripsOnServer.length; i++) {
+                    console.log(allTripsOnServer[i]);
+                    var div = $("<div>");
+                    var div2 = $("<div>");
+                    div.addClass("listaTrip");
+                    div2.addClass("listaTripInfo");
+                    div.html(allTripsOnServer[i][0] + " | " + allTripsOnServer[i][2]);
+                    div2.html("i");
+                    div.attr("id", "trip" + i);
+                    div2.attr("id", "info" + i);
+                    $("#leftDiv2").append(div);
+                    $(div).append(div2);
+                }
+                console.log("WCZYTANO WYCIECZKI Z SERWERA")
+                console.log("ILOŚĆ " + allTripsOnServer.length)
+                $(".listaTrip").on("click", function () {
+                    //console.log("klik lista trip")
+                    
+                    //czyszczenie mapy przed wczytaniem
+                    $('#mapDiv').gmap3({
+                        clear: {
+                        }
+                    });
+                    $("#rightList").empty();
+                    tab.splice(0, tab.length);
+                    n = 0;
+                    //jedna wycieczka - numer 0 w pliku txt
+                    var obecne = this.id;
+                    //console.log("obecne: ", obecne)
+                    obecne = obecne.substr(4, 1);
+                    //console.log("obecne: ", obecne)
+                    var Trip = allTripsOnServer[obecne];
+                    //console.log(Trip);
+                    // teraz pobieram z tablicy tylko dane geolokacyjne
+                    for (i = 3; i < Trip.length ; i++) {
+                        var szerok = Trip[i][0];
+                        var dlugos = Trip[i][1];
+                        var zoomik = Trip[i][2];
+                        tab.push({ lat: szerok, lng: dlugos, zoom: zoomik });
+    
+                    }
+                    //console.log("Tablica wycieczki: ", tab)
+                    // pomijam imie, kolor i datę, (do wymyślenia samodzielnie)
+                    var colorTrip2 = Trip[1];              
+    
+                    //rysuję pierwsza wycieczkę:
+    
+                    $("#mapDiv").gmap3({
+                        marker: {
+                            values: tab,
+                        },
+                        polyline: {
+                            options: {
+                                strokeColor: colorTrip2,
+                                strokeOpacity: 0.5,
+                                strokeWeight: 4,
+                                path: tab,
+                            }
+                        },
+                        autofit: {} // focus na wycieczkę - przybliżenie
+    
+                    })
+                    for (n = 0; n < tab.length; n++) {
+                        addLista(n);
+                    }                                     
+                })
+                $(".listaTripInfo").on("click", function (event) {
+                    event.stopPropagation();
+                    
+                    var obecne = this.id;
+                    //console.log("obecne: ", obecne)
+                    obecne = obecne.substr(4, 1);
+                    //console.log("obecne: ", obecne)
+                    var Trip = allTripsOnServer[obecne];
+                    //alert("Data wycieczki: " + Trip[2] + '\n' + "Nazwa wycieczki: " + Trip[0]);
+                    $("#fadeDiv3").fadeIn(500)
+                    $("#pdata").html("WYCIECZKA Z DNIA: "+Trip[2] + "<br>"+"NAZWA: "+ Trip[0]);
+                })             
+            }
+            $("#zamknij4").on("click", function () {
+                $("#fadeDiv3").fadeOut(500);
+            })
+        })
+    </script>
+    <style>
+        .listaTripInfo {
+            position:absolute;
+            width:22px;
+            height:22px;
+            background-color:white;
+            font-family:Arial, sans-serif;
+            right:4px;
+            top:4px;
+            text-align:center;
+            border: 2px black solid;
+            font-size:20px;
+            font-weight:400;
+        }
+        .cb {
+            width:50px;
+            height:50px;
+            margin:20px;
+            float:left;
+            z-index:120;
+            border-radius:25px;
+            cursor:pointer;
+        }
+        .cs {
+            position:absolute;
+            width:60px;
+            height:60px;
+            margin:10px;
+            z-index:120;
+            border-radius:30px;
+            cursor:pointer;            
+        }
+        #basicColors {
+            margin:0 auto;
+            height:360px;
+            width:360px;
+            margin-top:100px;
+            z-index:110;
+            display:none;
+        }
+        #typymapy {
+            position:relative;
+            top:300px;
+            margin:0 auto;
+            height:100px;
+            width:400px;
+            background-color:black;
+            color:white;
+            cursor:pointer;
+        }
+        .typmapy {
+            height:100%;
+            width:98px;
+            float:left;
+            border:1px white solid;
+            text-align:center;
+            font-family:sans-serif;
+        }
+        #zamknij, #zamknij2, #zamknij4 {
+            position:absolute;
+            right:20px;
+            top:20px;
+            background-color:black;
+            height:30px;
+            width:30px;
+            font-family:sans-serif;
+            font-size:28px;
+            text-align:center;
+            color:white;
+            border:3px white solid;
+            cursor:pointer;
+        }
+        #fadeDiv, #fadeDiv2, #fadeDiv3 {
+            display:none;
+            position:absolute;
+            width:100%;
+            height:100%;
+            z-index:100;
+            background-color:rgba(0,0,0, 0.80);
+        }
+        #streetDiv {
+            width: 95%;
+            margin: 0 auto;
+            margin-top: 20px;
+            background-color: silver;
+            height: 300px;
+            z-index: 25;
+            border:3px black solid;
+            font-family:sans-serif;
+            padding-top:30px;
+            text-align:center;
+            font-size:10px;
+        }
+        .usun {
+            border: 1px black solid;
+            background-color: white;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 10px;
+            height: 10px;
+            z-index: 20;
+            cursor: pointer;
+            font-size:10px;
+            text-align:center;
+        }
+        .lista {
+            position: relative;
+            width: 98%;
+            height: 40px;
+            border: 2px black solid;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin-bottom: 10px;
+            background-color: white;
+            text-align: center;
+            padding-top: 1.5em;
+        }
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+        #mainDiv {
+            width: 100%;
+            float: left;
+            position: relative;
+        }
+        #btnDiv {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: black;
+            width: 40px;
+            height: 40px;
+            z-index: 5;
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
+        #zamknij3 {
+            font-family:Arial, sans-serif;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: white;
+            width: 30px;
+            height: 30px;
+            z-index: 8;
+            color: black;
+            border:2px black solid;
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+        }
+        #leftDiv {
+            position: absolute;
+            height: 100vh;
+            float: left;
+            left: -100%;
+            width: 20%;
+            background-color: white;
+            border-right: 5px black solid;
+            z-index: 3;
+            min-width: 260px;
+        }
+        #leftDiv2 {
+            position: absolute;
+            height: 100vh;
+            float: left;
+            left: -100%;
+            width: 20%;
+            background-color: white;
+            border-right: 5px black solid;
+            z-index: 7;
+            min-width: 260px;
+        }
+        #leftList, #leftList2 {
+            margin-top: 100px;
+            width: 100%;
+        }
+        .listaTrip {
+            cursor: pointer;
+            margin: 0 auto;
+            position: relative;
+            width: 90%;
+            height: 25px;
+            border: 2px black solid;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin-bottom: 10px;
+            background-color: white;
+            text-align: left;
+            padding-top: 0.5em;
+            overflow: auto;
+            padding-left:10px;
+        }
+        .leftList{
+            cursor: pointer;
+            margin: 0 auto;
+            position: relative;
+            width: 90%;
+            height: 30px;
+            border: 2px black solid;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin-bottom: 10px;
+            background-color: white;
+            text-align: center;
+            padding-top: 1em;
+            overflow: auto;
+        }
+        #mapDiv {
+            width: 69%;
+            background: grey;
+            height: 100vh;
+            float: left;
+        }
+        #menuDiv {
+            width: 30%;
+            background: white;
+            height: 100vh;
+            float: left;
+        }
+        #stripeDiv {
+            width: 5px;
+            float: left;
+            background-color: black;
+            height: 100vh;
+        }
+        input {
+            width: 100%;
+            margin-top: 50px;
+        }
+        #rightList {
+            margin: 0 auto;
+            width: 90%;
+            margin-top: 50px;
+            height: 58vh;
+            overflow: auto;
+        }
+        #pdata {
+            width:700px;
+            height:100px;
+            margin:300px auto;
+            color:#00c1ff;
+            font-size:30px;
+            text-align:center;
+            font-family:sans-serif;
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="fadeDiv">
+        <div id="zamknij">x</div>
+        <div id="typymapy">
+            <div class="typmapy" id="roadmap" >DROGI</div>
+            <div class="typmapy" id="satellite" >SATELITA</div>
+            <div class="typmapy" id="hybrid" >HYBRYDA</div>
+            <div class="typmapy" id="terrain" >TEREN</div>
+        </div>
+    </div>
+    <div id="fadeDiv2">
+        <div id="zamknij2">x</div>
+        <div id="basicColors"></div>
+    </div>
+    <div id="leftDiv">
+        <div id="leftList">
+            <div class="leftList" id="saveDiv">ZAPISZ LOKALIZACJE</div>
+            <div class="leftList" id="deleteDiv">USUŃ LOKALIZACJE</div>
+            <div class="leftList" id="drawDiv">NARYSUJ TRASĘ WYCIECZKI</div>
+            <div class="leftList" id="locationDiv">LOKALIZUJ</div>
+            <div class="leftList" id="colorDiv">WYBIERZ KOLOR</div>
+            <div class="leftList" id="maptypeDiv">ZMIEŃ TYP MAPY</div>
+            <div class="leftList" id="sendserverDiv">WYŚLIJ NA SERWER</div>
+            <div class="leftList" id="readserverDiv">WCZYTAJ Z SERWERA</div>
+        </div>
+        <div id="streetDiv">
+            Zaznacz drogę, aby skorzystać z Google Street View
+        </div>
+    </div>
+    <div id="fadeDiv3">
+        <div id="zamknij4">x</div>
+        <div id="pdata"></div>
+    </div>
+    <div id="leftDiv2">      
+        <div id="zamknij3">x</div>
+        <div id="leftList2">
+        </div>
+    </div>
+    <div id="mainDiv">
+        <div id="btnDiv"> ≡</div>
+        <div id="mapDiv"></div>
+        <div id="stripeDiv"></div>
+        <div id="menuDiv">
+            <input type="range" id="r1" min="-90" max="90" step="1" />
+            <input type="range" id="r2" min="-180" max="180" step="1" />
+            <input type="range" id="r3" min="0" max="17" step="1" value="3" />
+            <div id="rightList"></div>
+        </div>
+    </div>
+</body>
+</html>

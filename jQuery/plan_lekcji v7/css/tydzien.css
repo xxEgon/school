@@ -1,0 +1,39 @@
+﻿#leftPanelweek {
+    height:100%;
+    position:fixed;
+    top:0;
+    z-index:5;
+    opacity:0.95;
+    overflow:auto;
+}
+#parentweek {
+    margin:8% auto;
+    text-align:center;
+}
+#weekTable {
+    display:inline-block;  
+    overflow:auto;
+    font-size:3vh;
+    text-align:right;
+    padding:2%;
+}
+#weekTable td{
+    width:15vw;
+    text-align:center;
+    cursor:pointer;
+}
+
+@media only screen and (orientation: landscape) {
+    #leftPanelweek {
+        width:100%;
+        left:-100%;
+    }
+}
+@media only screen and (orientation: portrait) {
+    #weekHours {
+        margin-top:20%;
+    }
+    #weekTable td{
+        width:15vw;
+    }
+}

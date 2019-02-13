@@ -1,0 +1,82 @@
+﻿#startDiv {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color:black;
+    text-align: center;
+    font-size: 4vh;
+    line-height:100px;
+}
+#captchaDiv {
+    width: 900px;
+    height: 300px;
+    position: relative;
+    background-color:silver;
+    margin:0 auto;
+    margin-top:10%;
+}
+#chooseCaptcha {
+    width:100%;
+    height:70%;
+    position:absolute;
+    top:0;
+    left:0;
+    background-color:white;    
+}
+#acceptCaptcha {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height:30%;
+    width:50%;
+    text-align: center;
+    font-size: 2vw;
+    line-height:80px;
+    cursor:pointer;
+}
+#reloadCaptcha {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height:30%;
+    width:50%;
+    text-align: center;
+    font-size: 2vw;
+    line-height:80px;
+    cursor:pointer;
+}
+.captchaPic {
+    width:225px;
+    height:225px;
+    position:absolute;
+    top:0;
+    cursor:pointer;
+}
+@media only screen and (orientation: portrait) {
+    #captchaDiv {
+        width: 90%;
+        height: 35vw;
+        position: relative;
+        background-color:red;
+        margin:0 auto;
+        margin-top:25%;
+    }
+    #chooseCaptcha {
+        width:100%;
+        height:70%;
+        position:absolute;
+        top:0;
+        left:0;
+        background-color:green;
+    
+    }
+    .captchaPic {
+    width:25%;
+    height:100%;
+    position:absolute;
+    top:0;
+}
+    
+}

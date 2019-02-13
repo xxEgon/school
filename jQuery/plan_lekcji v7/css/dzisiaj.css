@@ -1,0 +1,41 @@
+﻿#leftPaneltoday {
+    height:100%;
+    position:fixed;
+    top:0;
+    z-index:5;
+    opacity:0.95;
+    overflow:auto;
+}
+#parentToday {
+    margin:8% auto;
+    text-align:center;
+    overflow:auto;
+}
+#todayTable {
+    display:inline-block;  
+    overflow:auto;
+    font-size:4vh;
+    text-align:right;
+    padding:2%;
+}
+#todayTable td{
+    width:30vw;
+    text-align:center;
+    cursor:auto;
+}
+
+@media only screen and (orientation: landscape) {
+    #leftPaneltoday {
+        width:100%;
+        left:-100%;
+    }
+}
+@media only screen and (orientation: portrait) {
+    #todayHours {
+        margin-top:20%;
+    }
+    #todayTable td{
+        width:30vw;
+        font-size:3vh;
+    }
+}
