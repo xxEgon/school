@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset= "utf-8"/>
+		<meta name="keywords" content="definicje, podstawy, html, obrazy"/>
+		<meta name="author" content="damian filipowski"/>
+		<meta name="generator" content="Notepad++"/>
+		<title>HTML i CSS </title>
+		<link rel="stylesheet" href="css/styles_menu.css" type="text/css"/>
+		<link rel="stylesheet" href="css/styles.css" type="text/css"/>
+		<link rel="shortcut icon" href="css/icon.ico" type="image/x-icon"/>
+	</head>
+	<body>
+		<div id="poj">
+			<header>
+				<ol>
+					<li><a href="index.html">STRONA GŁÓWNA</a>
+					</li>
+					<li><a href="#">TEORIA</a>
+					    <ul>
+						    <li><a href="teoria_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="teoria_znaczniki.html">ZNACZNIKI</a></li>
+						    <li><a href="teoria_deklaracja.html">DEKLARACJA STRONY KODOWEJ</a></li>
+					    </ul>
+					</li>
+
+					<li><a href="#">ZASTOSOWANIE</a>
+						<ul>
+						    <li><a href="zasto_listy.html">LISTY</a></li>
+							<li><a href="zasto_obrazy.html">OBRAZY</a></li>
+							<li><a href="zasto_kotwice.html">KOTWICE</a></li>
+							<li><a href="zasto_tabele.html">TABELE</a></li>
+							<li><a href="zasto_adresy.html">HIPERŁĄCZA</a></li>
+							<li><a href="zasto_mapa.html">MAPA ODSYŁACZY</a></li>
+						</ul>
+					</li>
+					<li><a href="#">CSS</a>
+						<ul>
+							<li><a href="css_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="css_znaczniki.html">ZNACZNIKI</a></li>
+							<li><a href="css_kaskadowosc.html">KASKADOWOŚĆ</a></li>
+							<li><a href="css_formatowanie.html">FORMATOWANIE</a></li>
+							<li><a href="css_uklady.html">UKŁADY STRON</a></li>
+							<li><a href="css_tlo.html">TŁA NA STRONIE</a></li>
+							
+							
+						</ul>
+					</li>
+				</ol>
+			</header>
+			<div id="zaw">
+				<h1> Obrazki</h1>
+				<p>Do wstawiania obrazków na strone używamy następującej struktury:</p>
+				<pre>
+&lt;p&gt;&lt;img src="images/koala.jpg" alt="koala"/&gt;&lt;/p&gt;
+				</pre>
+				<p>Atrybut <em>src</em> to adres obrazka, a <em>alt</em> to jakieś słowo kluczowe.</p>
+				<p></p><p>Efekt:</p>
+				<p><img src="images/koala.jpg" alt="koala"/></p>
+				
+				
+				<p style="margin-top:3em;">Aby dodatkowo ustalić rozmiary obrazka wpisujemy po prostu atrybuty <em>width</em> i <em>height</em>.</p>
+				<pre>
+&lt;p&gt;&lt;img src="images/koala.jpg" alt="koala" width="250" height="250"/&gt;&lt;/p&gt;
+				</pre>
+				<p></p><p>Efekt:</p>
+				<p><img src="images/koala.jpg" alt="koala" width="250" height="250"/></p>
+					
+				<p style="margin-top:3em;">Tworzenie linku do obrazka:</p>
+				<pre>
+&lt;p&gt;&lt;a href="images/koala.jpg"&gt;koala&lt;/a&gt;&lt;/p&gt;
+				</pre>
+				<p></p><p>Efekt:</p>
+				<p><a href="images/koala.jpg">koala</a></p>
+				
+				<p style="margin-top:3em;">Aby nasz obrazek był linkiem używamy takiej struktury:</p>
+				<pre>
+&lt;p&gt;&lt;a href="przyklad.html"&gt;&lt;img src="images/koala.jpg" alt="koala" /&gt;&lt;/a&gt;&lt;/p&gt;
+				</pre>
+				<p></p><p>Efekt:</p>
+				<p><a href="przyklad2.html"><img src="images/koala.jpg" alt="koala" /></a></p>
+				
+			<div id="kotwica"><a href="#poj">Przejdź na górę strony</a></div>
+			</div>
+			
+			<footer>Wykonał Damian Filipowski ©2015</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,130 @@
+
+	header ol 	
+					{
+					list-style-type:none;
+					padding:0;
+					margin:10px 40%;
+					width:801px;
+					font-size:20px;
+					height:2em;
+					line-height:2em;
+					text-align:center;
+					border:3px #4E2F2F solid;
+					font-weight:bold;
+					
+					
+					}
+ 
+	header ol > li   	
+					{
+					
+        			float:left;
+       	 			width:198px;
+        			height:2em;
+					transition-duration:2000ms;
+					background-color:aqua;
+					border-left:3px solid #4E2F2F;
+					position:relative;
+					opacity:1;
+					
+					
+					}
+
+	header ol > li:first-child 	
+					{
+        			margin-left:0px;
+					border-left:none;
+      				}
+
+	header ol > li > a 	
+					{
+       	 			display:block;
+        			text-decoration:none;
+        			color:#4E2F2F;
+        			padding:0 5px;
+					
+      				}
+
+	header ol > li:hover 
+					{
+					transition-duration:100ms;
+        			background-color:#ccffff;
+					
+					
+					}
+
+	header ol > li:hover > a 	
+					{
+					transition-duration:100ms;
+					background-color:#4E2F2F;
+					color:aqua;
+     				}
+
+	header ol > li:hover > ul 	
+					{
+					display:block;
+					}
+
+	header ol > li > ul 	
+					{
+					width:100%;
+					visibility:hidden;
+					position:absolute;
+					z-index:1;
+					list-style-type:none;
+					padding:0;
+					margin:0;
+					}
+
+	header ol > li:hover > ul 	
+					{
+        			visibility:visible;
+      				}
+	
+	header ol > li > ul > li 	
+					{
+        			position:relative;
+        			background-color:aqua;
+					opacity:initial;
+					
+					}
+
+	header ol > li > ul > li > a 	
+					{
+					display:block;
+        			text-decoration:none;
+       		 		border-top:1px solid #4E2F2F;
+					color:#4E2F2F;
+					line-height:28px;
+					padding:5px;
+					font-size:14px;
+					
+      				}
+
+	header ol > li > ul > li:hover 
+					{
+        			background-color:#4E2F2F;
+					transition-duration:200ms;
+					color:aqua;
+					}
+
+	header ol > li > ul > li:hover > a 
+					{
+       				color:aqua;
+					
+      				}							
+
+	header ol > li > ul 	
+					{
+        			transform:scaleY(0);
+        			-webkit-transform:scaleY(0);
+       				transform-origin:50% 0;
+        			-webkit-transform-origin:50% 0;
+        			transition:250ms;		
+      				}
+
+	header ol > li:hover > ul 	
+					{
+        			transform:scaleY(1);
+        			-webkit-transform:scaleY(1);
+      				}

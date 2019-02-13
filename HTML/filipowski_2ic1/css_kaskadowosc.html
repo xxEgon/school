@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset= "utf-8"/>
+		<meta name="keywords" content="definicje, podstawy, html, kaskadowosc"/>
+		<meta name="author" content="damian filipowski"/>
+		<meta name="generator" content="Notepad++"/>
+		<title>HTML i CSS </title>
+		<link rel="stylesheet" href="css/styles_menu.css" type="text/css"/>
+		<link rel="stylesheet" href="css/styles.css" type="text/css"/>
+		<link rel="shortcut icon" href="css/icon.ico" type="image/x-icon"/>
+	</head>
+	<body>
+		<div id="poj">
+			<header>
+				<ol>
+					<li><a href="index.html">STRONA GŁÓWNA</a>
+					</li>
+					<li><a href="#">TEORIA</a>
+					    <ul>
+						    <li><a href="teoria_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="teoria_znaczniki.html">ZNACZNIKI</a></li>
+						    <li><a href="teoria_deklaracja.html">DEKLARACJA STRONY KODOWEJ</a></li>
+					    </ul>
+					</li>
+
+					<li><a href="#">ZASTOSOWANIE</a>
+						<ul>
+						    <li><a href="zasto_listy.html">LISTY</a></li>
+							<li><a href="zasto_obrazy.html">OBRAZY</a></li>
+							<li><a href="zasto_kotwice.html">KOTWICE</a></li>
+							<li><a href="zasto_tabele.html">TABELE</a></li>
+							<li><a href="zasto_adresy.html">HIPERŁĄCZA</a></li>
+							<li><a href="zasto_mapa.html">MAPA ODSYŁACZY</a></li>
+						</ul>
+					</li>
+					<li><a href="#">CSS</a>
+						<ul>
+							<li><a href="css_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="css_znaczniki.html">ZNACZNIKI</a></li>
+							<li><a href="css_kaskadowosc.html">KASKADOWOŚĆ</a></li>
+							<li><a href="css_formatowanie.html">FORMATOWANIE</a></li>
+							<li><a href="css_uklady.html">UKŁADY STRON</a></li>
+							<li><a href="css_tlo.html">TŁA NA STRONIE</a></li>
+							
+							
+						</ul>
+					</li>
+				</ol>
+			</header>
+			<div id="zaw">
+				<h2>Kaskadowość</h2>
+				<p>Kaskadowość arkuszy stylów - im styl jest bliżej miejsca w dokumencie, którego dotyczy, tym jest ważniejszy w hierarchii formatowania.</p>
+				
+				<p style="margin-top:2em;">Nazwa „kaskadowe arkusze stylów” wynika z faktu, iż gdy reguły CSS wykluczają się wzajemnie w arkuszu zewnętrznym, arkuszu wewnętrznym
+				oraz na poziomie elementów HTML, priorytet stylów ustalany jest hierarchicznie. Przyjęto, że oddziaływanie stylów z arkuszy zewnętrznych
+				może być modyfikowane przez style zdefiniowane w nagłówku dokumentu, te zaś mogą być modyfikowane przez reguły zdefiniowane bezpośrednio
+				w ciele dokumentu. Pierwszeństwo mają zatem style zdefiniowane „bliżej” formatowanego elementu. </p>
+				<p style="margin-top:2em;">Kolejność interpretacji reguł 
+				formatujących dany element przez przeglądarkę przedstawia się następująco:</p>
+				<ol>
+					<li>Styl lokalny.</li>
+					<li>Rozciąganie stylu <em>span</em>.</li>
+					<li>Wydzielone bloki <em>div</em>.</li>
+					<li>Wewnętrzny arkusz stylów.</li>
+					<li>Zewnętrzny arkusz stylów.</li>
+					<li>Import arkusza stylów.</li>
+					<li>Domyślne ustawienia przeglądarki.</li>
+				</ol>
+				<p style="margin-top:2em;">Kaskadowość wymaga przestrzegania kolejności deklaracji. W dokumencie powinny być one umieszczane od mających numer najwyższy do opatrzonych numerem najniższym (1).</p>
+				
+				<p style="margin-top:2em;">Przykładowe drzewo:</p>
+				
+				<img src="images/kaskadowosc.jpg" alt="drzewo" style="padding:20px"/>
+			</div>
+			<footer>Wykonał Damian Filipowski ©2015</footer>
+		</div>
+	</body>
+</html>

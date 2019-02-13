@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset= "utf-8"/>
+		<meta name="keywords" content="definicje, podstawy, html, css"/>
+		<meta name="author" content="damian filipowski"/>
+		<meta name="generator" content="Notepad++"/>
+		<title>HTML i CSS </title>
+		<link rel="stylesheet" href="css/styles_menu.css" type="text/css"/>
+		<link rel="stylesheet" href="css/styles.css" type="text/css"/>
+		<link rel="shortcut icon" href="css/icon.ico" type="image/x-icon"/>
+	</head>
+	<body>
+		<div id="poj">
+			<header>
+				<ol>
+					<li><a href="index.html">STRONA GŁÓWNA</a>
+					</li>
+					<li><a href="#">TEORIA</a>
+					    <ul>
+						    <li><a href="teoria_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="teoria_znaczniki.html">ZNACZNIKI</a></li>
+						    <li><a href="teoria_deklaracja.html">DEKLARACJA STRONY KODOWEJ</a></li>
+					    </ul>
+					</li>
+
+					<li><a href="#">ZASTOSOWANIE</a>
+						<ul>
+						    <li><a href="zasto_listy.html">LISTY</a></li>
+							<li><a href="zasto_obrazy.html">OBRAZY</a></li>
+							<li><a href="zasto_kotwice.html">KOTWICE</a></li>
+							<li><a href="zasto_tabele.html">TABELE</a></li>
+							<li><a href="zasto_adresy.html">HIPERŁĄCZA</a></li>
+							<li><a href="zasto_mapa.html">MAPA ODSYŁACZY</a></li>
+						</ul>
+					</li>
+					<li><a href="#">CSS</a>
+						<ul>
+							<li><a href="css_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="css_znaczniki.html">ZNACZNIKI</a></li>
+							<li><a href="css_kaskadowosc.html">KASKADOWOŚĆ</a></li>
+							<li><a href="css_formatowanie.html">FORMATOWANIE</a></li>
+							<li><a href="css_uklady.html">UKŁADY STRON</a></li>
+							<li><a href="css_tlo.html">TŁA NA STRONIE</a></li>
+							
+							
+						</ul>
+					</li>
+				</ol>
+			</header>
+			<div id="zaw" >
+				<h2>Podstawowe informacje</h2>
+				<p>Arkusz stylów określa w jaki sposób przeglądarki sformatują elementy na stronie.</p>
+				
+				<p style="margin-top:2em;">Kaskadowe arkusze stylów (ang. Cascading Style Sheets, w skrócie CSS) to język służący do opisu for
+				my prezentacji (wyświetlania) stron WWW. CSS został opracowany przez organizację 
+				W3C w 1996 r. jako potomek języka DSSSL przezna
+				czony do używania w połączeniu z SGML-em. Pierwszy szkic CSS zaproponował w 1994 r. Håkon Wium Lie.</p>
+				
+				<p style="margin-top:2em;">Reguła CSS składa się z:</p>
+				<ul>
+					<li>selektora - służy on do wyszukania elementu bądź grupy elementów w danym dokumencie HTML, które mają otrzymać dany styl CSS, czyli dane właściwości CSS, które odpowiadają za zmianę wyglądu odszukanych elementów HTML. Przykładowo, selektor p > span odszuka wszystkie elementy span umieszczone w elemencie p.</li>
+					<li>nawiasu klamrowego { }, który występuje zaraz po selektorze i w którym należy umieścić właściwości CSS jakie mają otrzymać dane elementy HTML, wyselekcjonowane przez dany selektor.</li>
+					<li>właściwości CSS - za pomocą nich możemy określić co chcemy zmienić w wyglądzie danego elementu HTML, umieszczamy je w nawiasie klamrowym. Przykładowo, właściwość background-color określa kolor tła elementu HTML.</li>
+					<li>wartości właściwości CSS - występują po właściwości, są podawane po dwukropku i określają w jaki sposób chcemy zmienić daną właściwość wyglądu elementu HTML. Na końcu wartości należy postawić średnik ; Przykładowo, wartość lightblue określa kolor jasnoniebieski.</li>
+				</ul>
+				<p style="margin-top:2em;">Selektory: grupowy, pseudoklasy, potomka, identyfikatora, uniwersalny.</p>
+				<p style="margin-top:2em;">Rodzaje arkuszy stylów:</p>
+				<dl>
+					<dt>arkusz lokalny</dt>
+					<dd>Przykład: &lt; p style=&quot; color:red &quot; &gt;</dd>
+					<dt>arkusz wewnętrzny</dt>
+					<dd>Przykład: &lt; style &gt; style=&quot; color:red &quot; &lt; /style &gt;</dd>
+					<dt>arkusz zewnętrzny</dt>
+					<dd>Linkowanie:  &lt; link &gt; rel=&quot; stylesheet &quot; href=&quot; styles.css &quot; type=&quot;text/css&quot; &lt; /link &gt; </dd>
+				</dl>
+			</div>
+			<footer>Wykonał Damian Filipowski ©2015</footer>
+		</div>
+	</body>
+</html>

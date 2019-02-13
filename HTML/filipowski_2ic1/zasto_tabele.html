@@ -1,0 +1,313 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset= "utf-8"/>
+		<meta name="keywords" content="definicje, podstawy, html, tabele"/>
+		<meta name="author" content="damian filipowski"/>
+		<meta name="generator" content="Notepad++"/>
+		<title>HTML i CSS </title>
+		<link rel="stylesheet" href="css/styles_menu.css" type="text/css"/>
+		<link rel="stylesheet" href="css/styles.css" type="text/css"/>
+		<link rel="shortcut icon" href="css/icon.ico" type="image/x-icon"/>
+		<style>
+			div.dziecko1
+				{	
+					float:left;
+					width:50%;
+				}
+			div.dziecko2
+				{	
+					float:left;
+					width:50%;
+				}
+			dt
+				{
+					font-weight:normal;
+				}
+				
+			
+		</style>
+	</head>
+	<body>
+		<div id="poj">
+			<header>
+				<ol>
+					<li><a href="index.html">STRONA GŁÓWNA</a>
+					</li>
+					<li><a href="#">TEORIA</a>
+					    <ul>
+						    <li><a href="teoria_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="teoria_znaczniki.html">ZNACZNIKI</a></li>
+						    <li><a href="teoria_deklaracja.html">DEKLARACJA STRONY KODOWEJ</a></li>
+					    </ul>
+					</li>
+
+					<li><a href="#">ZASTOSOWANIE</a>
+						<ul>
+						    <li><a href="zasto_listy.html">LISTY</a></li>
+							<li><a href="zasto_obrazy.html">OBRAZY</a></li>
+							<li><a href="zasto_kotwice.html">KOTWICE</a></li>
+							<li><a href="zasto_tabele.html">TABELE</a></li>
+							<li><a href="zasto_adresy.html">HIPERŁĄCZA</a></li>
+							<li><a href="zasto_mapa.html">MAPA ODSYŁACZY</a></li>
+						</ul>
+					</li>
+					<li><a href="#">CSS</a>
+						<ul>
+							<li><a href="css_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="css_znaczniki.html">ZNACZNIKI</a></li>
+							<li><a href="css_kaskadowosc.html">KASKADOWOŚĆ</a></li>
+							<li><a href="css_formatowanie.html">FORMATOWANIE</a></li>
+							<li><a href="css_uklady.html">UKŁADY STRON</a></li>
+							<li><a href="css_tlo.html">TŁA NA STRONIE</a></li>
+							
+							
+						</ul>
+					</li>
+				</ol>
+			</header>
+			<div id="zaw">
+				<h1>Znaczniki niezbędne do tworzenia tabeli</h1>
+				<dl>
+				<dt>&lt; table &gt;</dt>
+				<dd>Ustanawia ramy tabeli.</dd>
+				
+				<dt>&lt; tr &gt;</dt>
+				<dd>Ustanawia ramy wiersza.</dd>
+				
+				<dt>&lt; td &gt;</dt>
+				<dd>Komórka tabeli.</dd>
+				
+				<dt>&lt; th &gt;</dt>
+				<dd>Komórka nagłówka tabeli.</dd>
+				
+				<dt>&lt; caption &gt;</dt>
+				<dd>Podpis tabeli.</dd>
+				
+				<dt>&lt; thead &gt;</dt>
+				<dd>Nagłówek.</dd>
+				
+				<dt>&lt; tfoot &gt;</dt>
+				<dd>Stopka.</dd>
+				
+				<dt>&lt; tbody &gt;</dt>
+				<dd>Treść.</dd>
+				
+				<dt>&lt; col &gt;</dt>
+				<dd>Kolumna i grupa kolumn.</dd>
+				</dl>
+				<p>Aby połączyć komórki tabeli poziomo do znacznika <em>td</em> musimy dodać atrybut <em>rowspan="x"</em>, gdzie <em>x</em> jest liczbą komórek jakie chcemy połączyć.</p>
+				<p style="margin-top:1em;" >Aby połączyć komórki tabeli pionowo do znacznika <em>td</em> musimy dodać atrybut <em>colspan="x"</em>, gdzie <em>x</em> jest liczbą komórek jakie chcemy połączyć.</p>
+				<p style="margin-top:1em;" >Aby nadać tabeli ramkę można użyć atrybutu <em>border="1"</em>, należy jednak pamiętać, że powinniśmy to zrobić za pomocą CSS'a, gdyż HTML'em nie formatujemy wyglądu strony.</p>
+				<p style="margin-top:3em;">Przykład prostej tabeli:</p>
+				<div class="rodzic">
+					<div class="dziecko1">
+					<p>Przykład:</p>
+					<pre>
+&lt;table border="1"&gt;
+	&lt;caption&gt;Podpis tabeli&lt;/caption&gt;
+	&lt;tr&gt;
+		&lt;td>komórka 1-1&lt;/td&gt;
+		&lt;td>komórka 1-2&lt;/td&gt;
+		&lt;td>komórka 1-2&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td>komórka 2-1/td&gt;
+		&lt;td>komórka 2-2&lt;/td&gt;
+		&lt;td>komórka 2-3&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td>komórka 3-1&lt;/td&gt;
+		&lt;td>komórka 3-2&lt;/td&gt;
+		&lt;td>komórka 3-3&lt;/td&gt;
+	&lt;/tr>
+	&lt;tr>
+		&lt;td>komórka 4-1&lt;/td&gt;
+		&lt;td>komórka 4-2&lt;/td&gt;
+		&lt;td>komórka 4-2&lt;/td&gt;
+	&lt;/tr>	
+&lt;/table>	
+					</pre>
+					</div>
+					<div class="dziecko2">
+					<p>Efekt:</p>
+					
+					<table border="1">
+						<caption>Podpis tabeli</caption>
+						<tr>
+							<td>komórka 1-1 </td>
+							<td>komórka 1-2</td>
+							<td>komórka 1-2</td>
+						</tr>
+						<tr>
+							<td>komórka 2-1</td>
+							<td>komórka 2-2</td>
+							<td>komórka 2-3</td>
+						</tr>
+						<tr>
+							<td>komórka 3-1</td>
+							<td>komórka 3-2</td>
+							<td>komórka 3-3</td>
+						</tr>
+						<tr>
+							<td>komórka 4-1</td>
+							<td>komórka 4-2</td>
+							<td>komórka 4-2</td>
+						</tr>
+					</table>			
+					
+					</div>
+				</div>
+				<p style="margin-top:3em; clear:both;" > Czas na połączenie komórek.</p>
+				<div class="rodzic">
+					<div class="dziecko1">
+					<p>Przykład:</p>
+					<pre>
+&lt;table border="1"&gt;
+	&lt;tr&gt;
+		&lt;th&gt;lp.&lt;/th&gt;
+		&lt;th&gt;Państwo&lt;/th&gt;
+		&lt;th&gt;Stolica&lt;/th&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td>1.&lt;/td&gt;
+		&lt;td rowspan="2"&gt;Niemcy&lt;/td&gt;
+		&lt;td&gt;Berlin&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td&gt;2.&lt;/td&gt;
+		&lt;td&gt;Bonn do 1989 stolica RFN&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td&gt;3.&lt;/td&gt;
+		&lt;td colspan="2">Luksemburg&lt;/td&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;
+					</pre>
+					</div>
+					<div class="dziecko2">
+					<p>Efekt:</p>
+					
+					<table border="1">
+						<tr>
+							<th>lp.</th>
+							<th>Państwo</th>
+							<th>Stolica</th>
+						</tr>
+						<tr>
+							<td>1.</td>
+							<td rowspan="2">Niemcy</td>
+							<td>Berlin</td>
+						</tr>
+						<tr>
+							<td>2.</td>
+							<td>Bonn do 1989 stolica RFN</td>
+						</tr>
+						<tr>
+							<td>3.</td>
+							<td colspan="2">Luksemburg</td>
+						</tr>
+					</table>
+					
+					</div>
+				</div>
+				
+				<p style="margin-top:3em; clear:both;" > Aby zagnieździć tabelę "wklejamy" ją po prostu do odpowiedniej komórki.</p>
+				<div class="rodzic">
+					<div class="dziecko1">
+					<p>Przykład:</p>
+					<pre>
+&lt;table border="1"&gt;
+&lt;tr&gt;
+	&lt;td colspan="2"&gt;komórka 1-1 &lt;/td&gt;
+	&lt;td&gt;komórka 1-3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td>komórka 2-1&lt;/td&gt;
+	&lt;td colspan="2" rowspan="2"&gt;
+		&lt;table border="1"&gt;
+		&lt;tr&gt;
+			&lt;th>lp.&lt;/th&gt;
+			&lt;th>Państwo&lt;/th&gt;
+			&lt;th>Stolica&lt;/th&gt;
+		&lt;/tr&gt;
+		&lt;tr>
+			&lt;td&gt;1.&lt;/td&gt;
+			&lt;td rowspan="2">Niemcy&lt;/td&gt;
+			&lt;td&gt;Berlin&lt;/td&gt;
+		&lt;/tr&gt;
+		&lt;tr&gt;
+			&lt;td&gt;2.&lt;/td&gt;
+			&lt;td&gt;Bonn do 1989 stolica RFN&lt;/td&gt;
+		&lt;/tr&gt;
+		&lt;tr&gt;
+			&lt;td&gt;3.&lt;/td&gt;
+			&lt;td colspan="2">Luksemburg&lt;/td&gt;
+		&lt;/tr&gt;
+		&lt;/table&gt;
+	&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td>komórka 3-1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;komórka 4-1&lt;/td&gt;
+	&lt;td&gt;komórka 4-2&lt;/td&gt;
+	&lt;td&gt;komórka 4-2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+					</pre>
+					</div>
+					<div class="dziecko2">
+						<p>Efekt:</p>
+					
+						<table border="1">
+							<tr>
+								<td colspan="2">komórka 1-1 </td>
+								<td>komórka 1-3</td>
+							</tr>
+							<tr>
+								<td>komórka 2-1</td>
+								<td colspan="2" rowspan="2">
+								<table border="1">
+									<tr>
+										<th>lp.</th>
+										<th>Państwo</th>
+										<th>Stolica</th>
+									</tr>
+									<tr>
+										<td>1.</td>
+										<td rowspan="2">Niemcy</td>
+										<td>Berlin</td>
+									</tr>
+									<tr>
+										<td>2.</td>
+										<td>Bonn do 1989 stolica RFN</td>
+									</tr>
+									<tr>
+										<td>3.</td>
+										<td colspan="2">Luksemburg</td>
+									</tr>
+								</table>
+								</td>
+								
+							</tr>
+							<tr>
+								<td>komórka 3-1</td>
+								
+							</tr>
+							<tr>
+								<td>komórka 4-1</td>
+								<td>komórka 4-2</td>
+								<td>komórka 4-2</td>
+							</tr>
+						</table>
+					
+					</div>	
+				</div>
+				<div id="kotwica"><a href="#poj">Przejdź na górę strony</a></div>
+			</div>
+		<footer>Wykonał Damian Filipowski ©2015</footer>
+		</div>
+	</body>
+</html>

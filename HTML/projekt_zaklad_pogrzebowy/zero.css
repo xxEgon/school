@@ -1,0 +1,54 @@
+/*
+ARKUSZ ZERUJĄCY
+*/
+
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, big, cite, code,
+del, em, img, ins,
+small, strong, sub, sup, 
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, 
+figure, figcaption, footer, header, 
+menu, nav, output, ruby, section
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+article, aside, figcaption, figure, 
+footer, header, menu, nav, section 
+{
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul 
+{
+	list-style: none;
+}
+blockquote, q 
+{
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after 
+{
+	content: '';
+	content: none;
+}
+table 
+{
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a
+{
+	text-decoration:none;
+}

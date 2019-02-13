@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset= "utf-8"/>
+		<meta name="keywords" content="definicje, podstawy, html, listy"/>
+		<meta name="author" content="damian filipowski"/>
+		<meta name="generator" content="Notepad++"/>
+		<title>HTML i CSS </title>
+		<link rel="stylesheet" href="css/styles_menu.css" type="text/css"/>
+		<link rel="stylesheet" href="css/styles.css" type="text/css"/>
+		<link rel="shortcut icon" href="css/icon.ico" type="image/x-icon"/>
+		<style>
+			div.dziecko1
+				{	
+					float:left;
+					width:50%;
+				}
+			div.dziecko2
+				{	
+					float:left;
+					width:50%;
+				}
+			dt
+				{
+					font-weight:normal;
+				}
+		</style>
+	</head>
+	<body>
+		<div id="poj">
+			<header>
+				<ol>
+					<li><a href="index.html">STRONA GŁÓWNA</a>
+					</li>
+					<li><a href="#">TEORIA</a>
+					    <ul>
+						    <li><a href="teoria_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="teoria_znaczniki.html">ZNACZNIKI</a></li>
+						    <li><a href="teoria_deklaracja.html">DEKLARACJA STRONY KODOWEJ</a></li>
+					    </ul>
+					</li>
+
+					<li><a href="#">ZASTOSOWANIE</a>
+						<ul>
+						    <li><a href="zasto_listy.html">LISTY</a></li>
+							<li><a href="zasto_obrazy.html">OBRAZY</a></li>
+							<li><a href="zasto_kotwice.html">KOTWICE</a></li>
+							<li><a href="zasto_tabele.html">TABELE</a></li>
+							<li><a href="zasto_adresy.html">HIPERŁĄCZA</a></li>
+							<li><a href="zasto_mapa.html">MAPA ODSYŁACZY</a></li>
+						</ul>
+					</li>
+					<li><a href="#">CSS</a>
+						<ul>
+							<li><a href="css_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="css_znaczniki.html">ZNACZNIKI</a></li>
+							<li><a href="css_kaskadowosc.html">KASKADOWOŚĆ</a></li>
+							<li><a href="css_formatowanie.html">FORMATOWANIE</a></li>
+							<li><a href="css_uklady.html">UKŁADY STRON</a></li>
+							<li><a href="css_tlo.html">TŁA NA STRONIE</a></li>
+							
+							
+						</ul>
+					</li>
+				</ol>
+			</header>
+			<div id="zaw">
+				<h1> Lista nieuporządkowana</h1>
+				<p>Jako ramy listy nieuporządkowanej używamy znacznika &lt; ul &gt; (unordered list). <br/>Każdy element listy umieszczamy w znaczniku &lt; li&gt; (list item).</p>
+				<div class="rodzic">
+					<div class="dziecko1">
+					<p>Przykład:</p>
+					<pre>
+&lt;p>Lista zakupów&lt;/p&gt;
+
+&lt;ul&gt;
+   &lt;li>Mleko&lt;/li&gt;
+   &lt;li>Chleb&lt;/li&gt;
+  &lt;li>Masło&lt;/li&gt;
+&lt;/ul&gt;				
+					</pre>
+					</div>
+					<div class="dziecko2">
+					<p>Efekt:</p>
+					
+					<p>Lista zakupów</p>
+
+					<ul>
+						<li>Mleko</li>
+						<li>Chleb</li>
+						<li>Masło</li>
+					</ul>				
+					
+					</div>
+				</div>
+			
+				<h1 style="clear:both;"> Lista uporządkowana</h1>
+				<p>Jako ramy listy uporządkowanej używamy znacznika &lt; ol &gt; (ordered list). <br/>Każdy element listy umieszczamy w znaczniku &lt; li&gt; (list item).</p>
+				<div class="rodzic">
+					<div class="dziecko1">
+					<p>Przykład:</p>
+					<pre>
+&lt;p&gt;Lista zakupów&lt;/p&gt;
+
+&lt;ol&gt;
+   &lt;li>Mleko&lt;li&gt;
+   &lt;li>Chleb&lt;/li&gt;
+   &lt;li>Masło&lt;/li&gt;
+&lt;/ol&gt;				
+					</pre>
+					</div>
+					<div class="dziecko2">
+					<p>Efekt:</p>
+					
+					<p>Lista zakupów</p>
+
+					<ol>
+						<li>Mleko</li>
+						<li>Chleb</li>
+						<li>Masło</li>
+					</ol>				
+					
+					</div>
+				</div>
+			
+			<h1 style="clear:both;"> Lista definicji</h1>
+				<p>Jako ramy listy definicji używamy znacznika &lt; dl &gt; (definition list). <br/>Termin definiowany umieszczamy w znaczniku &lt; dt&gt;, a definicję w znaczniku &lt; dd&gt;. </p>
+				<div class="rodzic">
+					<div class="dziecko1">
+					<p>Przykład:</p>
+					<pre>
+&lt;dl&gt;
+   &lt;dt>Krzesło&lt;/dt&gt;
+   &lt;dd>Mebel do siedzenia.&lt;/dd&gt;
+   &lt;dt>Długopis&lt;/dt&gt;
+   &lt;dd>Przyrząd do pisania.&lt;/dd&gt;
+   &lt;dt>Pies&lt;/dt&gt;
+   &lt;dd>Zwierzę domowe.&lt;/dd&gt;
+&lt;/dl&gt;					
+					</pre>
+					
+					</div>
+					<div class="dziecko2">
+					<p>Efekt:</p>
+					
+					<p>Lista definicji</p>
+
+					<dl>
+						<dt>Krzesło</dt>
+						<dd>Mebel do siedzenia.</dd>
+						<dt>Długopis</dt>
+						<dd>Przyrząd do pisania.</dd>
+						<dt>Pies</dt>
+						<dd>Zwierzę domowe.</dd>
+						
+					</dl>				
+					
+					</div>
+				</div>
+
+				<div id="kotwica"><a href="#poj">Przejdź na górę strony</a></div>
+			</div>
+			<footer>Wykonał Damian Filipowski ©2015</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset= "utf-8"/>
+		<meta name="keywords" content="definicje, podstawy, html, mapa"/>
+		<meta name="author" content="damian filipowski"/>
+		<meta name="generator" content="Notepad++"/>
+		<title>HTML i CSS </title>
+		<link rel="stylesheet" href="css/styles_menu.css" type="text/css"/>
+		<link rel="stylesheet" href="css/styles.css" type="text/css"/>
+		<link rel="shortcut icon" href="css/icon.ico" type="image/x-icon"/>
+		<style>
+			#zaw li
+				{
+					margin-top:1em;
+				}
+		</style>
+	</head>
+	<body>
+		<div id="poj">
+			<header>
+				<ol>
+					<li><a href="index.html">STRONA GŁÓWNA</a>
+					</li>
+					<li><a href="#">TEORIA</a>
+					    <ul>
+						    <li><a href="teoria_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="teoria_znaczniki.html">ZNACZNIKI</a></li>
+						    <li><a href="teoria_deklaracja.html">DEKLARACJA STRONY KODOWEJ</a></li>
+					    </ul>
+					</li>
+
+					<li><a href="#">ZASTOSOWANIE</a>
+						<ul>
+						    <li><a href="zasto_listy.html">LISTY</a></li>
+							<li><a href="zasto_obrazy.html">OBRAZY</a></li>
+							<li><a href="zasto_kotwice.html">KOTWICE</a></li>
+							<li><a href="zasto_tabele.html">TABELE</a></li>
+							<li><a href="zasto_adresy.html">HIPERŁĄCZA</a></li>
+							<li><a href="zasto_mapa.html">MAPA ODSYŁACZY</a></li>
+							
+						</ul>
+					</li>
+					<li><a href="#">CSS</a>
+						<ul>
+							<li><a href="css_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="css_znaczniki.html">ZNACZNIKI</a></li>
+							<li><a href="css_kaskadowosc.html">KASKADOWOŚĆ</a></li>
+							<li><a href="css_formatowanie.html">FORMATOWANIE</a></li>
+							<li><a href="css_uklady.html">UKŁADY STRON</a></li>
+							<li><a href="css_tlo.html">TŁA NA STRONIE</a></li>
+							
+							
+							
+							
+						</ul>
+					</li>
+				</ol>
+			</header>
+			<div id="zaw">
+				<h1>Mapa odsyłaczy</h1>
+				<p>Mapa odsyłaczy to obrazek, który posiada obszary klikalne, które mogą być hiperłączami. W rzeczywistości na wybramy obraz tworzymy niewidzialną "folijkę", no której zaznaczamy wybrane przez nas obszary jako te, które będą odnośnikami.
+				Można to wykorzystać na przykład przy mapach, gdzie w zależności na jaką część obszary klikniemy, to wydarzy się coś innego.</p>
+				
+				<p>Element &lt;map&gt; odpowiada za deklarację mapy. Zawiera obowiązkowy atrybut <em>name</em>, który jest wykorzystywany przy osadzaniu obrazka za pomocą znacznika &lt;img&gt;.Wewnętrz &lt;map&gt; znajduje się znacznik &lt;area/&gt;, który definiuje obszar danego hiperłącza.</p>
+				<p>&lt;area&gt; zawiera nasteujące atrybuty:</p>
+					<ul>
+						<li>href - adres</li>
+						<li>
+							<p>shape - kształt aktywnego obszaru</p>
+							<ul>
+							<li>circle - koło (współrzędne: środek i promień)</li>
+							<li>rect - prostokąt (współrzędne: prawy górny róg i lewy dolny róg)</li>
+							<li>poly - wielokąt (współrzędne: wierzchołki)</li>
+							</ul>
+						</li>
+						<li>coords - współrzędne krańcowych punktów aktywnego obszaru</li>
+						<li>title</li>
+						
+					</ul>
+				<p>Przykładowe użycie:</p>
+				<pre>
+&lt;body&gt;
+	&lt;map name="mapaobrazka"&gt;
+		&lt;area href="#" alt="kaczka" shape="rect" coords="529, 195, 715, 315"/&gt;
+		&lt;area href="#" alt="kaczka" shape="circle" coords="140, 248, 30" /&gt;
+		&lt;area href="#" alt="kaczka" shape="poly" coords="170,58,528,58,321,195"/&gt;
+	&lt;/map&gt;
+	&lt;img src="images/kaczki.jpg" alt="kaczki" usemap="#mapaobrazka" /&gt;
+&lt;/body&gt;
+				</pre>
+				<p>Efekt</p>
+				<map name="mapaobrazka">
+				<area href="#" alt="kaczka" shape="rect" coords="529,195,715,315"/>
+				<area href="#" alt="kaczka" shape="circle" coords="140,248,30" />
+				<area href="#" alt="kaczka" shape="poly" coords="170,58,528,58,321,195"/>
+				</map>
+				<img src="images/kaczki.jpg" alt="kaczki" usemap="#mapaobrazka" />
+			<div id="kotwica"><a href="#poj">Przejdź na górę strony</a></div>
+			</div>
+			<footer>Wykonał Damian Filipowski ©2015</footer>
+		</div>
+	</body>
+</html>

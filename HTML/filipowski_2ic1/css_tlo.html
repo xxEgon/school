@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset= "utf-8"/>
+		<meta name="keywords" content="definicje, podstawy, html, tlo"/>
+		<meta name="author" content="damian filipowski"/>
+		<meta name="generator" content="Notepad++"/>
+		<title>HTML i CSS </title>
+		<link rel="stylesheet" href="css/styles_menu.css" type="text/css"/>
+		<link rel="stylesheet" href="css/styles.css" type="text/css"/>
+		<link rel="shortcut icon" href="css/icon.ico" type="image/x-icon"/>
+	</head>
+	<body>
+		<div id="poj">
+			<header>
+				<ol>
+					<li><a href="index.html">STRONA GŁÓWNA</a>
+					</li>
+					<li><a href="#">TEORIA</a>
+					    <ul>
+						    <li><a href="teoria_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="teoria_znaczniki.html">ZNACZNIKI</a></li>
+						    <li><a href="teoria_deklaracja.html">DEKLARACJA STRONY KODOWEJ</a></li>
+					    </ul>
+					</li>
+
+					<li><a href="#">ZASTOSOWANIE</a>
+						<ul>
+						    <li><a href="zasto_listy.html">LISTY</a></li>
+							<li><a href="zasto_obrazy.html">OBRAZY</a></li>
+							<li><a href="zasto_kotwice.html">KOTWICE</a></li>
+							<li><a href="zasto_tabele.html">TABELE</a></li>
+							<li><a href="zasto_adresy.html">HIPERŁĄCZA</a></li>
+							<li><a href="zasto_mapa.html">MAPA ODSYŁACZY</a></li>
+						</ul>
+					</li>
+					<li><a href="#">CSS</a>
+						<ul>
+							<li><a href="css_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="css_znaczniki.html">ZNACZNIKI</a></li>
+							<li><a href="css_kaskadowosc.html">KASKADOWOŚĆ</a></li>
+							<li><a href="css_formatowanie.html">FORMATOWANIE</a></li>
+							<li><a href="css_uklady.html">UKŁADY STRON</a></li>
+							<li><a href="css_tlo.html">TŁA NA STRONIE</a></li>
+							
+							
+						</ul>
+					</li>
+				</ol>
+			</header>
+			<div id="zaw">
+				<h1>Grafika jako tło</h1>
+				<p>Aby obrazek po prostu powtarzał się na stronie (jest to domyślne), do znacznika body przypisujemy odpowiedni kod CSS:</p>
+				<pre>
+body
+	{
+	background-image:url('../images/tlo_cegla.jpg');
+	}
+				</pre>
+				<p><a href="przyklady/css_tlo2.html">Efekt</a></p>
+				<h1 style="margin-top:4em;">Powtarzanie w pionie</h1>
+				<p >Aby obrazek powtarzał się na stronie w pionie, dodajemy właściwość <em>background-repeat</em> :</p>
+				<pre>
+body
+	{
+	background-image:url('../images/tlo_liscie.jpg');
+	background-repeat:repeat-y;
+	}
+				</pre>
+				<p><a href="przyklady/css_tlo3.html">Efekt</a></p>
+				<h1 style="margin-top:4em;">Powtarzanie w poziomie</h1>
+				<p >Aby obrazek powtarzał się na stronie w poziomie, dodajemy właściwość <em>background-repeat</em> :</p>
+				<pre>
+body
+	{
+	background-image:url('images/tlo_liscie.jpg');
+	background-repeat:repeat-x;
+	}
+				</pre>
+				<p><a href="przyklady/css_tlo4.html">Efekt</a></p>
+				<h1 style="margin-top:4em;">Stałe miejsce</h1>
+				<p >Aby obrazek był w stałym miejscu, we właściwości <em>background-repeat</em> dajemy <em>no-repeat</em>.</p>
+				<p>Oto przykładowa strona z zastosowaniem tej właściwości:</p>
+				<pre>
+&lt;style&gt;
+	p	
+		{
+		width:800px;
+		margin:0 auto;
+		padding-top:600px;
+		background: url('../images/tlo_lilia.jpg');
+		background-repeat: no-repeat;
+		background-color:#59A69E;
+		}
+&lt;/style&gt;
+&lt;body&gt;
+	&lt;p&gt;Lorem ipsum...&lt;/p&gt;
+&lt;/body&gt;
+				</pre>
+				<p><a href="przyklady/css_tlo5.html">Efekt</a></p>
+				<h1 style="margin-top:4em;">Niezależny od przewijania</h1>
+				<p >Aby obrazek był cały cały czas na swoim miejscu, niezależnie od przewijania strony używamy następujących właściwości <em>background</em> :</p>
+				<pre>
+&lt;style&gt;
+p	
+	{
+		width:800px;
+		margin:0 auto;
+		padding-top:50px;
+		background: url('../images/tlo_smiley.gif');
+		background-repeat: no-repeat;
+		background-position: center;
+		background-attachment:fixed;
+	}
+&lt;/style&gt;
+&lt;body&gt;
+	&lt;p&gt;Lorem ipsum...&lt;/p&gt;
+&lt;/body&gt;
+				</pre>
+				<p><a href="przyklady/css_tlo6.html">Efekt</a> (dla lepszego efektu można zmniejszyć okno przeglądarki)</p>
+			<div id="kotwica"><a href="#poj">Przejdź na górę strony</a></div>
+			</div>
+			<footer>Wykonał Damian Filipowski ©2015</footer>
+		</div>
+	</body>
+</html>

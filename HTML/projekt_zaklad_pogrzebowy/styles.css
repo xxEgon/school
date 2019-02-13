@@ -1,0 +1,199 @@
+﻿html
+			{
+				background-color:black;
+			}
+			#poj
+			{
+				width:960px;
+				margin:0 auto;
+				background-color:#191919;
+				padding:40px;
+			}
+			header
+			{
+				margin-top:-20px;
+				margin-bottom:25px;
+			}
+			header img
+			{
+				display:block;
+				margin:0 auto;
+			}
+			nav
+			{
+				height:60px;
+				background-color:black;
+				margin-bottom:30px;
+			}
+			nav li	
+			{
+				display:inline-block;
+			}
+			nav a:link, nav a:visited
+			{	
+				display:block;
+				text-align:center;
+				text-decoration:none;
+				background-color:black;
+				color:#aba000;
+				width:140px;
+				height:50px;
+				float:left;
+				margin-right:20px;
+				line-height:20px;
+				padding-top:10px;
+				font-family:Arial, sans;
+				
+				
+			}
+			nav a.menu:link,nav a.menu:visited
+			{
+				padding:0;
+				height:60px;
+				line-height:60px;
+				
+			}
+			nav #ostatnimenu
+			{
+				margin-right:0;
+				width:137px;
+				
+			}
+			nav a:hover
+			{
+				box-shadow:0px 0px 10px #aba000;
+				
+			}
+			#baner
+			{
+				background-color:black;
+				position:relative;
+				height:240px;
+				margin-bottom:30px;
+			}
+			#baner p
+			{
+				position:absolute;
+				text-align:right;
+				color:white;
+				top:40px;
+				right:30px;
+				font-size:25px;
+				font-style:italic;
+			}
+			#baner img
+			{
+				position:absolute;
+				bottom:0;
+				left:140px;
+			}
+			#kafelki
+			{
+				margin-bottom:30px;
+				height:117px;
+			}
+			.kafelek
+			{
+				display:inline-block;
+				float:left;
+				width:225px;
+				margin-right:20px;
+				height:117px;
+				
+			}
+			#ostatnikafelek
+			{
+				margin-right:0;
+			}
+			.kafelek a:link, .kafelek a:visited
+			{	
+				text-align:center;
+				font-size:30px;
+				color:#aba000;
+				display:block;
+				margin-top:-95px;
+				
+			}
+			.kafelek a:hover
+			{
+				text-shadow:0px 0px 20px #aba000;
+				
+			}
+			.kafelek .drugi:link, .drugi:visited
+			{
+				margin-top:10px;
+			}
+			.kafelek .pojedynczy:link, .pojedynczy:visited
+			{
+				margin-top:-80px;
+			}
+			#zaw
+			{
+				height:204px;
+				margin-bottom:30px;
+			}
+			#info
+			{
+				width:470px;
+				height:204px;
+				float:left;
+				background-color:black;
+			}
+			#info p
+			{
+				font-size:25px;
+				color:white;
+				margin:20px;
+				margin-top:35px;
+			}
+			#zdjecie
+			{
+				width:470px;
+				height:204px;
+				float:right;
+			}
+			#zdjecie img
+			{
+				display:block;
+				float:right;
+				width:470px;
+			}
+			footer
+			{
+				
+			}
+			#duza
+			{
+				height:99px;
+				background-color:black;
+				padding-top:1px;
+			}
+			table
+			{
+				margin-top:20px;
+				margin-left:45px;
+				height:80px;
+			}
+			td
+			{
+				width:250px;
+				height:30px;
+			}
+			td a:link, td a:visited
+			{
+				font-family:Arial, sans;
+				text-decoration:underline;
+				font-size:18px;
+				color:white;
+			}
+			#mala
+			{
+				background-color:black;
+				height:20px;
+			}
+			#mala p
+			{
+				padding-top:2px;
+				text-align:center;
+				color:white;
+			}

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset= "utf-8"/>
+		<meta name="keywords" content="definicje, podstawy, html, adresy"/>
+		<meta name="author" content="damian filipowski"/>
+		<meta name="generator" content="Notepad++"/>
+		<title>HTML i CSS </title>
+		<link rel="stylesheet" href="css/styles_menu.css" type="text/css"/>
+		<link rel="stylesheet" href="css/styles.css" type="text/css"/>
+		<link rel="shortcut icon" href="css/icon.ico" type="image/x-icon"/>
+		<style>
+			div.dziecko1
+				{	
+					float:left;
+					width:500px;
+				}
+			div.dziecko2
+				{	
+					float:left;
+					width:250px;
+				
+				}
+			dt
+				{
+					font-weight:normal;
+				}
+		</style>
+	</head>
+	<body>
+		<div id="poj">
+			<header>
+				<ol>
+					<li><a href="index.html">STRONA GŁÓWNA</a>
+					</li>
+					<li><a href="#">TEORIA</a>
+					    <ul>
+						    <li><a href="teoria_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="teoria_znaczniki.html">ZNACZNIKI</a></li>
+						    <li><a href="teoria_deklaracja.html">DEKLARACJA STRONY KODOWEJ</a></li>
+					    </ul>
+					</li>
+
+					<li><a href="#">ZASTOSOWANIE</a>
+						<ul>
+						    <li><a href="zasto_listy.html">LISTY</a></li>
+							<li><a href="zasto_obrazy.html">OBRAZY</a></li>
+							<li><a href="zasto_kotwice.html">KOTWICE</a></li>
+							<li><a href="zasto_tabele.html">TABELE</a></li>
+							<li><a href="zasto_adresy.html">HIPERŁĄCZA</a></li>
+							<li><a href="zasto_mapa.html">MAPA ODSYŁACZY</a></li>
+							
+						</ul>
+					</li>
+					<li><a href="#">CSS</a>
+						<ul>
+							<li><a href="css_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="css_znaczniki.html">ZNACZNIKI</a></li>
+							<li><a href="css_kaskadowosc.html">KASKADOWOŚĆ</a></li>
+							<li><a href="css_formatowanie.html">FORMATOWANIE</a></li>
+							<li><a href="css_uklady.html">UKŁADY STRON</a></li>
+							<li><a href="css_tlo.html">TŁA NA STRONIE</a></li>
+							
+							
+							
+						</ul>
+					</li>
+				</ol>
+			</header>
+			<div id="zaw">
+				<h1>Hiperłącze</h1>
+				<p>Do umieszczania hiperłącz używamy znacznika &lt; a &gt;. </p>
+				
+				<div class="rodzic">
+					<div class="dziecko1">
+						<p style="margin-top:1em;">Przykładowe hiperłącze:</p>
+						<pre>
+&lt;p>&lt;a href="przyklad.html">Link do strony&lt;/a&gt;&lt;/p&gt;
+						</pre>
+					</div>
+					<div class="dziecko2">
+						<p style="margin-top:1em;">Efekt:</p>
+						
+					<p><a href="przyklady/przyklad.html">Link do strony</a></p>
+						
+					</div>
+				</div>
+			
+				<h1 style="clear:both; margin-top:1em;">Adresowanie względne</h1>
+				<p style="margin-top:1em;">Adresowanie względne to takie, przy którym punktem odniesienia jest nasza główna strona, plik.</p>
+				<p style="margin-top:1em;">Przykład:</p>
+				<pre>
+&lt;p>&lt;a href="../strony/adres.html">Link1&lt;/a&gt;&lt;/p&gt;
+				</pre>
+				
+				<h1 style="clear:both; margin-top:1em;">Adresowanie bezwzględne</h1>
+				<p style="margin-top:1em;">Adresowanie bezwzględne to pełna ścieżka dostępu do pliku.</p>
+				<p style="margin-top:1em;">Przykład:</p>
+				<pre>
+&lt;p>&lt;a href="C:/dane/strony/adres.html">Link1&lt;/a&gt;&lt;/p&gt;
+				</pre>
+				
+			</div>
+			
+			<footer>Wykonał Damian Filipowski ©2015</footer>
+		</div>
+	</body>
+</html>

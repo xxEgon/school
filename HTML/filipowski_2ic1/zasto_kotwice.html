@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset= "utf-8"/>
+		<meta name="keywords" content="definicje, podstawy, html, kotwice"/>
+		<meta name="author" content="damian filipowski"/>
+		<meta name="generator" content="Notepad++"/>
+		<title>HTML i CSS </title>
+		<link rel="stylesheet" href="css/styles_menu.css" type="text/css"/>
+		<link rel="stylesheet" href="css/styles.css" type="text/css"/>
+		<link rel="shortcut icon" href="css/icon.ico" type="image/x-icon"/>
+	</head>
+	<body>
+		<div id="poj">
+			<header>
+				<ol>
+					<li><a href="index.html">STRONA GŁÓWNA</a>
+					</li>
+					<li><a href="#">TEORIA</a>
+					    <ul>
+						    <li><a href="teoria_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="teoria_znaczniki.html">ZNACZNIKI</a></li>
+						    <li><a href="teoria_deklaracja.html">DEKLARACJA STRONY KODOWEJ</a></li>
+					    </ul>
+					</li>
+
+					<li><a href="#">ZASTOSOWANIE</a>
+						<ul>
+						    <li><a href="zasto_listy.html">LISTY</a></li>
+							<li><a href="zasto_obrazy.html">OBRAZY</a></li>
+							<li><a href="zasto_kotwice.html">KOTWICE</a></li>
+							<li><a href="zasto_tabele.html">TABELE</a></li>
+							<li><a href="zasto_adresy.html">HIPERŁĄCZA</a></li>
+							<li><a href="zasto_mapa.html">MAPA ODSYŁACZY</a></li>
+						</ul>
+					</li>
+					<li><a href="#">CSS</a>
+						<ul>
+							<li><a href="css_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="css_znaczniki.html">ZNACZNIKI</a></li>
+							<li><a href="css_kaskadowosc.html">KASKADOWOŚĆ</a></li>
+							<li><a href="css_formatowanie.html">FORMATOWANIE</a></li>
+							<li><a href="css_uklady.html">UKŁADY STRON</a></li>
+							<li><a href="css_tlo.html">TŁA NA STRONIE</a></li>
+							
+							
+						</ul>
+					</li>
+				</ol>
+			</header>
+			<div id="zaw">
+				<h1>Kotwice</h1>
+				<p>Kotwice służą do "poruszania się" po stronie i odnoszą się (hiperłącze) do wybranych przez nas miejsc.</p>
+				<p style="margin-top:1em;">Przykładowa kotwica do akapitu o ID <em>gora</em>:</p>
+				<pre>
+&lt;p&gt;&lt;a href="#gora"&gt;Na górę strony&lt;/a&gt;&lt;/p&gt;
+				</pre>
+				<p style="margin-top:1em;">Trudno jest to wytłumaczyć, więc umieszczam po prostu kod prostej strony opartej o kotwice i sam link do strony.</p>
+				<p><a href="przyklady/zasto_kotwice2.html">Strona pokazowa.</a></p>
+				<pre>
+&lt;p&gt;&lt;a href="#dol"&gt;Na dół&lt;/a&gt;&lt;/p&gt;
+		&lt;p&gt;&lt;a href="../index.html"&gt;POWRÓT DO STRONY GŁÓWNEJ&lt;/a&gt;&lt;/p&gt;
+		&lt;p id="gora"&gt;Lorem ipsum ...&lt;/p&gt;
+		&lt;p&gt;Lorem ipsum ...&lt;/p&gt;
+		&lt;p&gt;Lorem ipsum ...&lt;/p&gt;
+		&lt;p&gt;Lorem ipsum ...&lt;/p&gt;
+		&lt;p id="dol"&gt; Koniec&lt;/p&gt;
+		&lt;p>&lt;a href="#gora"&gt;Na górę&lt;/a&gt;&lt;/p&gt;
+				</pre>
+		</div>
+			<footer>Wykonał Damian Filipowski ©2015</footer>
+		</div>
+	</body>
+</html>

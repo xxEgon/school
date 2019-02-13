@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset= "utf-8"/>
+		<meta name="keywords" content="definicje, podstawy, html, uklady"/>
+		<meta name="author" content="damian filipowski"/>
+		<meta name="generator" content="Notepad++"/>
+		<title>HTML i CSS </title>
+		<link rel="stylesheet" href="css/styles_menu.css" type="text/css"/>
+		<link rel="stylesheet" href="css/styles.css" type="text/css"/>
+		<link rel="shortcut icon" href="css/icon.ico" type="image/x-icon"/>
+		<style>
+			img 
+				{
+					border:1px solid black;
+				
+		</style>
+	</head>
+	<body>
+		<div id="poj">
+			<header>
+				<ol>
+					<li><a href="index.html">STRONA GŁÓWNA</a>
+					</li>
+					<li><a href="#">TEORIA</a>
+					    <ul>
+						    <li><a href="teoria_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="teoria_znaczniki.html">ZNACZNIKI</a></li>
+						    <li><a href="teoria_deklaracja.html">DEKLARACJA STRONY KODOWEJ</a></li>
+					    </ul>
+					</li>
+
+					<li><a href="#">ZASTOSOWANIE</a>
+						<ul>
+						    <li><a href="zasto_listy.html">LISTY</a></li>
+							<li><a href="zasto_obrazy.html">OBRAZY</a></li>
+							<li><a href="zasto_kotwice.html">KOTWICE</a></li>
+							<li><a href="zasto_tabele.html">TABELE</a></li>
+							<li><a href="zasto_adresy.html">HIPERŁĄCZA</a></li>
+							<li><a href="zasto_mapa.html">MAPA ODSYŁACZY</a></li>
+						</ul>
+					</li>
+					<li><a href="#">CSS</a>
+						<ul>
+							<li><a href="css_pojecia.html">PODSTAWOWE POJĘCIA</a></li>
+							<li><a href="css_znaczniki.html">ZNACZNIKI</a></li>
+							<li><a href="css_kaskadowosc.html">KASKADOWOŚĆ</a></li>
+							<li><a href="css_formatowanie.html">FORMATOWANIE</a></li>
+							<li><a href="css_uklady.html">UKŁADY STRON</a></li>
+							<li><a href="css_tlo.html">TŁA NA STRONIE</a></li>
+							
+							
+						</ul>
+					</li>
+				</ol>
+			</header>
+			<div id="zaw">
+				<h2>Układy stron o stałej szerokości</h2>
+				<p>Oznaczenia:</p>
+				<ul>
+					<li>poj=całość</li>
+					<li>header=nagłówek</li>
+					<li>praw=prawa strona</li>
+					<li>center=środek</li>
+					<li>lew=lewa strona</li>
+					<li>footer=stopka</li>
+					<li>ramka to okno przeglądarki</li>
+				</ul>
+				<h3>Szablon 1</h3>
+				<img src="images/uklad1.jpg" alt="uklad" style="padding:20px;"/>
+				<pre>
+#poj
+{
+width:960px;
+margin:0 auto;
+background:silver;
+}
+				</pre>
+				<h3>Szablon 2</h3>
+				<img src="images/uklad2.jpg" alt="uklad" style="padding:20px;"/>
+				<pre>
+header
+{
+border-bottom:3px;
+text-align:center;
+border-bottom-style:solid;
+}
+#poj
+
+width:960px;
+margin:0 auto;
+background:silver;
+}
+footer
+{
+border-top:3px;
+border-top-style:solid;
+text-align:center;	
+}
+				</pre>
+				<h3>Szablon 3</h3>
+				<img src="images/uklad3.jpg" alt="uklad" style="padding:20px;"/>
+				<pre>
+#poj
+{
+width:960px;
+margin:0 auto;
+background:silver;
+overflow:hidden;
+}
+#lew
+{
+width:200px;
+float:left;
+}
+#praw
+{
+width:755px;
+float:left;
+border-left:3px red solid;
+}
+				</pre>
+				<h3>Szablon 4</h3>
+				<img src="images/uklad4.jpg" alt="uklad" style="padding:20px;"/>
+				<pre>
+#poj
+{
+width:960px;
+margin:0 auto;
+background:silver;
+overflow:hidden;
+}
+#lew
+{
+width:200px;
+float:right;
+border-left:3px red solid;
+}
+#praw
+{
+width:755px;
+float:right;
+
+}
+				</pre>
+				<h3>Szablon 5</h3>
+				<img src="images/uklad5.jpg" alt="uklad" style="padding:20px;"/>
+				<pre>
+#poj
+{
+width:960px;
+margin:0 auto;
+background:silver;
+overflow:hidden;
+}
+#lew
+{
+width:200px;
+float:left;
+}
+#center
+{
+width:550px;
+float:left;
+border-left:3px red solid;
+}
+#praw
+{
+width:200px;
+float:left;
+border-left:3px red solid;
+				</pre>
+				<h3>Szablon 6</h3>
+				<img src="images/uklad6.jpg" alt="uklad" style="padding:20px;"/>
+				<pre>
+#poj
+{
+width:960px;
+margin:0 auto;
+background:silver;
+overflow:hidden;	
+}
+header
+{
+text-align:center;
+border-bottom:3px red solid;
+}
+#lew
+{
+width:200px;
+float:left;
+}
+#praw
+{
+width:550px;
+float:left;
+border-left:3px red solid;
+}
+footer
+{
+text-align:center;
+clear:both;
+border-top:red solid;
+}
+				</pre>
+				<h3>Szablon 7</h3>
+				<img src="images/uklad7.jpg" alt="uklad" style="padding:20px;"/>
+				<pre>
+#poj
+{
+width:960px;
+margin:0 auto;
+background:silver;
+overflow:hidden;	
+}
+header
+{
+text-align:center;
+border-bottom:3px red solid;
+}
+#lew
+{
+width:200px;
+float:right;
+border-left:3px red solid;
+}
+#praw
+{
+width:550px;
+float:right;
+}
+footer
+{
+text-align:center;
+clear:both;
+border-top:red solid;
+}
+				</pre>
+				<h3>Szablon 8</h3>
+				<img src="images/uklad8.jpg" alt="uklad" style="padding:20px;"/>
+				<pre>
+#poj
+{
+width:960px;
+margin:0 auto;
+background:silver;
+overflow:hidden;
+}
+header
+{
+text-align:center;
+border-bottom:3px red solid;
+}
+#lew
+{
+width:200px;
+float:left;
+}
+#center
+{
+width:550px;
+float:left;
+border-left:3px red solid;
+}
+#praw
+{
+width:200px;
+float:left;
+border-left:3px red solid;
+footer
+{
+text-align:center;
+clear:both;
+border-top:3px red solid;
+}
+				</pre>
+				<div id="kotwica"><a href="#poj">Przejdź na górę strony</a></div>
+			</div>
+			<footer>Wykonał Damian Filipowski ©2015</footer>
+		</div>
+	</body>
+</html>
